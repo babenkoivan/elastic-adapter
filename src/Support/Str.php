@@ -11,6 +11,6 @@ final class Str
      */
     public static function toSnakeCase(string $string): string
     {
-        return strtolower(preg_replace('/([A-Z])/', '_$1', $string));
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
     }
 }

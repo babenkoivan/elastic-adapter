@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace ElasticAdaptor\Indices;
 
 use BadMethodCallException;
+use ElasticAdaptor\Support\ArrayableInterface;
 use ElasticAdaptor\Support\Str;
 
-final class Mapping
+final class Mapping implements ArrayableInterface
 {
     /**
      * @var bool
@@ -81,5 +82,13 @@ final class Mapping
         $this->properties[$arguments[0]] = $property;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return $this->properties;
     }
 }

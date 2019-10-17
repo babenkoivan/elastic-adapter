@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace ElasticAdaptor\Indices;
 
 use BadMethodCallException;
+use ElasticAdaptor\Support\ArrayableInterface;
 use ElasticAdaptor\Support\Str;
 
-final class Settings
+final class Settings implements ArrayableInterface
 {
     /**
      * @var array
@@ -27,5 +28,13 @@ final class Settings
         $this->settings[Str::toSnakeCase($name)] = $arguments[0];
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return $this->settings;
     }
 }
