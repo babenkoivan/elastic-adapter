@@ -21,6 +21,12 @@ class StrTest extends TestCase
             ['_fooBar', '_foo_bar'],
             ['To_fooBar', 'to_foo_bar'],
             ['To__foo_Bar', 'to__foo_bar'],
+            ['foo1Bar', 'foo1_bar'],
+            ['foo-Bar', 'foo_bar'],
+            ['to-fooBar', 'to_foo_bar'],
+            ['FooBar', 'foo_bar'],
+            ['FOOBar', 'foobar'],
+            ['fooBAR', 'foo_bar'],
         ];
     }
 
