@@ -65,15 +65,21 @@ final class IndexManager
      */
     public function create(Index $index): self
     {
-        $this->indices->create([
-            'index' => $index->getName(),
-            'body' => [
-                'settings' => $index->getSettings()->toArray(),
-                'mappings' => [
-                    Document::getType() => $index->getMapping()->toArray()
-                ]
-            ]
-        ]);
+        $params = [
+            'index' => $index->getName()
+        ];
+
+        if ($settings = $index->getSettings()) {
+            $params['body']['settings'] = $settings->toArray();
+        }
+
+        if ($mapping = $index->getMapping()) {
+            $params['body']['mappings'] = [
+                Document::getType() => $mapping->toArray()
+            ];
+        }
+
+        $this->indices->create($params);
 
         return $this;
     }
@@ -84,13 +90,18 @@ final class IndexManager
      */
     public function putMapping(Index $index): self
     {
-        $this->indices->putMapping([
+        $params = [
             'index' => $index->getName(),
-            'type' => Document::getType(),
-            'body' => [
-                Document::getType() => $index->getMapping()->toArray()
-            ]
-        ]);
+            'type' => Document::getType()
+        ];
+
+        if ($mapping = $index->getMapping()) {
+            $params['body'] = [
+                Document::getType() => $mapping->toArray()
+            ];
+        }
+
+        $this->indices->putMapping($params);
 
         return $this;
     }
@@ -101,12 +112,15 @@ final class IndexManager
      */
     public function putSettings(Index $index): self
     {
-        $this->indices->putSettings([
-            'index' => $index->getName(),
-            'body' => [
-                'settings' => $index->getSettings()->toArray()
-            ]
-        ]);
+        $params = [
+            'index' => $index->getName()
+        ];
+
+        if ($settings = $index->getSettings()) {
+            $params['body']['settings'] = $settings->toArray();
+        }
+
+        $this->indices->putSettings($params);
 
         return $this;
     }

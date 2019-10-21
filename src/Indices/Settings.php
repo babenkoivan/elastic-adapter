@@ -15,17 +15,17 @@ final class Settings implements ArrayableInterface
     private $settings = [];
 
     /**
-     * @param string $name
+     * @param string $method
      * @param array $arguments
      * @return self
      */
-    public function __call(string $name, array $arguments): self
+    public function __call(string $method, array $arguments): self
     {
-        if (count($arguments) > 1) {
-            throw new BadMethodCallException(sprintf('Method %s doesn\'t exist', $name));
+        if (count($arguments) == 0 || count($arguments) > 1) {
+            throw new BadMethodCallException(sprintf('Invalid number of arguments for %s method', $method));
         }
 
-        $this->settings[Str::toSnakeCase($name)] = $arguments[0];
+        $this->settings[Str::toSnakeCase($method)] = $arguments[0];
 
         return $this;
     }

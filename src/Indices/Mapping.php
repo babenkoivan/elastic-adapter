@@ -10,13 +10,13 @@ use ElasticAdaptor\Support\Str;
 final class Mapping implements ArrayableInterface
 {
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $isFieldNamesEnabled = true;
+    private $isFieldNamesEnabled;
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $isSourceEnabled = true;
+    private $isSourceEnabled;
     /**
      * @var array
      */
@@ -63,17 +63,17 @@ final class Mapping implements ArrayableInterface
     }
 
     /**
-     * @param string $name
+     * @param string $method
      * @param array $arguments
      * @return $this
      */
-    public function __call(string $name, array $arguments): self
+    public function __call(string $method, array $arguments): self
     {
-        if (count($arguments) > 2) {
-            throw new BadMethodCallException(sprintf('Method %s doesn\'t exist', $name));
+        if (count($arguments) == 0 || count($arguments) > 2) {
+            throw new BadMethodCallException(sprintf('Invalid number of arguments for %s method', $method));
         }
 
-        $property = ['type' => Str::toSnakeCase($name)];
+        $property = ['type' => Str::toSnakeCase($method)];
 
         if (isset($arguments[1])) {
             $property += $arguments[1];
@@ -89,6 +89,24 @@ final class Mapping implements ArrayableInterface
      */
     public function toArray(): array
     {
-        return $this->properties;
+        $mapping = [];
+
+        if (isset($this->isFieldNamesEnabled)) {
+            $mapping['_field_names'] = [
+                'enabled' => $this->isFieldNamesEnabled
+            ];
+        }
+
+        if (isset($this->isSourceEnabled)) {
+            $mapping['_source'] = [
+                'enabled' => $this->isSourceEnabled
+            ];
+        }
+
+        if (count($this->properties) > 0) {
+            $mapping['properties'] = $this->properties;
+        }
+
+        return $mapping;
     }
 }

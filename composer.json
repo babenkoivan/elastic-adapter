@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ElasticAdaptor\\": "tests"
+            "ElasticAdaptor\\Tests\\": "tests"
         }
     },
     "require": {

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Support;
+namespace ElasticAdaptor\Tests\Unit\Support;
 
+use ElasticAdaptor\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
