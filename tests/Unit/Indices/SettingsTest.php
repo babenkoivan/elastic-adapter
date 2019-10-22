@@ -20,11 +20,10 @@ class SettingsTest extends TestCase
     public function callParametersProvider(): array
     {
         return [
-            ['index', []],
-            ['index', [['number_of_replicas' => 2]]],
-            ['index', [['number_of_replicas' => 2], ['refresh_interval' => -1]]],
+            ['numberOfReplicas', []],
+            ['numberOfReplicas', [2]],
+            ['numberOfReplicas', [2, 3]],
             ['analysis', [['analyzer' => ['content' => ['type' => 'custom', 'tokenizer' => 'whitespace']]]]],
-            ['caseSensitiveOption', ['value']],
         ];
     }
 
@@ -55,10 +54,8 @@ class SettingsTest extends TestCase
     public function test_configured_array_conversion(): void
     {
         $settings = (new Settings())
-            ->index([
-                'number_of_replicas' => 2,
-                'refresh_interval' => -1
-            ])
+            ->numberOfReplicas(2)
+            ->refreshInterval(-1)
             ->analysis([
                 'analyzer' => [
                     'content' => [
@@ -69,10 +66,8 @@ class SettingsTest extends TestCase
             ]);
 
         $this->assertSame([
-            'index' => [
-                'number_of_replicas' => 2,
-                'refresh_interval' => -1
-            ],
+            'number_of_replicas' => 2,
+            'refresh_interval' => -1,
             'analysis' => [
                 'analyzer' => [
                     'content' => [

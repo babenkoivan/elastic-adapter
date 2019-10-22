@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace ElasticAdaptor\Indices;
 
-use ElasticAdaptor\Documents\Document;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use InvalidArgumentException;
 
 final class IndexManager
 {
@@ -69,14 +69,12 @@ final class IndexManager
             'index' => $index->getName()
         ];
 
-        if ($settings = $index->getSettings()) {
-            $params['body']['settings'] = $settings->toArray();
+        if ($mapping = $index->getMapping()) {
+            $params['body']['mappings'] = $mapping->toArray();
         }
 
-        if ($mapping = $index->getMapping()) {
-            $params['body']['mappings'] = [
-                Document::getType() => $mapping->toArray()
-            ];
+        if ($settings = $index->getSettings()) {
+            $params['body']['settings'] = $settings->toArray();
         }
 
         $this->indices->create($params);
@@ -90,18 +88,14 @@ final class IndexManager
      */
     public function putMapping(Index $index): self
     {
-        $params = [
-            'index' => $index->getName(),
-            'type' => Document::getType()
-        ];
-
-        if ($mapping = $index->getMapping()) {
-            $params['body'] = [
-                Document::getType() => $mapping->toArray()
-            ];
+        if (!$mapping = $index->getMapping()) {
+            throw new InvalidArgumentException('Mapping is not provided');
         }
 
-        $this->indices->putMapping($params);
+        $this->indices->putMapping([
+            'index' => $index->getName(),
+            'body' => $mapping->toArray()
+        ]);
 
         return $this;
     }
@@ -112,15 +106,16 @@ final class IndexManager
      */
     public function putSettings(Index $index): self
     {
-        $params = [
-            'index' => $index->getName()
-        ];
-
-        if ($settings = $index->getSettings()) {
-            $params['body']['settings'] = $settings->toArray();
+        if (!$settings = $index->getSettings()) {
+            throw new InvalidArgumentException('Settings are not provided');
         }
 
-        $this->indices->putSettings($params);
+        $this->indices->putSettings([
+            'index' => $index->getName(),
+            'body' => [
+                'settings' => $settings->toArray()
+            ]
+        ]);
 
         return $this;
     }
