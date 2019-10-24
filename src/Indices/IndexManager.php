@@ -23,39 +23,39 @@ final class IndexManager
     }
 
     /**
-     * @param Index $index
-     * @return $this
+     * @param string $indexName
+     * @return IndexManager
      */
-    public function open(Index $index): self
+    public function open(string $indexName): self
     {
         $this->indices->open([
-            'index' => $index->getName()
+            'index' => $indexName
         ]);
 
         return $this;
     }
 
     /**
-     * @param Index $index
-     * @return $this
+     * @param string $indexName
+     * @return IndexManager
      */
-    public function close(Index $index): self
+    public function close(string $indexName): self
     {
         $this->indices->close([
-            'index' => $index->getName()
+            'index' => $indexName
         ]);
 
         return $this;
     }
 
     /**
-     * @param Index $index
+     * @param string $indexName
      * @return bool
      */
-    public function exists(Index $index): bool
+    public function exists(string $indexName): bool
     {
         return $this->indices->exists([
-            'index' => $index->getName()
+            'index' => $indexName
         ]);
     }
 
@@ -83,17 +83,14 @@ final class IndexManager
     }
 
     /**
-     * @param Index $index
-     * @return $this
+     * @param string $indexName
+     * @param Mapping $mapping
+     * @return IndexManager
      */
-    public function putMapping(Index $index): self
+    public function putMapping(string $indexName, Mapping $mapping): self
     {
-        if (!$mapping = $index->getMapping()) {
-            throw new InvalidArgumentException('Mapping is not provided');
-        }
-
         $this->indices->putMapping([
-            'index' => $index->getName(),
+            'index' => $indexName,
             'body' => $mapping->toArray()
         ]);
 
@@ -101,17 +98,14 @@ final class IndexManager
     }
 
     /**
-     * @param Index $index
-     * @return $this
+     * @param string $indexName
+     * @param Settings $settings
+     * @return IndexManager
      */
-    public function putSettings(Index $index): self
+    public function putSettings(string $indexName, Settings $settings): self
     {
-        if (!$settings = $index->getSettings()) {
-            throw new InvalidArgumentException('Settings are not provided');
-        }
-
         $this->indices->putSettings([
-            'index' => $index->getName(),
+            'index' => $indexName,
             'body' => [
                 'settings' => $settings->toArray()
             ]
@@ -121,13 +115,13 @@ final class IndexManager
     }
 
     /**
-     * @param Index $index
-     * @return $this
+     * @param string $indexName
+     * @return IndexManager
      */
-    public function drop(Index $index): self
+    public function drop(string $indexName): self
     {
         $this->indices->delete([
-            'index' => $index->getName()
+            'index' => $indexName
         ]);
 
         return $this;

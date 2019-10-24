@@ -41,51 +41,51 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_opened(): void
     {
-        $index = new Index('foo');
+        $indexName = 'foo';
 
         $this->client->indices()
             ->expects($this->once())
             ->method('open')
             ->with([
-                'index' => $index->getName()
+                'index' => $indexName
             ]);
 
         $indexManager = new IndexManager($this->client);
 
-        $this->assertSame($indexManager, $indexManager->open($index));
+        $this->assertSame($indexManager, $indexManager->open($indexName));
     }
 
     public function test_index_can_be_closed(): void
     {
-        $index = new Index('foo');
+        $indexName = 'foo';
 
         $this->client->indices()
             ->expects($this->once())
             ->method('close')
             ->with([
-                'index' => $index->getName()
+                'index' => $indexName
             ]);
 
         $indexManager = new IndexManager($this->client);
 
-        $this->assertSame($indexManager, $indexManager->close($index));
+        $this->assertSame($indexManager, $indexManager->close($indexName));
     }
 
     public function test_index_existence_can_be_checked(): void
     {
-        $index = new Index('foo');
+        $indexName = 'foo';
 
         $this->client->indices()
             ->expects($this->once())
             ->method('exists')
             ->with([
-                'index' => $index->getName()
+                'index' => $indexName
             ])
             ->willReturn(true);
 
         $indexManager = new IndexManager($this->client);
 
-        $this->assertTrue($indexManager->exists($index));
+        $this->assertTrue($indexManager->exists($indexName));
     }
 
     public function test_index_can_be_created_without_mapping_and_settings(): void
@@ -154,17 +154,17 @@ class IndexManagerTest extends TestCase
 
     public function test_mapping_can_be_updated(): void
     {
-        $mapping = (new Mapping())->text('foo');
-        $index = new Index('bar', $mapping);
+        $indexName = 'foo';
+        $mapping = (new Mapping())->text('bar');
 
         $this->client->indices()
             ->expects($this->once())
             ->method('putMapping')
             ->with([
-                'index' => $index->getName(),
+                'index' => $indexName,
                 'body' => [
                     'properties' => [
-                        'foo' => [
+                        'bar' => [
                             'type' => 'text'
                         ]
                     ]
@@ -173,29 +173,19 @@ class IndexManagerTest extends TestCase
 
         $indexManager = new IndexManager($this->client);
 
-        $this->assertSame($indexManager, $indexManager->putMapping($index));
-    }
-
-    public function test_mapping_update_throws_an_error_if_mapping_is_not_defined(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $index = new Index('foo');
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->putMapping($index));
+        $this->assertSame($indexManager, $indexManager->putMapping($indexName, $mapping));
     }
 
     public function test_settings_can_be_updated(): void
     {
+        $indexName = 'foo';
         $settings = (new Settings())->numberOfReplicas(2);
-        $index = new Index('foo', null, $settings);
 
         $this->client->indices()
             ->expects($this->once())
             ->method('putSettings')
             ->with([
-                'index' => $index->getName(),
+                'index' => $indexName,
                 'body' => [
                     'settings' => [
                         'number_of_replicas' => 2
@@ -205,16 +195,6 @@ class IndexManagerTest extends TestCase
 
         $indexManager = new IndexManager($this->client);
 
-        $this->assertSame($indexManager, $indexManager->putSettings($index));
-    }
-
-    public function test_settings_update_throws_an_error_if_settings_are_not_defined(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $index = new Index('foo');
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->putSettings($index));
+        $this->assertSame($indexManager, $indexManager->putSettings($indexName, $settings));
     }
 }
