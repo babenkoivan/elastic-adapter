@@ -14,7 +14,11 @@ operations.
 
 ## Installation
 
-// todo
+You can install the library using composer:
+
+```bash
+composer require babenkoivan/elastic-adaptor
+```
 
 ## Index management
 

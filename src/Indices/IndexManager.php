@@ -5,7 +5,6 @@ namespace ElasticAdaptor\Indices;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use InvalidArgumentException;
 
 final class IndexManager
 {
