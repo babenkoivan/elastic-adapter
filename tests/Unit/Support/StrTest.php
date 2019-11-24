@@ -11,9 +11,6 @@ use PHPUnit\Framework\TestCase;
  */
 class StrTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function stringProvider(): array
     {
         return [
@@ -34,8 +31,6 @@ class StrTest extends TestCase
     /**
      * @dataProvider stringProvider
      * @testdox String $input can be converted to snake case $output
-     * @param string $input
-     * @param string $output
      */
     public function test_string_can_be_converted_to_snake_case(string $input, string $output): void
     {

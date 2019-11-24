@@ -22,9 +22,6 @@ final class Mapping implements ArrayableInterface
      */
     private $properties = [];
 
-    /**
-     * @return $this
-     */
     public function enableFieldNames(): self
     {
         $this->isFieldNamesEnabled = true;
@@ -32,9 +29,6 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function disableFieldNames(): self
     {
         $this->isFieldNamesEnabled = false;
@@ -42,9 +36,6 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function enableSource(): self
     {
         $this->isSourceEnabled = true;
@@ -52,9 +43,6 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function disableSource(): self
     {
         $this->isSourceEnabled = false;
@@ -62,11 +50,6 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @param string $method
-     * @param array $arguments
-     * @return $this
-     */
     public function __call(string $method, array $arguments): self
     {
         if (count($arguments) == 0 || count($arguments) > 2) {
@@ -84,9 +67,6 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function toArray(): array
     {
         $mapping = [];

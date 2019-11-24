@@ -58,9 +58,6 @@ class MappingTest extends TestCase
         ], $mapping->toArray());
     }
 
-    /**
-     * @return array
-     */
     public function callParametersProvider(): array
     {
         return [
@@ -74,8 +71,6 @@ class MappingTest extends TestCase
     /**
      * @dataProvider callParametersProvider
      * @testdox Test $method property magic setter
-     * @param string $method
-     * @param array $arguments
      */
     public function test_property_magic_setter(string $method, array $arguments): void
     {

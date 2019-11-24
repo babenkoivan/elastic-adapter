@@ -18,11 +18,6 @@ final class Index
      */
     private $settings;
 
-    /**
-     * @param string $name
-     * @param Mapping|null $mapping
-     * @param Settings|null $settings
-     */
     public function __construct(string $name, Mapping $mapping = null, Settings $settings = null)
     {
         $this->name = $name;
@@ -30,25 +25,16 @@ final class Index
         $this->settings = $settings;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return Mapping|null
-     */
     public function getMapping(): ?Mapping
     {
         return $this->mapping;
     }
 
-    /**
-     * @return Settings|null
-     */
     public function getSettings(): ?Settings
     {
         return $this->settings;

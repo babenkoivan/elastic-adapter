@@ -14,9 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class SettingsTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function callParametersProvider(): array
     {
         return [
@@ -30,8 +27,6 @@ class SettingsTest extends TestCase
     /**
      * @dataProvider callParametersProvider
      * @testdox Test $method option magic setter
-     * @param string $method
-     * @param array $arguments
      */
     public function test_option_magic_setter(string $method, array $arguments): void
     {

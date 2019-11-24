@@ -9,7 +9,6 @@ use ElasticAdaptor\Indices\Mapping;
 use ElasticAdaptor\Indices\Settings;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

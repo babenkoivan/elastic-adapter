@@ -9,16 +9,8 @@ use ElasticAdaptor\Support\Str;
 
 final class Settings implements ArrayableInterface
 {
-    /**
-     * @var array
-     */
     private $settings = [];
 
-    /**
-     * @param string $method
-     * @param array $arguments
-     * @return self
-     */
     public function __call(string $method, array $arguments): self
     {
         if (count($arguments) == 0 || count($arguments) > 1) {
@@ -30,9 +22,6 @@ final class Settings implements ArrayableInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function toArray(): array
     {
         return $this->settings;

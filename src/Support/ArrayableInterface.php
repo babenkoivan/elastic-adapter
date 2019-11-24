@@ -5,8 +5,5 @@ namespace ElasticAdaptor\Support;
 
 interface ArrayableInterface
 {
-    /**
-     * @return array
-     */
     public function toArray(): array;
 }

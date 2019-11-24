@@ -13,18 +13,11 @@ final class IndexManager
      */
     private $indices;
 
-    /**
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->indices = $client->indices();
     }
 
-    /**
-     * @param string $indexName
-     * @return IndexManager
-     */
     public function open(string $indexName): self
     {
         $this->indices->open([
@@ -34,10 +27,6 @@ final class IndexManager
         return $this;
     }
 
-    /**
-     * @param string $indexName
-     * @return IndexManager
-     */
     public function close(string $indexName): self
     {
         $this->indices->close([
@@ -47,10 +36,6 @@ final class IndexManager
         return $this;
     }
 
-    /**
-     * @param string $indexName
-     * @return bool
-     */
     public function exists(string $indexName): bool
     {
         return $this->indices->exists([
@@ -58,10 +43,6 @@ final class IndexManager
         ]);
     }
 
-    /**
-     * @param Index $index
-     * @return $this
-     */
     public function create(Index $index): self
     {
         $params = [
@@ -81,11 +62,6 @@ final class IndexManager
         return $this;
     }
 
-    /**
-     * @param string $indexName
-     * @param Mapping $mapping
-     * @return IndexManager
-     */
     public function putMapping(string $indexName, Mapping $mapping): self
     {
         $this->indices->putMapping([
@@ -96,11 +72,6 @@ final class IndexManager
         return $this;
     }
 
-    /**
-     * @param string $indexName
-     * @param Settings $settings
-     * @return IndexManager
-     */
     public function putSettings(string $indexName, Settings $settings): self
     {
         $this->indices->putSettings([
@@ -113,10 +84,6 @@ final class IndexManager
         return $this;
     }
 
-    /**
-     * @param string $indexName
-     * @return IndexManager
-     */
     public function drop(string $indexName): self
     {
         $this->indices->delete([
