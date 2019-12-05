@@ -1,10 +1,10 @@
-# Elastic Adaptor
+# Elastic Adapter
 
-[![Build Status](https://travis-ci.com/babenkoivan/elastic-adaptor.svg?token=tL2AyZUSS9biRsKPg7fp&branch=master)](https://travis-ci.com/babenkoivan/elastic-adaptor)
+[![Build Status](https://travis-ci.com/babenkoivan/elastic-adapter.svg?token=tL2AyZUSS9biRsKPg7fp&branch=master)](https://travis-ci.com/babenkoivan/elastic-adapter)
 
 ---
 
-This is an adaptor for official PHP client for Elasticsearch. It designed to simplify basic index and document 
+This is an adapter for official PHP client for Elasticsearch. It designed to simplify basic index and document 
 operations.
 
 ## Contents
@@ -17,7 +17,7 @@ operations.
 You can install the library using composer:
 
 ```bash
-composer require babenkoivan/elastic-adaptor
+composer require babenkoivan/elastic-adapter
 ```
 
 ## Index management
@@ -32,7 +32,7 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
   ]
 ]);
 
-$indexManager = new \ElasticAdaptor\Indices\IndexManager($client);
+$indexManager = new \ElasticAdapter\Indices\IndexManager($client);
 ``` 
 
 ### Create
@@ -40,7 +40,7 @@ $indexManager = new \ElasticAdaptor\Indices\IndexManager($client);
 You can created an index with default settings and mapping:
 
 ```php
-$index = new \ElasticAdaptor\Indices\Index('my_index');
+$index = new \ElasticAdapter\Indices\Index('my_index');
 
 $indexManager->create($index);
 ```
@@ -48,7 +48,7 @@ $indexManager->create($index);
 or configure the index to fulfill your needs:
 
 ```php
-$mapping = (new \ElasticAdaptor\Indices\Mapping())
+$mapping = (new \ElasticAdapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -57,11 +57,11 @@ $mapping = (new \ElasticAdaptor\Indices\Mapping())
     ])
     ->geoPoint('location');
 
-$settings = (new \ElasticAdaptor\Indices\Settings())
+$settings = (new \ElasticAdapter\Indices\Settings())
     ->numberOfReplicas(2)
     ->refreshInterval(-1);
 
-$index = new \ElasticAdaptor\Indices\Index('my_index', $mapping, $settings);
+$index = new \ElasticAdapter\Indices\Index('my_index', $mapping, $settings);
 
 $indexManager->create($index);
 ```
@@ -79,7 +79,7 @@ $indexManager->drop('my_index');
 You can update index mapping:
 
 ```php
-$mapping = (new \ElasticAdaptor\Indices\Mapping())
+$mapping = (new \ElasticAdapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -96,7 +96,7 @@ $indexManager->putMapping('my_index', $mapping);
 You can update index settings:
 
 ```php
-$settings = (new \ElasticAdaptor\Indices\Settings())
+$settings = (new \ElasticAdapter\Indices\Settings())
     ->numberOfReplicas(2)
     ->refreshInterval(-1);
 

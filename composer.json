@@ -1,6 +1,6 @@
 {
-    "name": "babenkoivan/elastic-adaptor",
-    "description": "An adaptor for official PHP Elasticsearch client",
+    "name": "babenkoivan/elastic-adapter",
+    "description": "An adapter for official PHP Elasticsearch client",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -11,12 +11,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "ElasticAdaptor\\": "src"
+            "ElasticAdapter\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ElasticAdaptor\\Tests\\": "tests"
+            "ElasticAdapter\\Tests\\": "tests"
         }
     },
     "require": {

@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Tests\Unit\Indices;
+namespace ElasticAdapter\Tests\Unit\Indices;
 
-use ElasticAdaptor\Indices\Index;
-use ElasticAdaptor\Indices\IndexManager;
-use ElasticAdaptor\Indices\Mapping;
-use ElasticAdaptor\Indices\Settings;
+use ElasticAdapter\Indices\Index;
+use ElasticAdapter\Indices\IndexManager;
+use ElasticAdapter\Indices\Mapping;
+use ElasticAdapter\Indices\Settings;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdaptor\Indices\IndexManager
- * @uses   \ElasticAdaptor\Indices\Index
- * @uses   \ElasticAdaptor\Indices\Settings
- * @uses   \ElasticAdaptor\Indices\Mapping
- * @uses   \ElasticAdaptor\Support\Str
+ * @covers \ElasticAdapter\Indices\IndexManager
+ * @uses   \ElasticAdapter\Indices\Index
+ * @uses   \ElasticAdapter\Indices\Settings
+ * @uses   \ElasticAdapter\Indices\Mapping
+ * @uses   \ElasticAdapter\Support\Str
  */
 class IndexManagerTest extends TestCase
 {

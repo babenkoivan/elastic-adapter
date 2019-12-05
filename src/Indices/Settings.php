@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Indices;
+namespace ElasticAdapter\Indices;
 
 use BadMethodCallException;
-use ElasticAdaptor\Support\ArrayableInterface;
-use ElasticAdaptor\Support\Str;
+use ElasticAdapter\Support\ArrayableInterface;
+use ElasticAdapter\Support\Str;
 
 final class Settings implements ArrayableInterface
 {

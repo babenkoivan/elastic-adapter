@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Tests\Unit\Support;
+namespace ElasticAdapter\Tests\Unit\Support;
 
-use ElasticAdaptor\Support\Str;
+use ElasticAdapter\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdaptor\Support\Str
+ * @covers \ElasticAdapter\Support\Str
  */
 class StrTest extends TestCase
 {

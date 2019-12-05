@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Tests\Unit\Indices;
+namespace ElasticAdapter\Tests\Unit\Indices;
 
 use BadMethodCallException;
-use ElasticAdaptor\Indices\Settings;
-use ElasticAdaptor\Support\Str;
+use ElasticAdapter\Indices\Settings;
+use ElasticAdapter\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdaptor\Indices\Settings
- * @uses   \ElasticAdaptor\Support\Str
+ * @covers \ElasticAdapter\Indices\Settings
+ * @uses   \ElasticAdapter\Support\Str
  */
 class SettingsTest extends TestCase
 {

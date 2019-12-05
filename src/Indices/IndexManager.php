@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Indices;
+namespace ElasticAdapter\Indices;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;

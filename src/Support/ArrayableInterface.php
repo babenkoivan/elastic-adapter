@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Support;
+namespace ElasticAdapter\Support;
 
 interface ArrayableInterface
 {

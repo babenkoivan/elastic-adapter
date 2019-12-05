@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace ElasticAdaptor\Tests\Unit\Indices;
+namespace ElasticAdapter\Tests\Unit\Indices;
 
-use ElasticAdaptor\Indices\Index;
-use ElasticAdaptor\Indices\Mapping;
-use ElasticAdaptor\Indices\Settings;
+use ElasticAdapter\Indices\Index;
+use ElasticAdapter\Indices\Mapping;
+use ElasticAdapter\Indices\Settings;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdaptor\Indices\Index
+ * @covers \ElasticAdapter\Indices\Index
  */
 class IndexTest extends TestCase
 {
