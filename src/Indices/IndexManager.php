@@ -6,7 +6,7 @@ namespace ElasticAdapter\Indices;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
 
-final class IndexManager
+class IndexManager
 {
     /**
      * @var IndicesNamespace
