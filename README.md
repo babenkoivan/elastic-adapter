@@ -4,7 +4,7 @@
 
 ---
 
-This is an adapter for official PHP client for Elasticsearch. It designed to simplify basic index and document 
+An adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document 
 operations.
 
 ## Contents
@@ -14,7 +14,7 @@ operations.
 
 ## Installation
 
-You can install the library using composer:
+The library can be installed via Composer:
 
 ```bash
 composer require babenkoivan/elastic-adapter
@@ -22,8 +22,7 @@ composer require babenkoivan/elastic-adapter
 
 ## Index management
 
-You can use the `IndexManager` class to manipulate indices. Before you start though, make sure you have 
-configured Elasticsearch client:
+The `IndexManager` class can be used for indices manipulation. It uses Elasticsearch client as a dependency, so make sure it's properly configured and passed in the constructor:
 
 ```php
 $client = \Elasticsearch\ClientBuilder::fromConfig([
@@ -35,9 +34,11 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
 $indexManager = new \ElasticAdapter\Indices\IndexManager($client);
 ``` 
 
+The manager provides a list of useful methods, which are listed below. 
+
 ### Create
 
-You can created an index with default settings and mapping:
+You can create an index with the default settings and mapping:
 
 ```php
 $index = new \ElasticAdapter\Indices\Index('my_index');
@@ -76,7 +77,7 @@ $indexManager->drop('my_index');
 
 ### Put Mapping
 
-You can update index mapping:
+You can update an index mapping:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -93,7 +94,7 @@ $indexManager->putMapping('my_index', $mapping);
 
 ### Put Settings
 
-You can update index settings:
+You can update an index settings:
 
 ```php
 $settings = (new \ElasticAdapter\Indices\Settings())
