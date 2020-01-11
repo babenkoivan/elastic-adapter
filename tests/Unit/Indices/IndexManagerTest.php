@@ -25,17 +25,22 @@ class IndexManagerTest extends TestCase
      * @var MockObject
      */
     private $client;
-
     /**
-     * @before
+     * @var IndexManager
      */
-    public function makeClient(): void
+    private $indexManager;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->client = $this->createMock(Client::class);
 
         $this->client
             ->method('indices')
             ->willReturn($this->createMock(IndicesNamespace::class));
+
+        $this->indexManager = new IndexManager($this->client);
     }
 
     public function test_index_can_be_opened(): void
@@ -49,9 +54,7 @@ class IndexManagerTest extends TestCase
                 'index' => $indexName
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->open($indexName));
+        $this->assertSame($this->indexManager, $this->indexManager->open($indexName));
     }
 
     public function test_index_can_be_closed(): void
@@ -65,9 +68,7 @@ class IndexManagerTest extends TestCase
                 'index' => $indexName
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->close($indexName));
+        $this->assertSame($this->indexManager, $this->indexManager->close($indexName));
     }
 
     public function test_index_existence_can_be_checked(): void
@@ -82,9 +83,7 @@ class IndexManagerTest extends TestCase
             ])
             ->willReturn(true);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertTrue($indexManager->exists($indexName));
+        $this->assertTrue($this->indexManager->exists($indexName));
     }
 
     public function test_index_can_be_created_without_mapping_and_settings(): void
@@ -98,9 +97,7 @@ class IndexManagerTest extends TestCase
                 'index' => $index->getName()
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->create($index));
+        $this->assertSame($this->indexManager, $this->indexManager->create($index));
     }
 
     public function test_index_can_be_created_without_mapping(): void
@@ -120,9 +117,7 @@ class IndexManagerTest extends TestCase
                 ]
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->create($index));
+        $this->assertSame($this->indexManager, $this->indexManager->create($index));
     }
 
     public function test_index_can_be_created_without_settings(): void
@@ -146,9 +141,7 @@ class IndexManagerTest extends TestCase
                 ]
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->create($index));
+        $this->assertSame($this->indexManager, $this->indexManager->create($index));
     }
 
     public function test_mapping_can_be_updated(): void
@@ -170,9 +163,7 @@ class IndexManagerTest extends TestCase
                 ]
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->putMapping($indexName, $mapping));
+        $this->assertSame($this->indexManager, $this->indexManager->putMapping($indexName, $mapping));
     }
 
     public function test_settings_can_be_updated(): void
@@ -192,8 +183,6 @@ class IndexManagerTest extends TestCase
                 ]
             ]);
 
-        $indexManager = new IndexManager($this->client);
-
-        $this->assertSame($indexManager, $indexManager->putSettings($indexName, $settings));
+        $this->assertSame($this->indexManager, $this->indexManager->putSettings($indexName, $settings));
     }
 }
