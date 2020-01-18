@@ -11,6 +11,7 @@ operations.
 
 * [Installation](#installation) 
 * [Index management](#index-management)
+* [Document management](#document-management)
 
 ## Installation
 
@@ -69,7 +70,7 @@ $indexManager->create($index);
 
 ### Drop
 
-You can delete an index by its name:
+You can drop an index by its name:
 
 ```php
 $indexManager->drop('my_index');
@@ -126,4 +127,96 @@ You can close an index:
 
 ```php
 $indexManager->close('my_index');
+```
+
+## Document management
+
+Similarly to `IndexManager`, the `DocumentManager` class also depends on Elasticsearch client:
+
+```php
+$client = \Elasticsearch\ClientBuilder::fromConfig([
+  'hosts' => [
+      'localhost:9200'
+  ]
+]);
+
+$documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
+``` 
+
+The manager makes typical operations over documents easier.
+
+### Index
+
+You can index documents:
+
+```php
+$documents = [
+    new ElasticAdapter\Documents\Document('1', ['title' => 'foo']),
+    new ElasticAdapter\Documents\Document('2', ['title' => 'bar']),
+];
+
+$documentManager->index('my_index', $documents);
+```
+
+You can also force Elasticsearch to refresh index immediately:
+
+```php
+$documentManager->index('my_index', $documents, true);
+```
+
+### Delete
+
+You can delete documents from index:
+
+```php
+$documentIds = ['1', '2'];
+
+$documentManager->delete('my_index', $documentIds);
+```
+
+You can refresh index immediately if needed:
+
+```php
+$documentManager->delete('my_index', $documentIds, true);
+```
+
+### Search
+
+You can search documents:
+
+```php
+$request = new \ElasticAdapter\Search\SearchRequest([
+    'match_phrase' => ['message' => 'number 1']
+]);
+
+$request->setHighlight([
+    'fields' => [
+        'message' => [
+            'type' => 'plain',
+            'fragment_size' => 15,
+            'number_of_fragments' => 3,
+            'fragmenter' => 'simple'
+        ]
+    ]
+]);
+
+$request->setSort([
+    ['post_date' => ['order' => 'asc']],
+    '_score'
+]);
+
+$request->setFrom(0)->setSize(20);
+
+$response = $documentManager->search('my_index', $request);
+
+// you can retrieve total number of results
+$total = $response->getHitsTotal();
+
+// you can retrieve highlight and document for every hit
+$hits = $response->getHits();
+
+foreach ($hits as $hit) {
+    $document = $hit->getDocument();
+    $highlight = $hit->getHighlight();
+}
 ```

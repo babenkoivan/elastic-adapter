@@ -20,15 +20,15 @@ class DocumentManager
     }
 
     /**
-     * @param  string  $index
+     * @param  string  $indexName
      * @param  Document[]  $documents
      * @param  bool  $refresh
      * @return DocumentManager
      */
-    public function index(string $index, array $documents, bool $refresh = false): self
+    public function index(string $indexName, array $documents, bool $refresh = false): self
     {
         $params = [
-            'index' => $index,
+            'index' => $indexName,
             'refresh' => $refresh ? 'true' : 'false',
             'body' => []
         ];
@@ -44,21 +44,21 @@ class DocumentManager
     }
 
     /**
-     * @param  string  $index
-     * @param  Document[]  $documents
+     * @param  string  $indexName
+     * @param  string[]  $documentIds
      * @param  bool  $refresh
      * @return DocumentManager
      */
-    public function delete(string $index, array $documents, bool $refresh = false): self
+    public function delete(string $indexName, array $documentIds, bool $refresh = false): self
     {
         $params = [
-            'index' => $index,
+            'index' => $indexName,
             'refresh' => $refresh ? 'true' : 'false',
             'body' => []
         ];
 
-        foreach ($documents as $document) {
-            $params['body'][] = ['delete' => ['_id' => $document->getId()]];
+        foreach ($documentIds as $documentId) {
+            $params['body'][] = ['delete' => ['_id' => $documentId]];
         }
 
         $this->client->bulk($params);
@@ -66,10 +66,10 @@ class DocumentManager
         return $this;
     }
 
-    public function search(string $index, SearchRequest $request): SearchResponse
+    public function search(string $indexName, SearchRequest $request): SearchResponse
     {
         $params = [
-            'index' => $index,
+            'index' => $indexName,
             'body' => $request->toArray()
         ];
 

@@ -15,6 +15,9 @@ final class SearchResponse implements SearchResponseFragmentInterface
         $this->response = $response;
     }
 
+    /**
+     * @return Hit[]
+     */
     public function getHits(): array
     {
         return array_map(function (array $hit) {
