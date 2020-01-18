@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Search\SearchRequest;
+use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
 
 class DocumentManager
@@ -62,5 +64,17 @@ class DocumentManager
         $this->client->bulk($params);
 
         return $this;
+    }
+
+    public function search(string $index, SearchRequest $request): SearchResponse
+    {
+        $params = [
+            'index' => $index,
+            'body' => $request->toArray()
+        ];
+
+        $response = $this->client->search($params);
+
+        return new SearchResponse($response);
     }
 }

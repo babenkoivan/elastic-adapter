@@ -5,6 +5,8 @@ namespace ElasticAdapter\Tests\Unit\Documents;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
+use ElasticAdapter\Search\SearchRequest;
+use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \ElasticAdapter\Documents\DocumentManager
  * @uses   \ElasticAdapter\Documents\Document
+ * @uses   \ElasticAdapter\Search\Hit
+ * @uses   \ElasticAdapter\Search\SearchRequest
+ * @uses   \ElasticAdapter\Search\SearchResponse
  */
 final class DocumentManagerTest extends TestCase
 {
@@ -109,5 +114,45 @@ final class DocumentManagerTest extends TestCase
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
             new Document('1', ['title' => 'Doc 1']),
         ], false));
+    }
+
+    public function test_documents_can_be_found(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('search')
+            ->with([
+                'index' => 'test',
+                'body' => [
+                    'query' => [
+                        'match' => ['content' => 'foo']
+                    ]
+                ]
+            ])
+            ->willReturn([
+                'hits' => [
+                    'total' => [
+                        'value' => 1,
+                        'relation' => 'eq'
+                    ],
+                    'max_score' => 1.601195,
+                    'hits' => [
+                        [
+                            '_index' => 'test',
+                            '_id' => '1',
+                            '_score' => 1.601195,
+                            '_source' => ['content' => 'foo']
+                        ]
+                    ]
+                ]
+            ]);
+
+        $response = $this->documentManager->search('test', new SearchRequest([
+            'match' => ['content' => 'foo']
+        ]));
+
+        $this->assertInstanceOf(SearchResponse::class, $response);
+        $this->assertSame(1, $response->getHitsTotal());
+        $this->assertEquals(new Document('1', ['content' => 'foo']), $response->getHits()[0]->getDocument());
     }
 }
