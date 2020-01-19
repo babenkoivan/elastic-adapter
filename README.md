@@ -169,15 +169,18 @@ $documentManager->index('my_index', $documents, true);
 You can delete documents from index:
 
 ```php
-$documentIds = ['1', '2'];
+$documents = [
+    new ElasticAdapter\Documents\Document('1', ['title' => 'foo']),
+    new ElasticAdapter\Documents\Document('2', ['title' => 'bar']),
+];
 
-$documentManager->delete('my_index', $documentIds);
+$documentManager->delete('my_index', $documents);
 ```
 
 You can refresh index immediately if needed:
 
 ```php
-$documentManager->delete('my_index', $documentIds, true);
+$documentManager->delete('my_index', $documents, true);
 ```
 
 ### Search
@@ -209,10 +212,10 @@ $request->setFrom(0)->setSize(20);
 
 $response = $documentManager->search('my_index', $request);
 
-// you can retrieve total number of results
+// you can read total number of results from response
 $total = $response->getHitsTotal();
 
-// you can retrieve highlight and document for every hit
+// it's also possible to get highlight and document for respective hit
 $hits = $response->getHits();
 
 foreach ($hits as $hit) {

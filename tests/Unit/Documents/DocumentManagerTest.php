@@ -92,7 +92,10 @@ final class DocumentManagerTest extends TestCase
                 ]
             ]);
 
-        $this->assertSame($this->documentManager, $this->documentManager->delete('test', ['1', '2'], true));
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
+            new Document('1', ['title' => 'Doc 1']),
+            new Document('2', ['title' => 'Doc 2']),
+        ], true));
     }
 
     public function test_documents_can_be_deleted_without_refresh(): void
@@ -108,7 +111,9 @@ final class DocumentManagerTest extends TestCase
                 ]
             ]);
 
-        $this->assertSame($this->documentManager, $this->documentManager->delete('test', ['1'], false));
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
+            new Document('1', ['title' => 'Doc 1']),
+        ], false));
     }
 
     public function test_documents_can_be_found(): void

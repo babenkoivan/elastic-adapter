@@ -45,11 +45,11 @@ class DocumentManager
 
     /**
      * @param  string  $indexName
-     * @param  string[]  $documentIds
+     * @param  Document[]  $documents
      * @param  bool  $refresh
      * @return DocumentManager
      */
-    public function delete(string $indexName, array $documentIds, bool $refresh = false): self
+    public function delete(string $indexName, array $documents, bool $refresh = false): self
     {
         $params = [
             'index' => $indexName,
@@ -57,8 +57,8 @@ class DocumentManager
             'body' => []
         ];
 
-        foreach ($documentIds as $documentId) {
-            $params['body'][] = ['delete' => ['_id' => $documentId]];
+        foreach ($documents as $document) {
+            $params['body'][] = ['delete' => ['_id' => $document->getId()]];
         }
 
         $this->client->bulk($params);
