@@ -144,6 +144,20 @@ class IndexManagerTest extends TestCase
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
     }
 
+    public function test_index_can_be_created_with_empty_settings_and_mapping(): void
+    {
+        $index = new Index('foo', new Mapping(), new Settings());
+
+        $this->client->indices()
+            ->expects($this->once())
+            ->method('create')
+            ->with([
+                'index' => $index->getName()
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->create($index));
+    }
+
     public function test_mapping_can_be_updated(): void
     {
         $indexName = 'foo';
