@@ -45,16 +45,19 @@ class IndexManager
 
     public function create(Index $index): self
     {
+        $mapping = $index->getMapping() ? $index->getMapping()->toArray() : [];
+        $settings = $index->getSettings() ? $index->getSettings()->toArray() : [];
+
         $params = [
             'index' => $index->getName()
         ];
 
-        if ($mapping = $index->getMapping()) {
-            $params['body']['mappings'] = $mapping->toArray();
+        if (count($mapping) > 0) {
+            $params['body']['mappings'] = $mapping;
         }
 
-        if ($settings = $index->getSettings()) {
-            $params['body']['settings'] = $settings->toArray();
+        if (count($settings) > 0) {
+            $params['body']['settings'] = $settings;
         }
 
         $this->indices->create($params);
