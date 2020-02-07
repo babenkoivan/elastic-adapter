@@ -10,6 +10,7 @@ use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers \ElasticAdapter\Documents\DocumentManager
@@ -113,6 +114,42 @@ final class DocumentManagerTest extends TestCase
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
             new Document('1', ['title' => 'Doc 1']),
+        ], false));
+    }
+
+    public function test_documents_can_be_deleted_by_query_with_refresh(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('deleteByQuery')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'true',
+                'body' => [
+                    'query' => ['match_all' => new stdClass()]
+                ]
+            ]);
+
+        $this->assertSame($this->documentManager, $this->documentManager->deleteByQuery('test', [
+            'match_all' => new stdClass()
+        ], true));
+    }
+
+    public function test_documents_can_be_deleted_by_query_without_refresh(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('deleteByQuery')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'false',
+                'body' => [
+                    'query' => ['match_all' => new stdClass()]
+                ]
+            ]);
+
+        $this->assertSame($this->documentManager, $this->documentManager->deleteByQuery('test', [
+            'match_all' => new stdClass()
         ], false));
     }
 

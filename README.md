@@ -177,6 +177,12 @@ $documents = [
 $documentManager->delete('my_index', $documents);
 ```
 
+or using query:
+
+```php
+$documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
+```
+
 You can refresh index immediately if needed:
 
 ```php

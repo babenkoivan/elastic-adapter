@@ -66,6 +66,19 @@ class DocumentManager
         return $this;
     }
 
+    public function deleteByQuery(string $indexName, array $query, bool $refresh = false): self
+    {
+        $params = [
+            'index' => $indexName,
+            'refresh' => $refresh ? 'true' : 'false',
+            'body' => compact('query')
+        ];
+
+        $this->client->deleteByQuery($params);
+
+        return $this;
+    }
+
     public function search(string $indexName, SearchRequest $request): SearchResponse
     {
         $params = [
