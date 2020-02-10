@@ -1,7 +1,7 @@
 # Elastic Adapter
 
 [![Build Status](https://travis-ci.com/babenkoivan/elastic-adapter.svg?token=tL2AyZUSS9biRsKPg7fp&branch=master)](https://travis-ci.com/babenkoivan/elastic-adapter)
-![WIP](https://img.shields.io/static/v1?label=WIP&message=work%20in%20progress&color=red)
+[![WIP](https://img.shields.io/static/v1?label=WIP&message=work%20in%20progress&color=red)](#)
 
 ---
 
