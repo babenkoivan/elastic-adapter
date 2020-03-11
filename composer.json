@@ -1,6 +1,13 @@
 {
     "name": "babenkoivan/elastic-adapter",
-    "description": "An adapter for official PHP Elasticsearch client",
+    "description": "Adapter for official PHP Elasticsearch client",
+    "keywords": [
+        "elastic",
+        "elasticsearch",
+        "adapter",
+        "client",
+        "php"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [

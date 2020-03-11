@@ -5,7 +5,7 @@
 
 ---
 
-An adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document 
+Elastic Adapter is an adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document 
 operations.
 
 ## Contents
@@ -24,7 +24,8 @@ composer require babenkoivan/elastic-adapter
 
 ## Index management
 
-The `IndexManager` class can be used for indices manipulation. It uses Elasticsearch client as a dependency, so make sure it's properly configured and passed in the constructor:
+`IndexManager` can be used to manipulate indices. It uses Elasticsearch client as a dependency,
+therefore you need to initiate the client before you create an `IndexManager` instance:
 
 ```php
 $client = \Elasticsearch\ClientBuilder::fromConfig([
@@ -40,7 +41,7 @@ The manager provides a list of useful methods, which are listed below.
 
 ### Create
 
-You can create an index with the default settings and mapping:
+Creates an index, either with the default settings and mapping:
 
 ```php
 $index = new \ElasticAdapter\Indices\Index('my_index');
@@ -48,7 +49,7 @@ $index = new \ElasticAdapter\Indices\Index('my_index');
 $indexManager->create($index);
 ```
 
-or configure the index to fulfill your needs:
+or configured accordingly to your needs:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -61,8 +62,10 @@ $mapping = (new \ElasticAdapter\Indices\Mapping())
     ->geoPoint('location');
 
 $settings = (new \ElasticAdapter\Indices\Settings())
-    ->numberOfReplicas(2)
-    ->refreshInterval(-1);
+    ->index([
+        'number_of_replicas' => 2,
+        'refresh_interval' => -1
+    ]);
 
 $index = new \ElasticAdapter\Indices\Index('my_index', $mapping, $settings);
 
@@ -71,7 +74,7 @@ $indexManager->create($index);
 
 ### Drop
 
-You can drop an index by its name:
+Deletes an index:
 
 ```php
 $indexManager->drop('my_index');
@@ -79,7 +82,7 @@ $indexManager->drop('my_index');
 
 ### Put Mapping
 
-You can update an index mapping:
+Updates an index mapping:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -96,19 +99,25 @@ $indexManager->putMapping('my_index', $mapping);
 
 ### Put Settings
 
-You can update an index settings:
+Updates an index settings:
 
 ```php
 $settings = (new \ElasticAdapter\Indices\Settings())
-    ->numberOfReplicas(2)
-    ->refreshInterval(-1);
+    ->analysis([
+        'analyzer' => [
+            'content' => [
+                'type' => 'custom',
+                'tokenizer' => 'whitespace'    
+            ]
+        ]
+    ]);
 
 $indexManager->putSettings('my_index', $settings);
 ```
 
 ### Exists
 
-You can check an index existence:
+Checks if an index exists:
 
 ```php
 $indexManager->exists('my_index');
@@ -116,7 +125,7 @@ $indexManager->exists('my_index');
 
 ### Open
 
-You can open an index:
+Opens an index:
 
 ```php
 $indexManager->open('my_index');
@@ -124,7 +133,7 @@ $indexManager->open('my_index');
 
 ### Close
 
-You can close an index:
+Closes an index:
 
 ```php
 $indexManager->close('my_index');
@@ -144,11 +153,9 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
 $documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
 ``` 
 
-The manager makes typical operations over documents easier.
-
 ### Index
 
-You can index documents:
+Adds a document to an index:
 
 ```php
 $documents = [
@@ -159,7 +166,7 @@ $documents = [
 $documentManager->index('my_index', $documents);
 ```
 
-You can also force Elasticsearch to refresh index immediately:
+There is also an option to refresh index immediately:
 
 ```php
 $documentManager->index('my_index', $documents, true);
@@ -167,7 +174,7 @@ $documentManager->index('my_index', $documents, true);
 
 ### Delete
 
-You can delete documents from index:
+Removes a document from index:
 
 ```php
 $documents = [
@@ -178,21 +185,21 @@ $documents = [
 $documentManager->delete('my_index', $documents);
 ```
 
-or using query:
-
-```php
-$documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
-```
-
-You can refresh index immediately if needed:
+If you want an index to be refreshed immediately pass `true` as the third argument:
 
 ```php
 $documentManager->delete('my_index', $documents, true);
 ```
 
+You can also delete documents using query:
+
+```php
+$documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
+```
+
 ### Search
 
-You can search documents:
+Finds documents in an index:
 
 ```php
 $request = new \ElasticAdapter\Search\SearchRequest([
@@ -219,14 +226,16 @@ $request->setFrom(0)->setSize(20);
 
 $response = $documentManager->search('my_index', $request);
 
-// you can read total number of results from response
-$total = $response->getHitsTotal();
+// total number of matched documents
+$total = $response->getHitsTotal(); 
 
-// it's also possible to get highlight and document for respective hit
+// corresponding hits
 $hits = $response->getHits();
 
+// you can retrieve related document, highlight or raw representation of the hit as shown below
 foreach ($hits as $hit) {
     $document = $hit->getDocument();
     $highlight = $hit->getHighlight();
+    $raw = $hit->getRaw();
 }
 ```

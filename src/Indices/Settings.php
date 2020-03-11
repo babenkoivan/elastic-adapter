@@ -7,6 +7,10 @@ use BadMethodCallException;
 use ElasticAdapter\Support\ArrayableInterface;
 use ElasticAdapter\Support\Str;
 
+/**
+ * @method $this index(array $configuration)
+ * @method $this analysis(array $configuration)
+ */
 final class Settings implements ArrayableInterface
 {
     private $settings = [];
