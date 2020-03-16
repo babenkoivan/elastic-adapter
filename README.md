@@ -11,8 +11,8 @@ operations.
 ## Contents
 
 * [Installation](#installation) 
-* [Index management](#index-management)
-* [Document management](#document-management)
+* [Index Management](#index-management)
+* [Document Management](#document-management)
 
 ## Installation
 
@@ -22,7 +22,7 @@ The library can be installed via Composer:
 composer require babenkoivan/elastic-adapter
 ```
 
-## Index management
+## Index Management
 
 `IndexManager` can be used to manipulate indices. It uses Elasticsearch client as a dependency,
 therefore you need to initiate the client before you create an `IndexManager` instance:
@@ -139,7 +139,7 @@ Closes an index:
 $indexManager->close('my_index');
 ```
 
-## Document management
+## Document Management
 
 Similarly to `IndexManager`, the `DocumentManager` class also depends on Elasticsearch client:
 
