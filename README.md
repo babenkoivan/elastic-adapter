@@ -1,7 +1,11 @@
 # Elastic Adapter
 
+[![Latest Stable Version](https://poser.pugx.org/babenkoivan/elastic-adapter/v/stable)](https://packagist.org/packages/babenkoivan/elastic-adapter)
+[![Total Downloads](https://poser.pugx.org/babenkoivan/elastic-adapter/downloads)](https://packagist.org/packages/babenkoivan/elastic-adapter)
+[![License](https://poser.pugx.org/babenkoivan/elastic-adapter/license)](https://packagist.org/packages/babenkoivan/elastic-adapter)
 [![Build Status](https://travis-ci.com/babenkoivan/elastic-adapter.svg?&branch=master)](https://travis-ci.com/babenkoivan/elastic-adapter)
-[![WIP](https://img.shields.io/static/v1?label=WIP&message=work%20in%20progress&color=red)](#)
+[![Donate PayPal](https://img.shields.io/badge/donate-paypal-blue)](https://paypal.me/babenkoi)
+[![Donate Amazon](https://img.shields.io/badge/donate-amazon-black)](https://www.amazon.de/Amazon-de-e-Gift-Voucher-Various-Designs/dp/B07Q1JNC7R)
 
 ---
 
