@@ -14,9 +14,17 @@ operations.
 
 ## Contents
 
+* [Compatibility](#compatibility)
 * [Installation](#installation) 
 * [Index Management](#index-management)
 * [Document Management](#document-management)
+
+## Compatibility
+
+The current version of Elastic Adapter has been tested with the following configuration:
+
+* PHP 7.2-7.4
+* Elasticsearch 7.x
 
 ## Installation
 
