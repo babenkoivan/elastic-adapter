@@ -27,6 +27,10 @@ final class SearchRequest implements ArrayableInterface
      * @var int
      */
     private $size;
+    /**
+     * @var array
+     */
+    private $suggest;
 
     public function __construct(array $query)
     {
@@ -57,13 +61,19 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setSuggest(array $suggest): self
+    {
+        $this->suggest = $suggest;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
             'query' => $this->query
         ];
 
-        foreach (['highlight', 'sort', 'from', 'size'] as $property) {
+        foreach (['highlight', 'sort', 'from', 'size', 'suggest'] as $property) {
             if (isset($this->$property)) {
                 $request[$property] = $this->$property;
             }

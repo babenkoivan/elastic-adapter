@@ -41,6 +41,13 @@ final class SearchRequestTest extends TestCase
             '_score'
         ]);
 
+        $request->setSuggest(['by_term' => [
+            'text' => 'foo',
+            'term' => [
+                'field' => 'content',
+            ],
+        ]]);
+
         $request->setFrom(0);
         $request->setSize(10);
 
@@ -58,7 +65,15 @@ final class SearchRequestTest extends TestCase
                 '_score'
             ],
             'from' => 0,
-            'size' => 10
+            'size' => 10,
+            'suggest' => [
+                'by_term' => [
+                    'text' => 'foo',
+                    'term' => [
+                        'field' => 'content',
+                    ],
+                ],
+            ],
         ], $request->toArray());
     }
 }
