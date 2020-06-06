@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ElasticAdapter\Search;
 
-interface SearchResponseFragmentInterface
+interface SearchResponseRawInterface
 {
     public function getRaw(): array;
 }

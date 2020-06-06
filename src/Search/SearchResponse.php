@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ElasticAdapter\Search;
 
-final class SearchResponse implements SearchResponseFragmentInterface
+final class SearchResponse implements SearchResponseRawInterface
 {
     /**
      * @var array
@@ -28,6 +28,15 @@ final class SearchResponse implements SearchResponseFragmentInterface
     public function getHitsTotal(): int
     {
         return $this->response['hits']['total']['value'];
+    }
+
+    public function getSuggestions(): array
+    {
+        return array_map(function (array $suggestions) {
+            return array_map(function (array $suggestion) {
+                return new Suggestion($suggestion);
+            }, $suggestions);
+        }, $this->response['suggest'] ?? []);
     }
 
     public function getRaw(): array

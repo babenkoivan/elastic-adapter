@@ -5,11 +5,13 @@ namespace ElasticAdapter\Tests\Unit\Search;
 
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
+use ElasticAdapter\Search\Suggestion;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Search\SearchResponse
  * @uses   \ElasticAdapter\Search\Hit
+ * @uses   \ElasticAdapter\Search\Suggestion
  */
 final class SearchResponseTest extends TestCase
 {
@@ -41,6 +43,55 @@ final class SearchResponseTest extends TestCase
         ]);
 
         $this->assertSame(100, $searchResponse->getHitsTotal());
+    }
+
+    public function test_empty_array_is_returned_when_suggestions_are_not_present(): void
+    {
+        $searchResponse = new SearchResponse([
+            'hits' => []
+        ]);
+
+        $this->assertSame([], $searchResponse->getSuggestions());
+    }
+
+    public function test_suggestions_can_be_retrieved(): void
+    {
+        $searchResponse = new SearchResponse([
+            'hits' => [],
+            'suggest' => [
+                'color_suggestion' => [
+                    [
+                        'text' => 'red',
+                        'offset' => 0,
+                        'length' => 3,
+                        'options' => []
+                    ],
+                    [
+                        'text' => 'blue',
+                        'offset' => 4,
+                        'length' => 4,
+                        'options' => []
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->assertEquals([
+            'color_suggestion' => [
+                new Suggestion([
+                    'text' => 'red',
+                    'offset' => 0,
+                    'length' => 3,
+                    'options' => []
+                ]),
+                new Suggestion([
+                    'text' => 'blue',
+                    'offset' => 4,
+                    'length' => 4,
+                    'options' => []
+                ])
+            ]
+        ], $searchResponse->getSuggestions());
     }
 
     public function test_raw_representation_can_be_retrieved(): void

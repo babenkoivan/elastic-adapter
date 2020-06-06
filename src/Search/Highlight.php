@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ElasticAdapter\Search;
 
-final class Highlight implements SearchResponseFragmentInterface
+final class Highlight implements SearchResponseRawInterface
 {
     /**
      * @var array

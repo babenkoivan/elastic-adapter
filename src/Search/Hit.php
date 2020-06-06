@@ -5,7 +5,7 @@ namespace ElasticAdapter\Search;
 
 use ElasticAdapter\Documents\Document;
 
-final class Hit implements SearchResponseFragmentInterface
+final class Hit implements SearchResponseRawInterface
 {
     /**
      * @var array

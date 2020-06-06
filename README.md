@@ -215,7 +215,9 @@ Finds documents in an index:
 
 ```php
 $request = new \ElasticAdapter\Search\SearchRequest([
-    'match_phrase' => ['message' => 'number 1']
+    'match' => [
+        'message' => 'test'
+    ]
 ]);
 
 $request->setHighlight([
@@ -225,6 +227,15 @@ $request->setHighlight([
             'fragment_size' => 15,
             'number_of_fragments' => 3,
             'fragmenter' => 'simple'
+        ]
+    ]
+]);
+
+$request->setSuggest([
+    'my_suggest' => [
+        'text' => 'test',
+        'term' => [
+            'field' => 'message'
         ]
     ]
 ]);
@@ -244,10 +255,13 @@ $total = $response->getHitsTotal();
 // corresponding hits
 $hits = $response->getHits();
 
-// you can retrieve related document, highlight or raw representation of the hit as shown below
+// document, highlight or raw representation of the hit
 foreach ($hits as $hit) {
     $document = $hit->getDocument();
     $highlight = $hit->getHighlight();
     $raw = $hit->getRaw();
 }
+
+// suggestions
+$suggestions = $response->getSuggestions();
 ```

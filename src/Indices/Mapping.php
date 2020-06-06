@@ -45,6 +45,7 @@ use ElasticAdapter\Support\Str;
  * @method $this text(string $name, array $parameters = null)
  * @method $this tokenCount(string $name, array $parameters = null)
  * @method $this shape(string $name, array $parameters = null)
+ * @method $this completion(string $name, array $parameters = null)
  */
 final class Mapping implements ArrayableInterface
 {
