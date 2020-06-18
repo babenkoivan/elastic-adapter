@@ -12,31 +12,31 @@ final class SearchRequest implements ArrayableInterface
      */
     private $query;
     /**
-     * @var array
+     * @var array|null
      */
     private $highlight;
     /**
-     * @var array
+     * @var array|null
      */
     private $sort;
     /**
-     * @var int
+     * @var int|null
      */
     private $from;
     /**
-     * @var int
+     * @var int|null
      */
     private $size;
     /**
-     * @var array
+     * @var array|null
      */
     private $suggest;
     /**
-     * @var bool|string|array
+     * @var bool|string|array|null
      */
     private $source;
     /**
-     * @var array
+     * @var array|null
      */
     private $collapse;
 
