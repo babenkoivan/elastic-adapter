@@ -240,6 +240,12 @@ $request->setSuggest([
     ]
 ]);
 
+$request->setSource(['message', 'post_date']);
+
+$request->setCollapse([
+    'field' => 'user'
+]);
+
 $request->setSort([
     ['post_date' => ['order' => 'asc']],
     '_score'

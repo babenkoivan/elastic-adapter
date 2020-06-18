@@ -31,6 +31,14 @@ final class SearchRequest implements ArrayableInterface
      * @var array
      */
     private $suggest;
+    /**
+     * @var bool|string|array
+     */
+    private $source;
+    /**
+     * @var array
+     */
+    private $collapse;
 
     public function __construct(array $query)
     {
@@ -67,16 +75,36 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    /**
+     * @param  bool|string|array  $source
+     * @return self
+     */
+    public function setSource($source): self
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    public function setCollapse(array $collapse): self
+    {
+        $this->collapse = $collapse;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
             'query' => $this->query
         ];
 
-        foreach (['highlight', 'sort', 'from', 'size', 'suggest'] as $property) {
+        foreach (['highlight', 'sort', 'from', 'size', 'suggest', 'collapse'] as $property) {
             if (isset($this->$property)) {
                 $request[$property] = $this->$property;
             }
+        }
+
+        if (isset($this->source)) {
+            $request['_source'] = $this->source;
         }
 
         return $request;

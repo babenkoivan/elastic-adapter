@@ -41,12 +41,12 @@ class SettingsTest extends TestCase
         ], $settings->toArray());
     }
 
-    public function test_default_array_conversion(): void
+    public function test_default_array_casting(): void
     {
         $this->assertSame([], (new Settings())->toArray());
     }
 
-    public function test_configured_array_conversion(): void
+    public function test_configured_array_casting(): void
     {
         $settings = (new Settings())
             ->index([
