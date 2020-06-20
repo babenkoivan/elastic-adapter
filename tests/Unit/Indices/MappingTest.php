@@ -87,12 +87,12 @@ class MappingTest extends TestCase
         ], $mapping->toArray());
     }
 
-    public function test_default_array_conversion(): void
+    public function test_default_array_casting(): void
     {
         $this->assertSame([], (new Mapping())->toArray());
     }
 
-    public function test_configured_array_conversion(): void
+    public function test_configured_array_casting(): void
     {
         $mapping = (new Mapping())
             ->disableFieldNames()

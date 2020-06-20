@@ -12,7 +12,7 @@ use stdClass;
  */
 final class SearchRequestTest extends TestCase
 {
-    public function test_array_conversion_with_query(): void
+    public function test_array_casting_with_query(): void
     {
         $request = new SearchRequest([
             'term' => [
@@ -29,7 +29,7 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function test_array_conversion_with_query_and_highlight(): void
+    public function test_array_casting_with_query_and_highlight(): void
     {
         $request = new SearchRequest([
             'match' => [
@@ -57,7 +57,7 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function test_array_conversion_with_query_and_sort(): void
+    public function test_array_casting_with_query_and_sort(): void
     {
         $request = new SearchRequest([
             'match_all' => new stdClass()
@@ -79,7 +79,7 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function test_array_conversion_with_query_and_from(): void
+    public function test_array_casting_with_query_and_from(): void
     {
         $request = new SearchRequest([
             'match_all' => new stdClass()
@@ -95,7 +95,7 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function test_array_conversion_with_query_and_size(): void
+    public function test_array_casting_with_query_and_size(): void
     {
         $request = new SearchRequest([
             'match_all' => new stdClass()
@@ -111,7 +111,7 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
-    public function test_array_conversion_with_query_and_suggest(): void
+    public function test_array_casting_with_query_and_suggest(): void
     {
         $request = new SearchRequest([
             'match_none' => new stdClass()
@@ -137,6 +137,55 @@ final class SearchRequestTest extends TestCase
                         'field' => 'color'
                     ]
                 ]
+            ]
+        ], $request->toArray());
+    }
+
+    public function sourceProvider(): array
+    {
+        return [
+            [false],
+            ['obj1.*'],
+            [['obj1.*', 'obj2.*']],
+            [['includes' => ['obj1.*', 'obj2.*'], 'excludes' => ['*.description']]],
+        ];
+    }
+
+    /**
+     * @dataProvider sourceProvider
+     */
+    public function test_array_casting_with_source($source): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass()
+        ]);
+
+        $request->setSource($source);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass()
+            ],
+            '_source' => $source
+        ], $request->toArray());
+    }
+
+    public function test_array_casting_with_collapse(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass()
+        ]);
+
+        $request->setCollapse([
+            'field' => 'user'
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass()
+            ],
+            'collapse' => [
+                'field' => 'user'
             ]
         ], $request->toArray());
     }
