@@ -39,6 +39,10 @@ final class SearchRequest implements ArrayableInterface
      * @var array|null
      */
     private $collapse;
+    /**
+     * @var array|null
+     */
+    private $aggregations;
 
     public function __construct(array $query)
     {
@@ -91,13 +95,19 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setAggregations(array $aggregations): self
+    {
+        $this->aggregations = $aggregations;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
             'query' => $this->query
         ];
 
-        foreach (['highlight', 'sort', 'from', 'size', 'suggest', 'collapse'] as $property) {
+        foreach (['highlight', 'sort', 'from', 'size', 'suggest', 'collapse', 'aggregations'] as $property) {
             if (isset($this->$property)) {
                 $request[$property] = $this->$property;
             }

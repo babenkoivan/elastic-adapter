@@ -232,7 +232,7 @@ $request->setHighlight([
 ]);
 
 $request->setSuggest([
-    'my_suggest' => [
+    'message_suggest' => [
         'text' => 'test',
         'term' => [
             'field' => 'message'
@@ -244,6 +244,14 @@ $request->setSource(['message', 'post_date']);
 
 $request->setCollapse([
     'field' => 'user'
+]);
+
+$request->setAggregations([
+    'max_likes' => [
+        'max' => [
+            'field' => 'likes'
+        ]
+    ]
 ]);
 
 $request->setSort([
@@ -270,4 +278,7 @@ foreach ($hits as $hit) {
 
 // suggestions
 $suggestions = $response->getSuggestions();
+
+// aggregations
+$aggregations = $response->getAggregations();
 ```

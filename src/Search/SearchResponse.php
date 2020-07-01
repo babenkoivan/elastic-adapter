@@ -39,6 +39,11 @@ final class SearchResponse implements SearchResponseRawInterface
         }, $this->response['suggest'] ?? []);
     }
 
+    public function getAggregations(): array
+    {
+        return $this->response['aggregations'] ?? [];
+    }
+
     public function getRaw(): array
     {
         return $this->response;

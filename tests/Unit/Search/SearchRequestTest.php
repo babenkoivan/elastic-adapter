@@ -189,4 +189,32 @@ final class SearchRequestTest extends TestCase
             ]
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_aggregations(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass()
+        ]);
+
+        $request->setAggregations([
+            'min_price' => [
+                'min' => [
+                    'field' => 'price'
+                ]
+            ]
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass()
+            ],
+            'aggregations' => [
+                'min_price' => [
+                    'min' => [
+                        'field' => 'price'
+                    ]
+                ]
+            ]
+        ], $request->toArray());
+    }
 }

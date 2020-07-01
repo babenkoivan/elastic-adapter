@@ -94,6 +94,24 @@ final class SearchResponseTest extends TestCase
         ], $searchResponse->getSuggestions());
     }
 
+    public function test_aggregations_can_be_retrieved(): void
+    {
+        $searchResponse = new SearchResponse([
+            'hits' => [],
+            'aggregations' => [
+                'min_price' => [
+                    'value' => 10
+                ]
+            ]
+        ]);
+
+        $this->assertEquals([
+            'min_price' => [
+                'value' => 10
+            ]
+        ], $searchResponse->getAggregations());
+    }
+
     public function test_raw_representation_can_be_retrieved(): void
     {
         $searchResponse = new SearchResponse([
