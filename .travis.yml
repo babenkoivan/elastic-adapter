@@ -27,5 +27,5 @@ jobs:
       name: Static Code Analysis
       php: 7.2
       script: make static-analysis
-    - stage: tests
-      script: make test
+
+script: make test
