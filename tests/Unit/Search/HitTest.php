@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -10,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Search\Hit
+ *
  * @uses   \ElasticAdapter\Documents\Document
  * @uses   \ElasticAdapter\Search\Highlight
  */
@@ -19,7 +19,7 @@ final class HitTest extends TestCase
     {
         $hit = new Hit([
             '_id' => '1',
-            '_source' => ['title' => 'foo']
+            '_source' => ['title' => 'foo'],
         ]);
 
         $this->assertEquals(
@@ -32,7 +32,7 @@ final class HitTest extends TestCase
     {
         $hit = new Hit([
             '_id' => '1',
-            'highlight' => ['foo' => ['test fragment']]
+            'highlight' => ['foo' => ['test fragment']],
         ]);
 
         $this->assertEquals(
@@ -53,13 +53,13 @@ final class HitTest extends TestCase
         $hit = new Hit([
             '_id' => '1',
             '_source' => ['title' => 'foo'],
-            'highlight' => ['title' => [' <em>foo</em> ']]
+            'highlight' => ['title' => [' <em>foo</em> ']],
         ]);
 
         $this->assertSame([
             '_id' => '1',
             '_source' => ['title' => 'foo'],
-            'highlight' => ['title' => [' <em>foo</em> ']]
+            'highlight' => ['title' => [' <em>foo</em> ']],
         ], $hit->getRaw());
     }
 }

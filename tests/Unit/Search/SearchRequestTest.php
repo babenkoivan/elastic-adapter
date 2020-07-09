@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -16,16 +15,16 @@ final class SearchRequestTest extends TestCase
     {
         $request = new SearchRequest([
             'term' => [
-                'user' => 'foo'
-            ]
+                'user' => 'foo',
+            ],
         ]);
 
         $this->assertSame([
             'query' => [
                 'term' => [
-                    'user' => 'foo'
-                ]
-            ]
+                    'user' => 'foo',
+                ],
+            ],
         ], $request->toArray());
     }
 
@@ -33,111 +32,111 @@ final class SearchRequestTest extends TestCase
     {
         $request = new SearchRequest([
             'match' => [
-                'content' => 'foo'
-            ]
+                'content' => 'foo',
+            ],
         ]);
 
         $request->setHighlight([
             'fields' => [
-                'content' => new stdClass()
-            ]
+                'content' => new stdClass(),
+            ],
         ]);
 
         $this->assertEquals([
             'query' => [
                 'match' => [
-                    'content' => 'foo'
-                ]
+                    'content' => 'foo',
+                ],
             ],
             'highlight' => [
                 'fields' => [
-                    'content' => new stdClass()
-                ]
-            ]
+                    'content' => new stdClass(),
+                ],
+            ],
         ], $request->toArray());
     }
 
     public function test_array_casting_with_query_and_sort(): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setSort([
             ['title' => 'asc'],
-            '_score'
+            '_score',
         ]);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
             'sort' => [
                 ['title' => 'asc'],
-                '_score'
-            ]
+                '_score',
+            ],
         ], $request->toArray());
     }
 
     public function test_array_casting_with_query_and_from(): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setFrom(10);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
-            'from' => 10
+            'from' => 10,
         ], $request->toArray());
     }
 
     public function test_array_casting_with_query_and_size(): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setSize(100);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
-            'size' => 100
+            'size' => 100,
         ], $request->toArray());
     }
 
     public function test_array_casting_with_query_and_suggest(): void
     {
         $request = new SearchRequest([
-            'match_none' => new stdClass()
+            'match_none' => new stdClass(),
         ]);
 
         $request->setSuggest([
             'color_suggestion' => [
                 'text' => 'red',
                 'term' => [
-                    'field' => 'color'
-                ]
-            ]
+                    'field' => 'color',
+                ],
+            ],
         ]);
 
         $this->assertEquals([
             'query' => [
-                'match_none' => new stdClass()
+                'match_none' => new stdClass(),
             ],
             'suggest' => [
                 'color_suggestion' => [
                     'text' => 'red',
                     'term' => [
-                        'field' => 'color'
-                    ]
-                ]
-            ]
+                        'field' => 'color',
+                    ],
+                ],
+            ],
         ], $request->toArray());
     }
 
@@ -153,68 +152,70 @@ final class SearchRequestTest extends TestCase
 
     /**
      * @dataProvider sourceProvider
+     *
+     * @param array|string|bool $source
      */
     public function test_array_casting_with_source($source): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setSource($source);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
-            '_source' => $source
+            '_source' => $source,
         ], $request->toArray());
     }
 
     public function test_array_casting_with_collapse(): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setCollapse([
-            'field' => 'user'
+            'field' => 'user',
         ]);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
             'collapse' => [
-                'field' => 'user'
-            ]
+                'field' => 'user',
+            ],
         ], $request->toArray());
     }
 
     public function test_array_casting_with_aggregations(): void
     {
         $request = new SearchRequest([
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ]);
 
         $request->setAggregations([
             'min_price' => [
                 'min' => [
-                    'field' => 'price'
-                ]
-            ]
+                    'field' => 'price',
+                ],
+            ],
         ]);
 
         $this->assertEquals([
             'query' => [
-                'match_all' => new stdClass()
+                'match_all' => new stdClass(),
             ],
             'aggregations' => [
                 'min_price' => [
                     'min' => [
-                        'field' => 'price'
-                    ]
-                ]
-            ]
+                        'field' => 'price',
+                    ],
+                ],
+            ],
         ], $request->toArray());
     }
 }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Documents;
 
@@ -20,17 +19,14 @@ class DocumentManager
     }
 
     /**
-     * @param  string  $indexName
-     * @param  Document[]  $documents
-     * @param  bool  $refresh
-     * @return DocumentManager
+     * @param Document[] $documents
      */
     public function index(string $indexName, array $documents, bool $refresh = false): self
     {
         $params = [
             'index' => $indexName,
             'refresh' => $refresh ? 'true' : 'false',
-            'body' => []
+            'body' => [],
         ];
 
         foreach ($documents as $document) {
@@ -44,17 +40,14 @@ class DocumentManager
     }
 
     /**
-     * @param  string  $indexName
-     * @param  Document[]  $documents
-     * @param  bool  $refresh
-     * @return DocumentManager
+     * @param Document[] $documents
      */
     public function delete(string $indexName, array $documents, bool $refresh = false): self
     {
         $params = [
             'index' => $indexName,
             'refresh' => $refresh ? 'true' : 'false',
-            'body' => []
+            'body' => [],
         ];
 
         foreach ($documents as $document) {
@@ -71,7 +64,7 @@ class DocumentManager
         $params = [
             'index' => $indexName,
             'refresh' => $refresh ? 'true' : 'false',
-            'body' => compact('query')
+            'body' => compact('query'),
         ];
 
         $this->client->deleteByQuery($params);
@@ -83,7 +76,7 @@ class DocumentManager
     {
         $params = [
             'index' => $indexName,
-            'body' => $request->toArray()
+            'body' => $request->toArray(),
         ];
 
         $response = $this->client->search($params);

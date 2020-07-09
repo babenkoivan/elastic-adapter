@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Documents;
 
@@ -14,6 +13,7 @@ use stdClass;
 
 /**
  * @covers \ElasticAdapter\Documents\DocumentManager
+ *
  * @uses   \ElasticAdapter\Documents\Document
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchRequest
@@ -51,12 +51,12 @@ final class DocumentManagerTest extends TestCase
                     ['title' => 'Doc 1'],
                     ['index' => ['_id' => '2']],
                     ['title' => 'Doc 2'],
-                ]
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
             new Document('1', ['title' => 'Doc 1']),
-            new Document('2', ['title' => 'Doc 2'])
+            new Document('2', ['title' => 'Doc 2']),
         ], true));
     }
 
@@ -71,7 +71,7 @@ final class DocumentManagerTest extends TestCase
                 'body' => [
                     ['index' => ['_id' => '1']],
                     ['title' => 'Doc 1'],
-                ]
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
@@ -90,7 +90,7 @@ final class DocumentManagerTest extends TestCase
                 'body' => [
                     ['delete' => ['_id' => '1']],
                     ['delete' => ['_id' => '2']],
-                ]
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
@@ -109,7 +109,7 @@ final class DocumentManagerTest extends TestCase
                 'refresh' => 'false',
                 'body' => [
                     ['delete' => ['_id' => '1']],
-                ]
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
@@ -126,12 +126,12 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    'query' => ['match_all' => new stdClass()]
-                ]
+                    'query' => ['match_all' => new stdClass()],
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->deleteByQuery('test', [
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ], true));
     }
 
@@ -144,12 +144,12 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'false',
                 'body' => [
-                    'query' => ['match_all' => new stdClass()]
-                ]
+                    'query' => ['match_all' => new stdClass()],
+                ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->deleteByQuery('test', [
-            'match_all' => new stdClass()
+            'match_all' => new stdClass(),
         ], false));
     }
 
@@ -162,15 +162,15 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'body' => [
                     'query' => [
-                        'match' => ['content' => 'foo']
-                    ]
-                ]
+                        'match' => ['content' => 'foo'],
+                    ],
+                ],
             ])
             ->willReturn([
                 'hits' => [
                     'total' => [
                         'value' => 1,
-                        'relation' => 'eq'
+                        'relation' => 'eq',
                     ],
                     'max_score' => 1.601195,
                     'hits' => [
@@ -178,14 +178,14 @@ final class DocumentManagerTest extends TestCase
                             '_index' => 'test',
                             '_id' => '1',
                             '_score' => 1.601195,
-                            '_source' => ['content' => 'foo']
-                        ]
-                    ]
-                ]
+                            '_source' => ['content' => 'foo'],
+                        ],
+                    ],
+                ],
             ]);
 
         $response = $this->documentManager->search('test', new SearchRequest([
-            'match' => ['content' => 'foo']
+            'match' => ['content' => 'foo'],
         ]));
 
         $this->assertInstanceOf(SearchResponse::class, $response);

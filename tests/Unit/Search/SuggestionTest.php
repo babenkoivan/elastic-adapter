@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -39,17 +38,17 @@ final class SuggestionTest extends TestCase
                 [
                     'text' => 'foo',
                     'score' => 0.8,
-                    'freq' => 1
-                ]
-            ]
+                    'freq' => 1,
+                ],
+            ],
         ]);
 
         $this->assertSame([
             [
                 'text' => 'foo',
                 'score' => 0.8,
-                'freq' => 1
-            ]
+                'freq' => 1,
+            ],
         ], $suggestion->getOptions());
     }
 
@@ -59,14 +58,14 @@ final class SuggestionTest extends TestCase
             'text' => 'foo',
             'offset' => 0,
             'length' => 5,
-            'options' => []
+            'options' => [],
         ]);
 
         $this->assertSame([
             'text' => 'foo',
             'offset' => 0,
             'length' => 5,
-            'options' => []
+            'options' => [],
         ], $suggestion->getRaw());
     }
 }

@@ -9,9 +9,23 @@ php:
   - 7.3
   - 7.4
 
-before_script:
+install:
   - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
   - composer install --no-interaction --prefer-dist
 
-script:
-  - bin/phpunit --testsuit unit --testdox
+stages:
+  - code-analysis
+  - test
+
+jobs:
+  include:
+    - stage: code-analysis
+      name: Code Style Check
+      php: 7.2
+      script: make style-check
+    - stage: code-analysis
+      name: Static Code Analysis
+      php: 7.2
+      script: make static-analysis
+    - stage: test
+      script: make test

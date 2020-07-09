@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -10,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Search\SearchResponse
+ *
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\Suggestion
  */
@@ -22,10 +22,10 @@ final class SearchResponseTest extends TestCase
                 'hits' => [
                     [
                         '_id' => '1',
-                        '_source' => ['title' => 'foo']
-                    ]
-                ]
-            ]
+                        '_source' => ['title' => 'foo'],
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertEquals(
@@ -38,8 +38,8 @@ final class SearchResponseTest extends TestCase
     {
         $searchResponse = new SearchResponse([
             'hits' => [
-                'total' => ['value' => 100]
-            ]
+                'total' => ['value' => 100],
+            ],
         ]);
 
         $this->assertSame(100, $searchResponse->getHitsTotal());
@@ -48,7 +48,7 @@ final class SearchResponseTest extends TestCase
     public function test_empty_array_is_returned_when_suggestions_are_not_present(): void
     {
         $searchResponse = new SearchResponse([
-            'hits' => []
+            'hits' => [],
         ]);
 
         $this->assertSame([], $searchResponse->getSuggestions());
@@ -64,16 +64,16 @@ final class SearchResponseTest extends TestCase
                         'text' => 'red',
                         'offset' => 0,
                         'length' => 3,
-                        'options' => []
+                        'options' => [],
                     ],
                     [
                         'text' => 'blue',
                         'offset' => 4,
                         'length' => 4,
-                        'options' => []
-                    ]
-                ]
-            ]
+                        'options' => [],
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertEquals([
@@ -82,15 +82,15 @@ final class SearchResponseTest extends TestCase
                     'text' => 'red',
                     'offset' => 0,
                     'length' => 3,
-                    'options' => []
+                    'options' => [],
                 ]),
                 new Suggestion([
                     'text' => 'blue',
                     'offset' => 4,
                     'length' => 4,
-                    'options' => []
-                ])
-            ]
+                    'options' => [],
+                ]),
+            ],
         ], $searchResponse->getSuggestions());
     }
 
@@ -100,15 +100,15 @@ final class SearchResponseTest extends TestCase
             'hits' => [],
             'aggregations' => [
                 'min_price' => [
-                    'value' => 10
-                ]
-            ]
+                    'value' => 10,
+                ],
+            ],
         ]);
 
         $this->assertEquals([
             'min_price' => [
-                'value' => 10
-            ]
+                'value' => 10,
+            ],
         ], $searchResponse->getAggregations());
     }
 
@@ -120,14 +120,14 @@ final class SearchResponseTest extends TestCase
                 'hits' => [
                     [
                         '_id' => '1',
-                        '_source' => ['title' => 'foo']
+                        '_source' => ['title' => 'foo'],
                     ],
                     [
                         '_id' => '2',
-                        '_source' => ['title' => 'bar']
-                    ]
-                ]
-            ]
+                        '_source' => ['title' => 'bar'],
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertSame([
@@ -136,14 +136,14 @@ final class SearchResponseTest extends TestCase
                 'hits' => [
                     [
                         '_id' => '1',
-                        '_source' => ['title' => 'foo']
+                        '_source' => ['title' => 'foo'],
                     ],
                     [
                         '_id' => '2',
-                        '_source' => ['title' => 'bar']
-                    ]
-                ]
-            ]
+                        '_source' => ['title' => 'bar'],
+                    ],
+                ],
+            ],
         ], $searchResponse->getRaw());
     }
 }

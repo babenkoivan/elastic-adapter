@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Indices;
 
@@ -10,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Indices\Mapping
+ *
  * @uses   \ElasticAdapter\Support\Str
  */
 class MappingTest extends TestCase
@@ -20,8 +20,8 @@ class MappingTest extends TestCase
 
         $this->assertSame([
             '_field_names' => [
-                'enabled' => false
-            ]
+                'enabled' => false,
+            ],
         ], $mapping->toArray());
     }
 
@@ -31,8 +31,8 @@ class MappingTest extends TestCase
 
         $this->assertSame([
             '_field_names' => [
-                'enabled' => true
-            ]
+                'enabled' => true,
+            ],
         ], $mapping->toArray());
     }
 
@@ -42,8 +42,8 @@ class MappingTest extends TestCase
 
         $this->assertSame([
             '_source' => [
-                'enabled' => false
-            ]
+                'enabled' => false,
+            ],
         ], $mapping->toArray());
     }
 
@@ -53,8 +53,8 @@ class MappingTest extends TestCase
 
         $this->assertSame([
             '_source' => [
-                'enabled' => true
-            ]
+                'enabled' => true,
+            ],
         ], $mapping->toArray());
     }
 
@@ -82,8 +82,8 @@ class MappingTest extends TestCase
 
         $this->assertSame([
             'properties' => [
-                $arguments[0] => ['type' => Str::toSnakeCase($method)] + ($arguments[1] ?? [])
-            ]
+                $arguments[0] => ['type' => Str::toSnakeCase($method)] + ($arguments[1] ?? []),
+            ],
         ], $mapping->toArray());
     }
 
@@ -99,25 +99,25 @@ class MappingTest extends TestCase
             ->enableSource()
             ->text('foo')
             ->boolean('bar', [
-                'boost' => 1
+                'boost' => 1,
             ]);
 
         $this->assertSame([
             '_field_names' => [
-                'enabled' => false
+                'enabled' => false,
             ],
             '_source' => [
-                'enabled' => true
+                'enabled' => true,
             ],
             'properties' => [
                 'foo' => [
-                    'type' => 'text'
+                    'type' => 'text',
                 ],
                 'bar' => [
                     'type' => 'boolean',
-                    'boost' => 1
-                ]
-            ]
+                    'boost' => 1,
+                ],
+            ],
         ], $mapping->toArray());
     }
 }

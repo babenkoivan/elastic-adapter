@@ -1,0 +1,12 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$response of class ElasticAdapter\\\\Search\\\\SearchResponse constructor expects array, array\\|\\(callable\\) given\\.$#"
+			count: 1
+			path: src/Documents/DocumentManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Support/Str.php
+

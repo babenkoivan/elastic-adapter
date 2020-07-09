@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Indices;
 
@@ -21,7 +20,7 @@ class IndexManager
     public function open(string $indexName): self
     {
         $this->indices->open([
-            'index' => $indexName
+            'index' => $indexName,
         ]);
 
         return $this;
@@ -30,7 +29,7 @@ class IndexManager
     public function close(string $indexName): self
     {
         $this->indices->close([
-            'index' => $indexName
+            'index' => $indexName,
         ]);
 
         return $this;
@@ -39,17 +38,17 @@ class IndexManager
     public function exists(string $indexName): bool
     {
         return $this->indices->exists([
-            'index' => $indexName
+            'index' => $indexName,
         ]);
     }
 
     public function create(Index $index): self
     {
-        $mapping = $index->getMapping() ? $index->getMapping()->toArray() : [];
-        $settings = $index->getSettings() ? $index->getSettings()->toArray() : [];
+        $mapping = $index->getMapping() === null ? [] : $index->getMapping()->toArray();
+        $settings = $index->getSettings() === null ? [] : $index->getSettings()->toArray();
 
         $params = [
-            'index' => $index->getName()
+            'index' => $index->getName(),
         ];
 
         if (count($mapping) > 0) {
@@ -69,7 +68,7 @@ class IndexManager
     {
         $this->indices->putMapping([
             'index' => $indexName,
-            'body' => $mapping->toArray()
+            'body' => $mapping->toArray(),
         ]);
 
         return $this;
@@ -80,8 +79,8 @@ class IndexManager
         $this->indices->putSettings([
             'index' => $indexName,
             'body' => [
-                'settings' => $settings->toArray()
-            ]
+                'settings' => $settings->toArray(),
+            ],
         ]);
 
         return $this;
@@ -90,7 +89,7 @@ class IndexManager
     public function drop(string $indexName): self
     {
         $this->indices->delete([
-            'index' => $indexName
+            'index' => $indexName,
         ]);
 
         return $this;

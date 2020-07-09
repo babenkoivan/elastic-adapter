@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Indices;
 
@@ -13,6 +12,9 @@ use ElasticAdapter\Support\Str;
  */
 final class Settings implements ArrayableInterface
 {
+    /**
+     * @var array
+     */
     private $settings = [];
 
     public function __call(string $method, array $arguments): self

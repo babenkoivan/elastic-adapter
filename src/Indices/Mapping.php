@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Indices;
 
@@ -113,13 +112,13 @@ final class Mapping implements ArrayableInterface
 
         if (isset($this->isFieldNamesEnabled)) {
             $mapping['_field_names'] = [
-                'enabled' => $this->isFieldNamesEnabled
+                'enabled' => $this->isFieldNamesEnabled,
             ];
         }
 
         if (isset($this->isSourceEnabled)) {
             $mapping['_source'] = [
-                'enabled' => $this->isSourceEnabled
+                'enabled' => $this->isSourceEnabled,
             ];
         }
 

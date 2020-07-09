@@ -31,7 +31,9 @@
         "elasticsearch/elasticsearch": "^7.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4"
+        "phpunit/phpunit": "^8.4",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.32"
     },
     "config": {
         "bin-dir": "bin"

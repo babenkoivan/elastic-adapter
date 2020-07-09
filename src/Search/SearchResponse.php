@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Search;
 
@@ -20,7 +19,7 @@ final class SearchResponse implements SearchResponseRawInterface
      */
     public function getHits(): array
     {
-        return array_map(function (array $hit) {
+        return array_map(static function (array $hit) {
             return new Hit($hit);
         }, $this->response['hits']['hits']);
     }
@@ -32,8 +31,8 @@ final class SearchResponse implements SearchResponseRawInterface
 
     public function getSuggestions(): array
     {
-        return array_map(function (array $suggestions) {
-            return array_map(function (array $suggestion) {
+        return array_map(static function (array $suggestions) {
+            return array_map(static function (array $suggestion) {
                 return new Suggestion($suggestion);
             }, $suggestions);
         }, $this->response['suggest'] ?? []);

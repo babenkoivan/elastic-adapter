@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Indices;
 
@@ -10,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Indices\Settings
+ *
  * @uses   \ElasticAdapter\Support\Str
  */
 class SettingsTest extends TestCase
@@ -37,7 +37,7 @@ class SettingsTest extends TestCase
         $settings = (new Settings())->$method(...$arguments);
 
         $this->assertSame([
-            Str::toSnakeCase($method) => $arguments[0]
+            Str::toSnakeCase($method) => $arguments[0],
         ], $settings->toArray());
     }
 
@@ -57,9 +57,9 @@ class SettingsTest extends TestCase
                 'analyzer' => [
                     'content' => [
                         'type' => 'custom',
-                        'tokenizer' => 'whitespace'
-                    ]
-                ]
+                        'tokenizer' => 'whitespace',
+                    ],
+                ],
             ]);
 
         $this->assertSame([
@@ -71,10 +71,10 @@ class SettingsTest extends TestCase
                 'analyzer' => [
                     'content' => [
                         'type' => 'custom',
-                        'tokenizer' => 'whitespace'
-                    ]
-                ]
-            ]
+                        'tokenizer' => 'whitespace',
+                    ],
+                ],
+            ],
         ], $settings->toArray());
     }
 }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -17,7 +16,7 @@ final class HighlightTest extends TestCase
             'message' => [
                 ' with the <em>number</em>',
                 '  <em>1</em>',
-            ]
+            ],
         ]);
 
         $this->assertSame([
@@ -30,8 +29,8 @@ final class HighlightTest extends TestCase
     {
         $highlight = new Highlight([
             'foo' => [
-                'test fragment'
-            ]
+                'test fragment',
+            ],
         ]);
 
         $this->assertNull($highlight->getSnippets('bar'));
@@ -41,23 +40,22 @@ final class HighlightTest extends TestCase
     {
         $highlight = new Highlight([
             'foo' => [
-                'test fragment 1'
+                'test fragment 1',
             ],
             'bar' => [
                 'test fragment 2',
-                'test fragment 3'
-            ]
+                'test fragment 3',
+            ],
         ]);
-
 
         $this->assertSame([
             'foo' => [
-                'test fragment 1'
+                'test fragment 1',
             ],
             'bar' => [
                 'test fragment 2',
-                'test fragment 3'
-            ]
+                'test fragment 3',
+            ],
         ], $highlight->getRaw());
     }
 }

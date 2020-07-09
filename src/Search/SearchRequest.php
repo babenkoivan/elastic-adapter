@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Search;
 
@@ -80,8 +79,7 @@ final class SearchRequest implements ArrayableInterface
     }
 
     /**
-     * @param  bool|string|array  $source
-     * @return self
+     * @param bool|string|array $source
      */
     public function setSource($source): self
     {
@@ -104,7 +102,7 @@ final class SearchRequest implements ArrayableInterface
     public function toArray(): array
     {
         $request = [
-            'query' => $this->query
+            'query' => $this->query,
         ];
 
         foreach (['highlight', 'sort', 'from', 'size', 'suggest', 'collapse', 'aggregations'] as $property) {

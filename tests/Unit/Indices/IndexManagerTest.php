@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Indices;
 
@@ -14,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Indices\IndexManager
+ *
  * @uses   \ElasticAdapter\Indices\Index
  * @uses   \ElasticAdapter\Indices\Settings
  * @uses   \ElasticAdapter\Indices\Mapping
@@ -24,7 +24,7 @@ class IndexManagerTest extends TestCase
     /**
      * @var MockObject
      */
-    private $client;
+    private $indices;
     /**
      * @var IndexManager
      */
@@ -34,24 +34,25 @@ class IndexManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->client = $this->createMock(Client::class);
+        $client = $this->createMock(Client::class);
+        $this->indices = $this->createMock(IndicesNamespace::class);
 
-        $this->client
+        $client
             ->method('indices')
-            ->willReturn($this->createMock(IndicesNamespace::class));
+            ->willReturn($this->indices);
 
-        $this->indexManager = new IndexManager($this->client);
+        $this->indexManager = new IndexManager($client);
     }
 
     public function test_index_can_be_opened(): void
     {
         $indexName = 'foo';
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('open')
             ->with([
-                'index' => $indexName
+                'index' => $indexName,
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->open($indexName));
@@ -61,11 +62,11 @@ class IndexManagerTest extends TestCase
     {
         $indexName = 'foo';
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('close')
             ->with([
-                'index' => $indexName
+                'index' => $indexName,
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->close($indexName));
@@ -75,11 +76,11 @@ class IndexManagerTest extends TestCase
     {
         $indexName = 'foo';
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('exists')
             ->with([
-                'index' => $indexName
+                'index' => $indexName,
             ])
             ->willReturn(true);
 
@@ -90,11 +91,11 @@ class IndexManagerTest extends TestCase
     {
         $index = new Index('foo');
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName()
+                'index' => $index->getName(),
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -102,19 +103,21 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_created_without_mapping(): void
     {
-        $settings = (new Settings())->numberOfReplicas(2);
+        $settings = (new Settings())->index(['number_of_replicas' => 2]);
         $index = new Index('foo', null, $settings);
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
                 'index' => $index->getName(),
                 'body' => [
                     'settings' => [
-                        'number_of_replicas' => 2
-                    ]
-                ]
+                        'index' => [
+                            'number_of_replicas' => 2,
+                        ],
+                    ],
+                ],
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -125,7 +128,7 @@ class IndexManagerTest extends TestCase
         $mapping = (new Mapping())->text('foo');
         $index = new Index('bar', $mapping);
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
@@ -134,11 +137,11 @@ class IndexManagerTest extends TestCase
                     'mappings' => [
                         'properties' => [
                             'foo' => [
-                                'type' => 'text'
-                            ]
-                        ]
-                    ]
-                ]
+                                'type' => 'text',
+                            ],
+                        ],
+                    ],
+                ],
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -148,11 +151,11 @@ class IndexManagerTest extends TestCase
     {
         $index = new Index('foo', new Mapping(), new Settings());
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName()
+                'index' => $index->getName(),
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -163,7 +166,7 @@ class IndexManagerTest extends TestCase
         $indexName = 'foo';
         $mapping = (new Mapping())->text('bar');
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('putMapping')
             ->with([
@@ -171,10 +174,10 @@ class IndexManagerTest extends TestCase
                 'body' => [
                     'properties' => [
                         'bar' => [
-                            'type' => 'text'
-                        ]
-                    ]
-                ]
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->putMapping($indexName, $mapping));
@@ -183,18 +186,20 @@ class IndexManagerTest extends TestCase
     public function test_settings_can_be_updated(): void
     {
         $indexName = 'foo';
-        $settings = (new Settings())->numberOfReplicas(2);
+        $settings = (new Settings())->index(['number_of_replicas' => 2]);
 
-        $this->client->indices()
+        $this->indices
             ->expects($this->once())
             ->method('putSettings')
             ->with([
                 'index' => $indexName,
                 'body' => [
                     'settings' => [
-                        'number_of_replicas' => 2
-                    ]
-                ]
+                        'index' => [
+                            'number_of_replicas' => 2,
+                        ],
+                    ],
+                ],
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->putSettings($indexName, $settings));
