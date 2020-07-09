@@ -2,6 +2,10 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+stages:
+  - code-analysis
+  - test
+
 language: php
 
 php:
@@ -13,9 +17,7 @@ install:
   - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
   - composer install --no-interaction --prefer-dist
 
-stages:
-  - code-analysis
-  - tests
+script: make test
 
 jobs:
   include:
@@ -27,5 +29,3 @@ jobs:
       name: Static Code Analysis
       php: 7.2
       script: make static-analysis
-
-script: make test
