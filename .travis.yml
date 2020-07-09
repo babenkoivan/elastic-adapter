@@ -15,7 +15,7 @@ install:
 
 stages:
   - code-analysis
-  - test
+  - tests
 
 jobs:
   include:
@@ -27,5 +27,5 @@ jobs:
       name: Static Code Analysis
       php: 7.2
       script: make static-analysis
-    - stage: test
+    - stage: tests
       script: make test
