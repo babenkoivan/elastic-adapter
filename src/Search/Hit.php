@@ -16,6 +16,11 @@ final class Hit implements SearchResponseRawInterface
         $this->hit = $hit;
     }
 
+    public function getIndexName(): string
+    {
+        return $this->hit['_index'];
+    }
+
     public function getDocument(): Document
     {
         return new Document(

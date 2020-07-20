@@ -15,6 +15,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class HitTest extends TestCase
 {
+    public function test_index_name_can_be_retrieved(): void
+    {
+        $hit = new Hit([
+            '_id' => '1',
+            '_index' => 'test',
+        ]);
+
+        $this->assertSame('test', $hit->getIndexName());
+    }
+
     public function test_document_can_be_retrieved(): void
     {
         $hit = new Hit([
