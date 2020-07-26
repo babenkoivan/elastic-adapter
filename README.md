@@ -269,8 +269,9 @@ $total = $response->getHitsTotal();
 // corresponding hits
 $hits = $response->getHits();
 
-// document, highlight or raw representation of the hit
+// index name, document, highlight and raw representation of the hit
 foreach ($hits as $hit) {
+    $indexname = $hit->getIndexName();
     $document = $hit->getDocument();
     $highlight = $hit->getHighlight();
     $raw = $hit->getRaw();
