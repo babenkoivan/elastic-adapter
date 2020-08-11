@@ -167,7 +167,7 @@ $documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
 
 ### Index
 
-Add a document to an index:
+Add a document to the index:
 
 ```php
 $documents = [
@@ -186,7 +186,7 @@ $documentManager->index('my_index', $documents, true);
 
 ### Delete
 
-Remove a document from an index:
+Remove a document from the index:
 
 ```php
 $documents = [
@@ -211,7 +211,7 @@ $documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
 
 ### Search
 
-Search documents in an index:
+Search documents in the index:
 
 ```php
 // create a search request
@@ -243,7 +243,7 @@ $request->setSuggest([
     ]
 ]);
 
-// enable the source filtering
+// enable source filtering
 $request->setSource(['message', 'post_date']);
 
 // collapse fields
@@ -272,7 +272,7 @@ $request->setFrom(0)->setSize(20);
 // execute the search request and get the response
 $response = $documentManager->search('my_index', $request);
 
-// get total number of matching documents
+// get the total number of matching documents
 $total = $response->getHitsTotal(); 
 
 // get the corresponding hits
@@ -287,9 +287,9 @@ foreach ($hits as $hit) {
     $raw = $hit->getRaw();
 }
 
-// get suggestions
+// get the suggestions
 $suggestions = $response->getSuggestions();
 
-// get aggregations
+// get the aggregations
 $aggregations = $response->getAggregations();
 ```
