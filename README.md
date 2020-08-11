@@ -53,7 +53,7 @@ The manager provides a list of useful methods, which are listed below.
 
 ### Create
 
-Creates an index, either with the default settings and mapping:
+Create an index, either with the default settings and mapping:
 
 ```php
 $index = new \ElasticAdapter\Indices\Index('my_index');
@@ -61,7 +61,7 @@ $index = new \ElasticAdapter\Indices\Index('my_index');
 $indexManager->create($index);
 ```
 
-or configured accordingly to your needs:
+or configured according to your needs:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -86,7 +86,7 @@ $indexManager->create($index);
 
 ### Drop
 
-Deletes an index:
+Delete an index:
 
 ```php
 $indexManager->drop('my_index');
@@ -94,7 +94,7 @@ $indexManager->drop('my_index');
 
 ### Put Mapping
 
-Updates an index mapping:
+Update an index mapping:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -111,7 +111,7 @@ $indexManager->putMapping('my_index', $mapping);
 
 ### Put Settings
 
-Updates an index settings:
+Update an index settings:
 
 ```php
 $settings = (new \ElasticAdapter\Indices\Settings())
@@ -129,7 +129,7 @@ $indexManager->putSettings('my_index', $settings);
 
 ### Exists
 
-Checks if an index exists:
+Check if an index exists:
 
 ```php
 $indexManager->exists('my_index');
@@ -137,7 +137,7 @@ $indexManager->exists('my_index');
 
 ### Open
 
-Opens an index:
+Open an index:
 
 ```php
 $indexManager->open('my_index');
@@ -145,7 +145,7 @@ $indexManager->open('my_index');
 
 ### Close
 
-Closes an index:
+Close an index:
 
 ```php
 $indexManager->close('my_index');
@@ -167,7 +167,7 @@ $documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
 
 ### Index
 
-Adds a document to an index:
+Add a document to an index:
 
 ```php
 $documents = [
@@ -186,7 +186,7 @@ $documentManager->index('my_index', $documents, true);
 
 ### Delete
 
-Removes a document from index:
+Remove a document from an index:
 
 ```php
 $documents = [
@@ -197,7 +197,7 @@ $documents = [
 $documentManager->delete('my_index', $documents);
 ```
 
-If you want an index to be refreshed immediately pass `true` as the third argument:
+If you want the index to be refreshed immediately pass `true` as the third argument:
 
 ```php
 $documentManager->delete('my_index', $documents, true);
@@ -211,15 +211,17 @@ $documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
 
 ### Search
 
-Finds documents in an index:
+Search documents in an index:
 
 ```php
+// create a search request
 $request = new \ElasticAdapter\Search\SearchRequest([
     'match' => [
         'message' => 'test'
     ]
 ]);
 
+// configure highlighting
 $request->setHighlight([
     'fields' => [
         'message' => [
@@ -231,6 +233,7 @@ $request->setHighlight([
     ]
 ]);
 
+// add suggestions
 $request->setSuggest([
     'message_suggest' => [
         'text' => 'test',
@@ -240,12 +243,15 @@ $request->setSuggest([
     ]
 ]);
 
+// enable the source filtering
 $request->setSource(['message', 'post_date']);
 
+// collapse fields
 $request->setCollapse([
     'field' => 'user'
 ]);
 
+// aggregate data
 $request->setAggregations([
     'max_likes' => [
         'max' => [
@@ -254,22 +260,26 @@ $request->setAggregations([
     ]
 ]);
 
+// sort documents
 $request->setSort([
     ['post_date' => ['order' => 'asc']],
     '_score'
 ]);
 
+// use pagination
 $request->setFrom(0)->setSize(20);
 
+// execute the search request and get the response
 $response = $documentManager->search('my_index', $request);
 
-// total number of matched documents
+// get total number of matching documents
 $total = $response->getHitsTotal(); 
 
-// corresponding hits
+// get the corresponding hits
 $hits = $response->getHits();
 
-// index name, document, highlight and raw representation of the hit
+// every hit provides an access to the index name, the document and the highlight
+// in addition, you can get a raw representation of the hit
 foreach ($hits as $hit) {
     $indexname = $hit->getIndexName();
     $document = $hit->getDocument();
@@ -277,9 +287,9 @@ foreach ($hits as $hit) {
     $raw = $hit->getRaw();
 }
 
-// suggestions
+// get suggestions
 $suggestions = $response->getSuggestions();
 
-// aggregations
+// get aggregations
 $aggregations = $response->getAggregations();
 ```
