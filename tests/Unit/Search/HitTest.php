@@ -15,39 +15,42 @@ use PHPUnit\Framework\TestCase;
  */
 final class HitTest extends TestCase
 {
-    public function test_index_name_can_be_retrieved(): void
+    /**
+     * @var Hit
+     */
+    private $hit;
+
+    protected function setUp(): void
     {
-        $hit = new Hit([
+        parent::setUp();
+
+        $this->hit = new Hit([
             '_id' => '1',
             '_index' => 'test',
+            '_source' => ['title' => 'foo'],
+            '_score' => 1.3,
+            'highlight' => ['title' => [' <em>foo</em> ']],
         ]);
+    }
 
-        $this->assertSame('test', $hit->getIndexName());
+    public function test_index_name_can_be_retrieved(): void
+    {
+        $this->assertSame('test', $this->hit->getIndexName());
     }
 
     public function test_document_can_be_retrieved(): void
     {
-        $hit = new Hit([
-            '_id' => '1',
-            '_source' => ['title' => 'foo'],
-        ]);
-
         $this->assertEquals(
             new Document('1', ['title' => 'foo']),
-            $hit->getDocument()
+            $this->hit->getDocument()
         );
     }
 
     public function test_highlight_can_be_retrieved_if_present(): void
     {
-        $hit = new Hit([
-            '_id' => '1',
-            'highlight' => ['foo' => ['test fragment']],
-        ]);
-
         $this->assertEquals(
-            new Highlight(['foo' => ['test fragment']]),
-            $hit->getHighlight()
+            new Highlight(['title' => [' <em>foo</em> ']]),
+            $this->hit->getHighlight()
         );
     }
 
@@ -58,18 +61,19 @@ final class HitTest extends TestCase
         $this->assertNull($hit->getHighlight());
     }
 
+    public function test_score_can_be_retrieved(): void
+    {
+        $this->assertSame(1.3, $this->hit->getScore());
+    }
+
     public function test_raw_representation_can_be_retrieved(): void
     {
-        $hit = new Hit([
-            '_id' => '1',
-            '_source' => ['title' => 'foo'],
-            'highlight' => ['title' => [' <em>foo</em> ']],
-        ]);
-
         $this->assertSame([
             '_id' => '1',
+            '_index' => 'test',
             '_source' => ['title' => 'foo'],
+            '_score' => 1.3,
             'highlight' => ['title' => [' <em>foo</em> ']],
-        ], $hit->getRaw());
+        ], $this->hit->getRaw());
     }
 }

@@ -35,6 +35,11 @@ final class Hit implements SearchResponseRawInterface
             new Highlight($this->hit['highlight']) : null;
     }
 
+    public function getScore(): float
+    {
+        return $this->hit['_score'];
+    }
+
     public function getRaw(): array
     {
         return $this->hit;
