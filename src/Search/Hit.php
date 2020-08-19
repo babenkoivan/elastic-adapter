@@ -21,6 +21,11 @@ final class Hit implements SearchResponseRawInterface
         return $this->hit['_index'];
     }
 
+    public function getScore(): ?float
+    {
+        return $this->hit['_score'];
+    }
+
     public function getDocument(): Document
     {
         return new Document(
@@ -33,11 +38,6 @@ final class Hit implements SearchResponseRawInterface
     {
         return isset($this->hit['highlight']) ?
             new Highlight($this->hit['highlight']) : null;
-    }
-
-    public function getScore(): float
-    {
-        return $this->hit['_score'];
     }
 
     public function getRaw(): array
