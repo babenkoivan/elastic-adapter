@@ -266,6 +266,13 @@ $request->setSort([
     '_score'
 ]);
 
+// add a post filter
+$request->setPostFilter([
+    'term' => [
+        'cover' => 'hard'
+    ]
+]);
+
 // use pagination
 $request->setFrom(0)->setSize(20);
 

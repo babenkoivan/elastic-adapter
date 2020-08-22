@@ -218,4 +218,28 @@ final class SearchRequestTest extends TestCase
             ],
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_post_filter(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setPostFilter([
+            'term' => [
+                'color' => 'red',
+            ],
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'post_filter' => [
+                'term' => [
+                    'color' => 'red',
+                ],
+            ],
+        ], $request->toArray());
+    }
 }

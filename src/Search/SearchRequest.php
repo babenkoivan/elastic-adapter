@@ -42,6 +42,10 @@ final class SearchRequest implements ArrayableInterface
      * @var array|null
      */
     private $aggregations;
+    /**
+     * @var array|null
+     */
+    private $postFilter;
 
     public function __construct(array $query)
     {
@@ -99,6 +103,12 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setPostFilter(array $postFilter): self
+    {
+        $this->postFilter = $postFilter;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
@@ -113,6 +123,10 @@ final class SearchRequest implements ArrayableInterface
 
         if (isset($this->source)) {
             $request['_source'] = $this->source;
+        }
+
+        if (isset($this->postFilter)) {
+            $request['post_filter'] = $this->postFilter;
         }
 
         return $request;
