@@ -17,4 +17,14 @@ final class DocumentTest extends TestCase
         $this->assertSame('123456', $document->getId());
         $this->assertSame(['title' => 'foo'], $document->getContent());
     }
+
+    public function test_array_casting(): void
+    {
+        $document = new Document('1', ['title' => 'test']);
+
+        $this->assertSame([
+            'id' => '1',
+            'content' => ['title' => 'test'],
+        ], $document->toArray());
+    }
 }

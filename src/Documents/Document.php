@@ -2,7 +2,9 @@
 
 namespace ElasticAdapter\Documents;
 
-final class Document
+use ElasticAdapter\Support\ArrayableInterface;
+
+final class Document implements ArrayableInterface
 {
     /**
      * @var string
@@ -27,5 +29,13 @@ final class Document
     public function getContent(): array
     {
         return $this->content;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'content' => $this->getContent(),
+        ];
     }
 }
