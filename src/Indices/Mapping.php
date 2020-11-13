@@ -62,6 +62,10 @@ final class Mapping implements ArrayableInterface
      * @var array
      */
     private $properties = [];
+    /**
+     * @var array
+     */
+    private $dynamicTemplates = [];
 
     public function enableFieldNames(): self
     {
@@ -108,6 +112,12 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
+    public function dynamicTemplate(string $name, array $parameters): self
+    {
+        $this->dynamicTemplates[$name] = $parameters;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $mapping = [];
@@ -126,6 +136,10 @@ final class Mapping implements ArrayableInterface
 
         if (count($this->properties) > 0) {
             $mapping['properties'] = $this->properties;
+        }
+
+        if (count($this->dynamicTemplates) > 0) {
+            $mapping['dynamic_templates'] = $this->dynamicTemplates;
         }
 
         return $mapping;

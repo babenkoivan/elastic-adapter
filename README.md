@@ -71,7 +71,14 @@ $mapping = (new \ElasticAdapter\Indices\Mapping())
     ->keyword('tag', [
         'null_value' => 'NULL'
     ])
-    ->geoPoint('location');
+    ->geoPoint('location')
+    ->dynamicTemplate('no_doc_values', [
+        'match_mapping_type' => '*',
+        'mapping' => [
+            'type' => '{dynamic_type}',
+            'doc_values' => false,
+        ],
+    ]);
 
 $settings = (new \ElasticAdapter\Indices\Settings())
     ->index([

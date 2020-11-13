@@ -100,6 +100,12 @@ class MappingTest extends TestCase
             ->text('foo')
             ->boolean('bar', [
                 'boost' => 1,
+            ])
+            ->dynamicTemplate('integers', [
+                'match_mapping_type' => 'long',
+                'mapping' => [
+                    'type' => 'integer',
+                ],
             ]);
 
         $this->assertSame([
@@ -116,6 +122,14 @@ class MappingTest extends TestCase
                 'bar' => [
                     'type' => 'boolean',
                     'boost' => 1,
+                ],
+            ],
+            'dynamic_templates' => [
+                'integers' => [
+                    'match_mapping_type' => 'long',
+                    'mapping' => [
+                        'type' => 'integer',
+                    ],
                 ],
             ],
         ], $mapping->toArray());
