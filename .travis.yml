@@ -14,7 +14,6 @@ php:
   - 7.4
 
 install:
-  - composer global require --no-interaction --prefer-dist --update-no-dev hirak/prestissimo
   - composer install --no-interaction --prefer-dist
 
 script: make test
@@ -23,9 +22,9 @@ jobs:
   include:
     - stage: code-analysis
       name: Code Style Check
-      php: 7.2
+      php: 7.4
       script: make style-check
     - stage: code-analysis
       name: Static Code Analysis
-      php: 7.2
+      php: 7.4
       script: make static-analysis
