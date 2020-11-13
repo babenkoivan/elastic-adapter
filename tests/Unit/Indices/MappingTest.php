@@ -125,10 +125,12 @@ class MappingTest extends TestCase
                 ],
             ],
             'dynamic_templates' => [
-                'integers' => [
-                    'match_mapping_type' => 'long',
-                    'mapping' => [
-                        'type' => 'integer',
+                [
+                    'integers' => [
+                        'match_mapping_type' => 'long',
+                        'mapping' => [
+                            'type' => 'integer',
+                        ],
                     ],
                 ],
             ],

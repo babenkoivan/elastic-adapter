@@ -114,7 +114,7 @@ final class Mapping implements ArrayableInterface
 
     public function dynamicTemplate(string $name, array $parameters): self
     {
-        $this->dynamicTemplates[$name] = $parameters;
+        $this->dynamicTemplates[] = [$name => $parameters];
         return $this;
     }
 
