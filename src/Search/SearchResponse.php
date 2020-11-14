@@ -24,9 +24,9 @@ final class SearchResponse implements SearchResponseRawInterface
         }, $this->response['hits']['hits']);
     }
 
-    public function getHitsTotal(): int
+    public function getHitsTotal(): ?int
     {
-        return $this->response['hits']['total']['value'];
+        return $this->response['hits']['total']['value'] ?? null;
     }
 
     public function getSuggestions(): array

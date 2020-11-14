@@ -242,4 +242,20 @@ final class SearchRequestTest extends TestCase
             ],
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_track_total_hits(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setTrackTotalHits(100);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'track_total_hits' => 100,
+        ], $request->toArray());
+    }
 }

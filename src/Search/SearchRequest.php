@@ -46,6 +46,10 @@ final class SearchRequest implements ArrayableInterface
      * @var array|null
      */
     private $postFilter;
+    /**
+     * @var int|bool|null
+     */
+    private $trackTotalHits;
 
     public function __construct(array $query)
     {
@@ -109,24 +113,36 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    /**
+     * @param int|bool $trackTotalHits
+     */
+    public function setTrackTotalHits($trackTotalHits): self
+    {
+        $this->trackTotalHits = $trackTotalHits;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
             'query' => $this->query,
         ];
 
-        foreach (['highlight', 'sort', 'from', 'size', 'suggest', 'collapse', 'aggregations'] as $property) {
+        foreach ([
+                     'highlight' => 'highlight',
+                     'sort' => 'sort',
+                     'from' => 'from',
+                     'size' => 'size',
+                     'suggest' => 'suggest',
+                     'collapse' => 'collapse',
+                     'aggregations' => 'aggregations',
+                     'source' => '_source',
+                     'postFilter' => 'post_filter',
+                     'trackTotalHits' => 'track_total_hits',
+                 ] as $property => $requestParameter) {
             if (isset($this->$property)) {
-                $request[$property] = $this->$property;
+                $request[$requestParameter] = $this->$property;
             }
-        }
-
-        if (isset($this->source)) {
-            $request['_source'] = $this->source;
-        }
-
-        if (isset($this->postFilter)) {
-            $request['post_filter'] = $this->postFilter;
         }
 
         return $request;
