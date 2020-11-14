@@ -280,6 +280,9 @@ $request->setPostFilter([
     ]
 ]);
 
+// track total hits
+$request->setTrackTotalHits(true);
+
 // use pagination
 $request->setFrom(0)->setSize(20);
 
