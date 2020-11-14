@@ -129,17 +129,17 @@ final class SearchRequest implements ArrayableInterface
         ];
 
         foreach ([
-                     'highlight' => 'highlight',
-                     'sort' => 'sort',
-                     'from' => 'from',
-                     'size' => 'size',
-                     'suggest' => 'suggest',
-                     'collapse' => 'collapse',
-                     'aggregations' => 'aggregations',
-                     'source' => '_source',
-                     'postFilter' => 'post_filter',
-                     'trackTotalHits' => 'track_total_hits',
-                 ] as $property => $requestParameter) {
+            'highlight' => 'highlight',
+            'sort' => 'sort',
+            'from' => 'from',
+            'size' => 'size',
+            'suggest' => 'suggest',
+            'collapse' => 'collapse',
+            'aggregations' => 'aggregations',
+            'source' => '_source',
+            'postFilter' => 'post_filter',
+            'trackTotalHits' => 'track_total_hits',
+        ] as $property => $requestParameter) {
             if (isset($this->$property)) {
                 $request[$requestParameter] = $this->$property;
             }
