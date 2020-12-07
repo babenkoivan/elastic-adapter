@@ -16,6 +16,9 @@ php:
 install:
   - composer install --no-interaction --prefer-dist
 
+before_script:
+  - phpenv config-rm xdebug.ini
+
 script: make test
 
 jobs:
