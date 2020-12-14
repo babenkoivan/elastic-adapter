@@ -94,4 +94,24 @@ class IndexManager
 
         return $this;
     }
+
+    /**
+     * @return Alias[]
+     */
+    public function getAliases(string $indexName): array
+    {
+        $response = $this->indices->getAlias([
+            'index' => $indexName,
+        ]);
+
+        $aliases = $response[$indexName]['aliases'] ?? [];
+
+        return array_map(static function (array $parameters, string $name) {
+            return new Alias(
+                $name,
+                $parameters['filter'] ?? null,
+                $parameters['routing'] ?? null
+            );
+        }, $aliases, array_keys($aliases));
+    }
 }
