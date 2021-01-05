@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Tests\Unit\Indices;
 
+use ElasticAdapter\Indices\Alias;
 use ElasticAdapter\Indices\Index;
 use ElasticAdapter\Indices\IndexManager;
 use ElasticAdapter\Indices\Mapping;
@@ -14,9 +15,10 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \ElasticAdapter\Indices\IndexManager
  *
+ * @uses   \ElasticAdapter\Indices\Alias
  * @uses   \ElasticAdapter\Indices\Index
- * @uses   \ElasticAdapter\Indices\Settings
  * @uses   \ElasticAdapter\Indices\Mapping
+ * @uses   \ElasticAdapter\Indices\Settings
  * @uses   \ElasticAdapter\Support\Str
  */
 class IndexManagerTest extends TestCase
@@ -203,5 +205,41 @@ class IndexManagerTest extends TestCase
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->putSettings($indexName, $settings));
+    }
+
+    public function test_index_can_be_dropped(): void
+    {
+        $indexName = 'foo';
+
+        $this->indices
+            ->expects($this->once())
+            ->method('delete')
+            ->with([
+                'index' => $indexName,
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->drop($indexName));
+    }
+
+    public function test_aliases_can_be_retrieved(): void
+    {
+        $indexName = 'foo';
+        $aliasName = 'bar';
+
+        $this->indices
+            ->expects($this->once())
+            ->method('getAlias')
+            ->with([
+                'index' => $indexName,
+            ])
+            ->willReturn([
+                $indexName => [
+                    'aliases' => [
+                        $aliasName => [],
+                    ],
+                ],
+            ]);
+
+        $this->assertEquals([new Alias($aliasName)], $this->indexManager->getAliases($indexName));
     }
 }
