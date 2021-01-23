@@ -258,4 +258,42 @@ final class SearchRequestTest extends TestCase
             'track_total_hits' => 100,
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_indices_boost(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setIndicesBoost([
+            ['my-alias' => 1.4],
+            ['my-index' => 1.3],
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'indices_boost' => [
+                'my-alias' => 1.4,
+                'my-index' => 1.3,
+            ],
+        ], $request->toArray());
+    }
+
+    public function test_array_casting_with_track_scores(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setTrackScores(true);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'track_scores' => true,
+        ], $request->toArray());
+    }
 }

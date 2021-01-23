@@ -50,6 +50,14 @@ final class SearchRequest implements ArrayableInterface
      * @var int|bool|null
      */
     private $trackTotalHits;
+    /**
+     * @var array|null
+     */
+    private $indicesBoost;
+    /**
+     * @var bool|null
+     */
+    private $trackScores;
 
     public function __construct(array $query)
     {
@@ -122,6 +130,18 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setIndicesBoost(array $indicesBoost): self
+    {
+        $this->indicesBoost = $indicesBoost;
+        return $this;
+    }
+
+    public function setTrackScores(bool $trackScores): self
+    {
+        $this->trackScores = $trackScores;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
@@ -139,6 +159,8 @@ final class SearchRequest implements ArrayableInterface
             'source' => '_source',
             'postFilter' => 'post_filter',
             'trackTotalHits' => 'track_total_hits',
+            'indicesBoost' => 'indices_boost',
+            'trackScores' => 'track_scores',
         ] as $property => $requestParameter) {
             if (isset($this->$property)) {
                 $request[$requestParameter] = $this->$property;

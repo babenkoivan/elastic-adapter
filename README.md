@@ -284,6 +284,15 @@ $request->setPostFilter([
 // track total hits
 $request->setTrackTotalHits(true);
 
+// track scores
+$request->setTrackScores(true);
+
+// boost indices
+$request->setIndicesBoost([
+    ['my-alias' => 1.4],
+    ['my-index' => 1.3],
+]);
+
 // use pagination
 $request->setFrom(0)->setSize(20);
 
