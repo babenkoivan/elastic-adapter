@@ -275,8 +275,8 @@ final class SearchRequestTest extends TestCase
                 'match_all' => new stdClass(),
             ],
             'indices_boost' => [
-                'my-alias' => 1.4,
-                'my-index' => 1.3,
+                ['my-alias' => 1.4],
+                ['my-index' => 1.3],
             ],
         ], $request->toArray());
     }
