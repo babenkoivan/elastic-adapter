@@ -296,4 +296,42 @@ final class SearchRequestTest extends TestCase
             'track_scores' => true,
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_script_fields(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setScriptFields([
+            'my_doubled_field' => [
+                'script' => [
+                    'lang' => 'painless',
+                    'source' => 'doc[params.field] * params.multiplier',
+                    'params' => [
+                        'field' => 'my_field',
+                        'multiplier' => 2,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'script_fields' => [
+                'my_doubled_field' => [
+                    'script' => [
+                        'lang' => 'painless',
+                        'source' => 'doc[params.field] * params.multiplier',
+                        'params' => [
+                            'field' => 'my_field',
+                            'multiplier' => 2,
+                        ],
+                    ],
+                ],
+            ],
+        ], $request->toArray());
+    }
 }

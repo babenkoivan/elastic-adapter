@@ -287,6 +287,20 @@ $request->setTrackTotalHits(true);
 // track scores
 $request->setTrackScores(true);
 
+// script fields
+$request->setScriptFields([
+    'my_doubled_field' => [
+        'script' => [
+            'lang' => 'painless',
+            'source' => 'doc[params.field] * params.multiplier',
+            'params' => [
+                'field' => 'my_field',
+                'multiplier' => 2,
+            ],
+        ],
+    ],
+]);
+
 // boost indices
 $request->setIndicesBoost([
     ['my-alias' => 1.4],

@@ -58,6 +58,10 @@ final class SearchRequest implements ArrayableInterface
      * @var bool|null
      */
     private $trackScores;
+    /**
+     * @var array|null
+     */
+    private $scriptFields;
 
     public function __construct(array $query)
     {
@@ -142,6 +146,12 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setScriptFields(array $scriptFields): self
+    {
+        $this->scriptFields = $scriptFields;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $request = [
@@ -161,6 +171,7 @@ final class SearchRequest implements ArrayableInterface
             'trackTotalHits' => 'track_total_hits',
             'indicesBoost' => 'indices_boost',
             'trackScores' => 'track_scores',
+            'scriptFields' => 'script_fields',
         ] as $property => $requestParameter) {
             if (isset($this->$property)) {
                 $request[$requestParameter] = $this->$property;
