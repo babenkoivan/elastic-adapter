@@ -8,6 +8,10 @@
 [![Static analysis](https://github.com/babenkoivan/elastic-adapter/workflows/Static%20analysis/badge.svg)](https://github.com/babenkoivan/elastic-adapter/actions?query=workflow%3A%22Static+analysis%22)
 [![Donate PayPal](https://img.shields.io/badge/donate-paypal-blue)](https://paypal.me/babenkoi)
 
+<p>
+    <a href="https://www.buymeacoffee.com/ivanbabenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" height="50"></a>
+</p>
+
 ---
 
 Elastic Adapter is an adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document 
