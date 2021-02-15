@@ -28,7 +28,7 @@ operations.
 
 The current version of Elastic Adapter has been tested with the following configuration:
 
-* PHP 7.2-7.4
+* PHP 7.2-8.0
 * Elasticsearch 7.x
 
 ## Installation
