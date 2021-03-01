@@ -32,6 +32,10 @@ class DocumentManager
         foreach ($documents as $document) {
             $params['body'][] = ['index' => ['_id' => $document->getId()]];
             $params['body'][] = $document->getContent();
+
+            if (isset($document->getParams()['routing'])) {
+                $params['routing'] = $document->getParams()['routing'];
+            }
         }
 
         $this->client->bulk($params);

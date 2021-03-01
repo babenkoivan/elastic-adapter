@@ -16,6 +16,8 @@ final class DocumentTest extends TestCase
 
         $this->assertSame('123456', $document->getId());
         $this->assertSame(['title' => 'foo'], $document->getContent());
+        $this->assertSame(['routing' => null], $document->getParams());
+
     }
 
     public function test_array_casting(): void
@@ -25,6 +27,7 @@ final class DocumentTest extends TestCase
         $this->assertSame([
             'id' => '1',
             'content' => ['title' => 'test'],
+            'routing' => null,
         ], $document->toArray());
     }
 }

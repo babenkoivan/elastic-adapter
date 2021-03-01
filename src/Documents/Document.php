@@ -28,7 +28,18 @@ final class Document implements ArrayableInterface
 
     public function getContent(): array
     {
-        return $this->content;
+        $content = $this->content;
+        if (array_key_exists('routing', $content)) {
+            unset($content['routing']);
+        }
+        return $content;
+    }
+
+    public function getParams(): array
+    {
+        $params = [];
+        $params['routing'] = array_key_exists('routing', $this->content) ? $this->content['routing'] : null;
+        return $params;
     }
 
     public function toArray(): array
@@ -36,6 +47,7 @@ final class Document implements ArrayableInterface
         return [
             'id' => $this->getId(),
             'content' => $this->getContent(),
+            'routing' => $this->getParams()['routing'],
         ];
     }
 }
