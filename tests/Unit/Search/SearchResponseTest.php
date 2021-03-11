@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
+use ElasticAdapter\Search\Aggregation;
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticAdapter\Search\Suggestion;
@@ -105,11 +106,13 @@ final class SearchResponseTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
-            'min_price' => [
+        $aggregation = [
+            'min_price' => new Aggregation([
                 'value' => 10,
-            ],
-        ], $searchResponse->getAggregations());
+            ]),
+        ];
+
+        $this->assertEquals($aggregation, $searchResponse->getAggregations());
     }
 
     public function test_raw_representation_can_be_retrieved(): void

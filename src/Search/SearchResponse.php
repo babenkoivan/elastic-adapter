@@ -40,7 +40,9 @@ final class SearchResponse implements SearchResponseRawInterface
 
     public function getAggregations(): array
     {
-        return $this->response['aggregations'] ?? [];
+        return array_map(static function (array $aggregation) {
+            return new Aggregation($aggregation);
+        }, $this->response['aggregations'] ?? []);
     }
 
     public function getRaw(): array
