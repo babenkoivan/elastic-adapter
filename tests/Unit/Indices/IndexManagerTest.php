@@ -242,4 +242,44 @@ class IndexManagerTest extends TestCase
 
         $this->assertEquals([new Alias($aliasName)], $this->indexManager->getAliases($indexName));
     }
+
+    public function test_alias_can_be_created(): void
+    {
+        $indexName = 'foo';
+        $alias = (new Alias('bar', ['term' => ['user_id' => 12]], '12'));
+
+        $this->indices
+            ->expects($this->once())
+            ->method('putAlias')
+            ->with([
+                'index' => $indexName,
+                'name' => $alias->getName(),
+                'body' => [
+                    'routing' => '12',
+                    'filter' => [
+                        'term' => [
+                            'user_id' => 12,
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->putAlias($indexName, $alias));
+    }
+
+    public function test_alias_can_be_deleted(): void
+    {
+        $indexName = 'foo';
+        $aliasName = 'bar';
+
+        $this->indices
+            ->expects($this->once())
+            ->method('deleteAlias')
+            ->with([
+                'index' => $indexName,
+                'name' => $aliasName,
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->deleteAlias($indexName, $aliasName));
+    }
 }

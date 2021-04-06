@@ -114,4 +114,34 @@ class IndexManager
             );
         }, $aliases, array_keys($aliases));
     }
+
+    public function putAlias(string $indexName, Alias $alias): self
+    {
+        $params = [
+            'index' => $indexName,
+            'name' => $alias->getName(),
+        ];
+
+        if ($alias->getRouting()) {
+            $params['body']['routing'] = $alias->getRouting();
+        }
+
+        if ($alias->getFilter()) {
+            $params['body']['filter'] = $alias->getFilter();
+        }
+
+        $this->indices->putAlias($params);
+
+        return $this;
+    }
+
+    public function deleteAlias(string $indexName, string $aliasName): self
+    {
+        $this->indices->deleteAlias([
+            'index' => $indexName,
+            'name' => $aliasName,
+        ]);
+
+        return $this;
+    }
 }

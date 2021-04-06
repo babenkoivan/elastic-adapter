@@ -163,6 +163,36 @@ Close an index:
 $indexManager->close('my_index');
 ```
 
+### Put Alias
+
+Create an alias:
+
+```php
+$alias = new \ElasticAdapter\Indices\Alias('my_alias', [
+    'term' => [
+        'user_id' => 12,
+    ],
+]);
+
+$indexManager->putAlias('my_index', $alias);
+```
+
+### Get Aliases
+
+Get index aliases:
+
+```php
+$indexManager->getAliases('my_index');
+```
+
+### Delete Alias
+
+Delete an alias:
+
+```php
+$indexManager->deleteAlias('my_index', 'my_alias');
+```
+
 ## Document Management
 
 Similarly to `IndexManager`, the `DocumentManager` class also depends on Elasticsearch client:
