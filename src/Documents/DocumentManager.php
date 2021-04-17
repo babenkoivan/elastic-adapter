@@ -34,7 +34,7 @@ class DocumentManager
             if (!is_null($document->getRouting())) {
                 $indexConfig['index']['_routing'] = $document->getRouting();
             }
-            
+
             $params['body'][] = $indexConfig;
             $params['body'][] = $document->getContent();
         }

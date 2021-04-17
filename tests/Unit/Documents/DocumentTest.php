@@ -23,7 +23,7 @@ final class DocumentTest extends TestCase
     {
         $document = new Document('123456', ['title' => 'foo']);
 
-        $this->assertSame(null, $document->getRouting());
+        $this->assertNull($document->getRouting());
     }
 
     public function test_array_casting(): void
