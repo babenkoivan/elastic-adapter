@@ -32,7 +32,7 @@ class DocumentManager
         foreach ($documents as $document) {
             $indexConfig = ['index' => ['_id' => $document->getId()]];
             if (!is_null($document->getRouting())) {
-                $indexConfig['index']['_routing'] = $document->getRouting();
+                $indexConfig['index']['routing'] = $document->getRouting();
             }
 
             $params['body'][] = $indexConfig;
@@ -58,7 +58,7 @@ class DocumentManager
         foreach ($documents as $document) {
             $deleteConfig = ['delete' => ['_id' => $document->getId()]];
             if (!is_null($document->getRouting())) {
-                $deleteConfig['delete']['_routing'] = $document->getRouting();
+                $deleteConfig['delete']['routing'] = $document->getRouting();
             }
             $params['body'][] = $deleteConfig;
         }

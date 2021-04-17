@@ -88,7 +88,7 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['index' => ['_id' => '1', '_routing' => '123']],
+                    ['index' => ['_id' => '1', 'routing' => '123']],
                     ['title' => 'Doc 1'],
                     ['index' => ['_id' => '2']],
                     ['title' => 'Doc 2'],
@@ -148,7 +148,7 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['delete' => ['_id' => '1', '_routing' => '123']],
+                    ['delete' => ['_id' => '1', 'routing' => '123']],
                     ['delete' => ['_id' => '2']],
                 ],
             ]);
