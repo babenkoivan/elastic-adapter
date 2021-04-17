@@ -369,3 +369,12 @@ $suggestions = $response->getSuggestions();
 // get the aggregations
 $aggregations = $response->getAggregations();
 ```
+
+### Custom routing
+
+Every document can accept a nullable routing key that if not null will be used for bulk index and delete
+operations.
+
+```php
+new ElasticAdapter\Documents\Document('1', ['title' => 'foo'], $routing = '123'),
+```

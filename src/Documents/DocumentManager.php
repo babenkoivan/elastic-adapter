@@ -30,7 +30,12 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $params['body'][] = ['index' => ['_id' => $document->getId()]];
+            $indexConfig = ['index' => ['_id' => $document->getId()]];
+            if (!is_null($document->getRouting())) {
+                $indexConfig['index']['_routing'] = $document->getRouting();
+            }
+            
+            $params['body'][] = $indexConfig;
             $params['body'][] = $document->getContent();
         }
 
@@ -51,7 +56,11 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $params['body'][] = ['delete' => ['_id' => $document->getId()]];
+            $deleteConfig = ['delete' => ['_id' => $document->getId()]];
+            if (!is_null($document->getRouting())) {
+                $deleteConfig['delete']['_routing'] = $document->getRouting();
+            }
+            $params['body'][] = $deleteConfig;
         }
 
         $this->client->bulk($params);
