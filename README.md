@@ -311,8 +311,8 @@ $request->setSort([
 // rescore documents
 $request->setRescore([
     'window_size' => 50,
-        'query' => [
-            'rescore_query' => [
+    'query' => [
+        'rescore_query' => [
             'match_phrase' => [
                 'message' => [
                     'query' => 'the quick brown',
