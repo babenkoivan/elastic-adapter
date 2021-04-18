@@ -19,6 +19,10 @@ final class SearchRequest implements ArrayableInterface
      */
     private $sort;
     /**
+     * @var array|null
+     */
+    private $rescore;
+    /**
      * @var int|null
      */
     private $from;
@@ -77,6 +81,12 @@ final class SearchRequest implements ArrayableInterface
     public function setSort(array $sort): self
     {
         $this->sort = $sort;
+        return $this;
+    }
+
+    public function setRescore(array $rescore): self
+    {
+        $this->rescore = $rescore;
         return $this;
     }
 
@@ -161,6 +171,7 @@ final class SearchRequest implements ArrayableInterface
         foreach ([
             'highlight' => 'highlight',
             'sort' => 'sort',
+            'rescore' => 'rescore',
             'from' => 'from',
             'size' => 'size',
             'suggest' => 'suggest',
