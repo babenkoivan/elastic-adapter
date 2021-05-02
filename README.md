@@ -234,7 +234,7 @@ $documentManager->index('my_index', $documents, false, $routingPath = 'document_
 
 This will route documents to an elasticsearch shard based on the `document_field` value.
 
-$routingPath can be specified in dot notation to access nested fields.
+`$routingPath` can be specified in dot notation to access nested fields.
 ### Delete
 
 Remove a document from the index:
@@ -253,6 +253,14 @@ If you want the index to be refreshed immediately pass `true` as the third argum
 ```php
 $documentManager->delete('my_index', $documents, true);
 ```
+
+If you want to delete the document only at a specified shard then pass a `$routingPath` as the fourth argument:
+
+```php
+$documentManager->delete('my_index', $documents, false, $routingPath = 'document_field');
+```
+
+`$routingPath` can be specified in dot notation to access nested fields.
 
 You can also delete documents using query:
 
