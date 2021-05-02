@@ -12,18 +12,14 @@ final class DocumentTest extends TestCase
 {
     public function test_document_getters(): void
     {
-        $document = new Document('123456', ['title' => 'foo'], '123');
+        $document = new Document('123456', ['title' => 'foo', 'user' => ['name' => 'Elasticman']]);
 
         $this->assertSame('123456', $document->getId());
-        $this->assertSame('123', $document->getRouting());
-        $this->assertSame(['title' => 'foo'], $document->getContent());
-    }
-
-    public function test_document_routing_nullable(): void
-    {
-        $document = new Document('123456', ['title' => 'foo']);
-
-        $this->assertNull($document->getRouting());
+        $this->assertSame(['title' => 'foo', 'user' => ['name' => 'Elasticman']], $document->getContent());
+        $this->assertSame('foo', $document->getField('title'));
+        $this->assertSame('Elasticman', $document->getField('user.name'));
+        $this->assertNull($document->getField('not_defined_key'));
+        $this->assertNull($document->getField('user.not_defined_key'));
     }
 
     public function test_array_casting(): void

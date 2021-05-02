@@ -88,17 +88,17 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['index' => ['_id' => '1', 'routing' => '123']],
+                    ['index' => ['_id' => '1', 'routing' => 'Doc 1']],
                     ['title' => 'Doc 1'],
-                    ['index' => ['_id' => '2']],
+                    ['index' => ['_id' => '2', 'routing' => 'Doc 2']],
                     ['title' => 'Doc 2'],
                 ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
-            new Document('1', ['title' => 'Doc 1'], '123'),
+            new Document('1', ['title' => 'Doc 1']),
             new Document('2', ['title' => 'Doc 2']),
-        ], true));
+        ], true, $routingPath = 'title'));
     }
 
     public function test_documents_can_be_deleted_with_refresh(): void
@@ -148,15 +148,15 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['delete' => ['_id' => '1', 'routing' => '123']],
-                    ['delete' => ['_id' => '2']],
+                    ['delete' => ['_id' => '1', 'routing' => 'Doc 1']],
+                    ['delete' => ['_id' => '2', 'routing' => 'Doc 2']],
                 ],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
-            new Document('1', ['title' => 'Doc 1'], '123'),
+            new Document('1', ['title' => 'Doc 1']),
             new Document('2', ['title' => 'Doc 2']),
-        ], true));
+        ], true, $routingPath = 'title'));
     }
 
     public function test_documents_can_be_deleted_by_query_with_refresh(): void

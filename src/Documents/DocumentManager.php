@@ -21,7 +21,7 @@ class DocumentManager
     /**
      * @param Document[] $documents
      */
-    public function index(string $indexName, array $documents, bool $refresh = false): self
+    public function index(string $indexName, array $documents, bool $refresh = false, ?string $routingPath = null): self
     {
         $params = [
             'index' => $indexName,
@@ -30,12 +30,12 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $indexConfig = ['index' => ['_id' => $document->getId()]];
-            if (!is_null($document->getRouting())) {
-                $indexConfig['index']['routing'] = $document->getRouting();
+            $index = ['_id' => $document->getId()];
+            if (isset($routingPath)) {
+                $index['routing'] = $document->getField($routingPath);
             }
 
-            $params['body'][] = $indexConfig;
+            $params['body'][] = ['index' => $index];
             $params['body'][] = $document->getContent();
         }
 
@@ -47,7 +47,7 @@ class DocumentManager
     /**
      * @param Document[] $documents
      */
-    public function delete(string $indexName, array $documents, bool $refresh = false): self
+    public function delete(string $indexName, array $documents, bool $refresh = false, ?string $routingPath = null): self
     {
         $params = [
             'index' => $indexName,
@@ -56,11 +56,12 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $deleteConfig = ['delete' => ['_id' => $document->getId()]];
-            if (!is_null($document->getRouting())) {
-                $deleteConfig['delete']['routing'] = $document->getRouting();
+            $delete = ['_id' => $document->getId()];
+            if (isset($routingPath)) {
+                $delete['routing'] = $document->getField($routingPath);
             }
-            $params['body'][] = $deleteConfig;
+
+            $params['body'][] = ['delete' => $delete];
         }
 
         $this->client->bulk($params);

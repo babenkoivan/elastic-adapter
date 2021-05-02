@@ -11,18 +11,13 @@ final class Document implements ArrayableInterface
      */
     private $id;
     /**
-     * @var string|null
-     */
-    private $routing;
-    /**
      * @var array
      */
     private $content;
 
-    public function __construct(string $id, array $content, ?string $routing = null)
+    public function __construct(string $id, array $content)
     {
         $this->id = $id;
-        $this->routing = $routing;
         $this->content = $content;
     }
 
@@ -31,14 +26,32 @@ final class Document implements ArrayableInterface
         return $this->id;
     }
 
-    public function getRouting(): ?string
-    {
-        return $this->routing;
-    }
-
     public function getContent(): array
     {
         return $this->content;
+    }
+
+    /**
+     * Get a field's value using "dot" notation.
+     *
+     * @return mixed field value at key or null if it doesn't exist
+     */
+    public function getField(string $key)
+    {
+        $content = $this->getContent();
+        if (isset($content[$key])) {
+            return $content[$key];
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($content) || !array_key_exists($segment, $content)) {
+                return null;
+            }
+
+            $content = $content[$segment];
+        }
+
+        return $content;
     }
 
     public function toArray(): array

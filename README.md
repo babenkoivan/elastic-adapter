@@ -226,6 +226,15 @@ There is also an option to refresh index immediately:
 $documentManager->index('my_index', $documents, true);
 ```
 
+There is also an option to set a custom routing path:
+
+```php
+$documentManager->index('my_index', $documents, false, $routingPath = 'document_field');
+```
+
+This will route documents to an elasticsearch shard based on the `document_field` value.
+
+$routingPath can be specified in dot notation to access nested fields.
 ### Delete
 
 Remove a document from the index:
@@ -368,13 +377,4 @@ $suggestions = $response->getSuggestions();
 
 // get the aggregations
 $aggregations = $response->getAggregations();
-```
-
-### Custom routing
-
-Every document can accept a nullable routing key that if not null will be used for bulk index and delete
-operations.
-
-```php
-new ElasticAdapter\Documents\Document('1', ['title' => 'foo'], $routing = '123'),
 ```
