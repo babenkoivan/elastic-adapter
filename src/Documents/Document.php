@@ -31,6 +31,29 @@ final class Document implements ArrayableInterface
         return $this->content;
     }
 
+    /**
+     * Get a field's value using "dot" notation.
+     *
+     * @return mixed field value at key or null if it doesn't exist
+     */
+    public function getField(string $key)
+    {
+        $content = $this->getContent();
+        if (isset($content[$key])) {
+            return $content[$key];
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($content) || !array_key_exists($segment, $content)) {
+                return null;
+            }
+
+            $content = $content[$segment];
+        }
+
+        return $content;
+    }
+
     public function toArray(): array
     {
         return [

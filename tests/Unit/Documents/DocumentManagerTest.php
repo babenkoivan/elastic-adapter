@@ -79,6 +79,28 @@ final class DocumentManagerTest extends TestCase
         ], false));
     }
 
+    public function test_documents_can_be_indexed_with_custom_routing(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('bulk')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'true',
+                'body' => [
+                    ['index' => ['_id' => '1', 'routing' => 'Doc 1']],
+                    ['title' => 'Doc 1'],
+                    ['index' => ['_id' => '2', 'routing' => 'Doc 2']],
+                    ['title' => 'Doc 2'],
+                ],
+            ]);
+
+        $this->assertSame($this->documentManager, $this->documentManager->index('test', [
+            new Document('1', ['title' => 'Doc 1']),
+            new Document('2', ['title' => 'Doc 2']),
+        ], true, $routingPath = 'title'));
+    }
+
     public function test_documents_can_be_deleted_with_refresh(): void
     {
         $this->client
@@ -115,6 +137,26 @@ final class DocumentManagerTest extends TestCase
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
             new Document('1', ['title' => 'Doc 1']),
         ], false));
+    }
+
+    public function test_documents_can_be_deleted_with_custom_routing(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('bulk')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'true',
+                'body' => [
+                    ['delete' => ['_id' => '1', 'routing' => 'Doc 1']],
+                    ['delete' => ['_id' => '2', 'routing' => 'Doc 2']],
+                ],
+            ]);
+
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
+            new Document('1', ['title' => 'Doc 1']),
+            new Document('2', ['title' => 'Doc 2']),
+        ], true, $routingPath = 'title'));
     }
 
     public function test_documents_can_be_deleted_by_query_with_refresh(): void

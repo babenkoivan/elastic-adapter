@@ -21,7 +21,7 @@ class DocumentManager
     /**
      * @param Document[] $documents
      */
-    public function index(string $indexName, array $documents, bool $refresh = false): self
+    public function index(string $indexName, array $documents, bool $refresh = false, ?string $routingPath = null): self
     {
         $params = [
             'index' => $indexName,
@@ -30,7 +30,12 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $params['body'][] = ['index' => ['_id' => $document->getId()]];
+            $index = ['_id' => $document->getId()];
+            if (isset($routingPath)) {
+                $index['routing'] = $document->getField($routingPath);
+            }
+
+            $params['body'][] = ['index' => $index];
             $params['body'][] = $document->getContent();
         }
 
@@ -42,7 +47,7 @@ class DocumentManager
     /**
      * @param Document[] $documents
      */
-    public function delete(string $indexName, array $documents, bool $refresh = false): self
+    public function delete(string $indexName, array $documents, bool $refresh = false, ?string $routingPath = null): self
     {
         $params = [
             'index' => $indexName,
@@ -51,7 +56,12 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $params['body'][] = ['delete' => ['_id' => $document->getId()]];
+            $delete = ['_id' => $document->getId()];
+            if (isset($routingPath)) {
+                $delete['routing'] = $document->getField($routingPath);
+            }
+
+            $params['body'][] = ['delete' => $delete];
         }
 
         $this->client->bulk($params);
