@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Support\Arr;
 use ElasticAdapter\Support\ArrayableInterface;
 
 final class Document implements ArrayableInterface
@@ -32,26 +33,11 @@ final class Document implements ArrayableInterface
     }
 
     /**
-     * Get a field's value using "dot" notation.
-     *
-     * @return mixed field value at key or null if it doesn't exist
+     * @return mixed
      */
     public function getField(string $key)
     {
-        $content = $this->getContent();
-        if (isset($content[$key])) {
-            return $content[$key];
-        }
-
-        foreach (explode('.', $key) as $segment) {
-            if (!is_array($content) || !array_key_exists($segment, $content)) {
-                return null;
-            }
-
-            $content = $content[$segment];
-        }
-
-        return $content;
+        return Arr::get($this->content, $key);
     }
 
     public function toArray(): array

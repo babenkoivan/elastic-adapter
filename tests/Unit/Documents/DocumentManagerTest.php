@@ -14,6 +14,7 @@ use stdClass;
 /**
  * @covers \ElasticAdapter\Documents\DocumentManager
  *
+ * @uses   \ElasticAdapter\Support\Arr
  * @uses   \ElasticAdapter\Documents\Document
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchRequest
@@ -98,7 +99,7 @@ final class DocumentManagerTest extends TestCase
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
             new Document('1', ['title' => 'Doc 1']),
             new Document('2', ['title' => 'Doc 2']),
-        ], true, $routingPath = 'title'));
+        ], true, 'title'));
     }
 
     public function test_documents_can_be_deleted_with_refresh(): void
@@ -156,7 +157,7 @@ final class DocumentManagerTest extends TestCase
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
             new Document('1', ['title' => 'Doc 1']),
             new Document('2', ['title' => 'Doc 2']),
-        ], true, $routingPath = 'title'));
+        ], true, 'title'));
     }
 
     public function test_documents_can_be_deleted_by_query_with_refresh(): void
