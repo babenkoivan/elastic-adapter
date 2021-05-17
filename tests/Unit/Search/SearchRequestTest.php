@@ -78,6 +78,50 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
+    public function test_array_casting_with_query_and_rescore(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setRescore([
+            'window_size' => 50,
+            'query' => [
+                'rescore_query' => [
+                    'match_phrase' => [
+                        'message' => [
+                            'query' => 'the quick brown',
+                            'slop' => 2,
+                        ],
+                    ],
+                ],
+                'query_weight' => 0.7,
+                'rescore_query_weight' => 1.2,
+            ],
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'rescore' => [
+                'window_size' => 50,
+                'query' => [
+                    'rescore_query' => [
+                        'match_phrase' => [
+                            'message' => [
+                                'query' => 'the quick brown',
+                                'slop' => 2,
+                            ],
+                        ],
+                    ],
+                    'query_weight' => 0.7,
+                    'rescore_query_weight' => 1.2,
+                ],
+            ],
+        ], $request->toArray());
+    }
+
     public function test_array_casting_with_query_and_from(): void
     {
         $request = new SearchRequest([
