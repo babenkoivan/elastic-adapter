@@ -2,7 +2,6 @@
 
 namespace ElasticAdapter\Documents;
 
-use ElasticAdapter\Support\Arr;
 use ElasticAdapter\ElasticException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
