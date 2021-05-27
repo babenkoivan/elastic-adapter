@@ -4,6 +4,7 @@ namespace ElasticAdapter\Tests\Unit\Documents;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
+use ElasticAdapter\ElasticException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
@@ -234,5 +235,50 @@ final class DocumentManagerTest extends TestCase
         $this->assertInstanceOf(SearchResponse::class, $response);
         $this->assertSame(1, $response->getHitsTotal());
         $this->assertEquals(new Document('1', ['content' => 'foo']), $response->getHits()[0]->getDocument());
+    }
+
+    public function test_exception_is_thrown_when_index_response_contains_error(): void 
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('bulk')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'false',
+                'body' => [
+                    ['index' => ['_id' => '1']],
+                    ['title' => 'Doc 1'],
+                ],
+            ])->willReturn([
+                'took' => 0,
+                'errors' => true,
+                'items' => [
+                    [
+                        'index' => [
+                            '_index' => 'test',
+                            '_type' => '_doc',
+                            '_id' => '1',
+                            'status' => 400,
+                            'error' => [
+                            'type' => "mapper_parsing_exception",
+                            'reason' => "failed to parse field [title] of type [text] in document with id '1'. Preview of field's value: 'Doc 1'",
+                            'caused_by' => [
+                                    'type' => 'illegal_state_exception',
+                                    'reason' => "Can't get text on a START_OBJECT at 1:362",
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->expectException(ElasticException::class);
+        $this->expectExceptionMessage(
+            "mapper_parsing_exception: failed to parse field [title] of type [text] in document with id '1'. Preview of field's value: 'Doc 1'"
+        );
+        
+        $this->documentManager->index('test', [
+            new Document('1', ['title' => 'Doc 1']),
+        ], false);
     }
 }

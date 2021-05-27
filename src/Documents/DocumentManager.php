@@ -2,6 +2,8 @@
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Support\Arr;
+use ElasticAdapter\ElasticException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
@@ -44,9 +46,30 @@ class DocumentManager
             $params['body'][] = $document->getContent();
         }
 
-        $this->client->bulk($params);
+        $response = $this->client->bulk($params);
+
+        if ($response['errors'] ?? false) {
+            $error = $this->getFirstErrorFromResponse($response);
+
+            throw new ElasticException(
+                sprintf('%s: %s', $error['type'], $error['reason'])
+            );
+        }
 
         return $this;
+    }
+
+    protected function getFirstErrorFromResponse(array $response)
+    {
+        foreach ($response['items'] as $item) {
+            $result = reset($item);
+
+            if (! isset($result['error'])) {
+                continue;
+            }
+            
+            return $result['error'];
+        }
     }
 
     /**
