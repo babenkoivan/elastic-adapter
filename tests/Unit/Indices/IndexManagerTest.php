@@ -74,27 +74,6 @@ class IndexManagerTest extends TestCase
         $this->assertSame($this->indexManager, $this->indexManager->close($indexName));
     }
 
-    public function test_indexes_can_be_retrieved(): void
-    {
-        $indexPattern = '*';
-
-        $this->indices
-            ->expects($this->once())
-            ->method('get')
-            ->with([
-                'index' => $indexPattern,
-            ])
-            ->willReturn([
-                '.kibana' => ['...'],
-                'index' => ['...'],
-            ]);
-        
-        $this->assertEquals([
-            '.kibana' => ['...'],
-            'index' => ['...'],
-        ], $this->indexManager->get($indexPattern));
-    }
-
     public function test_index_existence_can_be_checked(): void
     {
         $indexName = 'foo';

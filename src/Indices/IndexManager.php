@@ -34,14 +34,7 @@ class IndexManager
 
         return $this;
     }
-
-    public function get(string $indexPattern): array
-    {
-        return $this->indices->get([
-            'index' => $indexPattern,
-        ]);
-    }
-
+    
     public function exists(string $indexName): bool
     {
         return $this->indices->exists([
