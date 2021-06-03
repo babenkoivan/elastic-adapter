@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
@@ -44,7 +45,11 @@ class DocumentManager
             $params['body'][] = $document->getContent();
         }
 
-        $this->client->bulk($params);
+        $response = $this->client->bulk($params);
+
+        if ($response['errors']) {
+            throw new BulkRequestException($response);
+        }
 
         return $this;
     }
@@ -74,7 +79,11 @@ class DocumentManager
             $params['body'][] = compact('delete');
         }
 
-        $this->client->bulk($params);
+        $response = $this->client->bulk($params);
+
+        if ($response['errors']) {
+            throw new BulkRequestException($response);
+        }
 
         return $this;
     }

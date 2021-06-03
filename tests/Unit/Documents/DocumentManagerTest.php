@@ -4,6 +4,7 @@ namespace ElasticAdapter\Tests\Unit\Documents;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
+use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
@@ -14,11 +15,12 @@ use stdClass;
 /**
  * @covers \ElasticAdapter\Documents\DocumentManager
  *
- * @uses   \ElasticAdapter\Support\Arr
  * @uses   \ElasticAdapter\Documents\Document
+ * @uses   \ElasticAdapter\Exceptions\BulkRequestException
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchRequest
  * @uses   \ElasticAdapter\Search\SearchResponse
+ * @uses   \ElasticAdapter\Support\Arr
  */
 final class DocumentManagerTest extends TestCase
 {
@@ -53,6 +55,11 @@ final class DocumentManagerTest extends TestCase
                     ['index' => ['_id' => '2']],
                     ['title' => 'Doc 2'],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
@@ -73,6 +80,11 @@ final class DocumentManagerTest extends TestCase
                     ['index' => ['_id' => '1']],
                     ['title' => 'Doc 1'],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
@@ -94,6 +106,11 @@ final class DocumentManagerTest extends TestCase
                     ['index' => ['_id' => '2', 'routing' => 'Doc 2']],
                     ['title' => 'Doc 2'],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
@@ -114,6 +131,11 @@ final class DocumentManagerTest extends TestCase
                     ['delete' => ['_id' => '1']],
                     ['delete' => ['_id' => '2']],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
@@ -133,6 +155,11 @@ final class DocumentManagerTest extends TestCase
                 'body' => [
                     ['delete' => ['_id' => '1']],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
@@ -152,6 +179,11 @@ final class DocumentManagerTest extends TestCase
                     ['delete' => ['_id' => '1', 'routing' => 'Doc 1']],
                     ['delete' => ['_id' => '2', 'routing' => 'Doc 2']],
                 ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => false,
+                'items' => [],
             ]);
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
@@ -234,5 +266,31 @@ final class DocumentManagerTest extends TestCase
         $this->assertInstanceOf(SearchResponse::class, $response);
         $this->assertSame(1, $response->getHitsTotal());
         $this->assertEquals(new Document('1', ['content' => 'foo']), $response->getHits()[0]->getDocument());
+    }
+
+    public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void
+    {
+        $this->client
+            ->expects($this->once())
+            ->method('bulk')
+            ->with([
+                'index' => 'test',
+                'refresh' => 'false',
+                'body' => [
+                    ['index' => ['_id' => '1']],
+                    ['title' => 'Doc 1'],
+                ],
+            ])
+            ->willReturn([
+                'took' => 0,
+                'errors' => true,
+                'items' => [],
+            ]);
+
+        $this->expectException(BulkRequestException::class);
+
+        $this->documentManager->index('test', [
+            new Document('1', ['title' => 'Doc 1']),
+        ]);
     }
 }
