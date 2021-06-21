@@ -7,7 +7,6 @@ use ElasticAdapter\Events\DocumentIndexed;
 use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
-use Illuminate\Support\Arr;
 use Elasticsearch\Client;
 
 class DocumentManager
@@ -54,7 +53,7 @@ class DocumentManager
             throw new BulkRequestException($response);
         }
 
-        event(new DocumentIndexed($indexName, Arr::pluck($response['items'], 'index._id')));
+        event(new DocumentIndexed($indexName, array_column(array_column($response['items'], 'index'), '_id')));
 
         return $this;
     }
@@ -90,7 +89,7 @@ class DocumentManager
             throw new BulkRequestException($response);
         }
 
-        event(new DocumentDeleted($indexName, Arr::pluck($response['items'], 'index._id')));
+        event(new DocumentDeleted($indexName, array_column(array_column($response['items'], 'index'), '_id')));
 
         return $this;
     }
