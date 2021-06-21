@@ -2,9 +2,12 @@
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Events\DocumentDeleted;
+use ElasticAdapter\Events\DocumentIndexed;
 use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
+use Illuminate\Support\Arr;
 use Elasticsearch\Client;
 
 class DocumentManager
@@ -51,6 +54,8 @@ class DocumentManager
             throw new BulkRequestException($response);
         }
 
+        event(new DocumentIndexed($indexName, Arr::pluck($response['items'], 'index._id')));
+
         return $this;
     }
 
@@ -84,6 +89,8 @@ class DocumentManager
         if ($response['errors']) {
             throw new BulkRequestException($response);
         }
+
+        event(new DocumentDeleted($indexName, Arr::pluck($response['items'], 'index._id')));
 
         return $this;
     }
