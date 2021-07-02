@@ -63,6 +63,10 @@ final class SearchRequest implements ArrayableInterface
      */
     private $trackScores;
     /**
+     * @var float|null
+     */
+    private $minScore;
+    /**
      * @var array|null
      */
     private $scriptFields;
@@ -156,6 +160,12 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setMinScore(float $minScore): self
+    {
+        $this->minScore = $minScore;
+        return $this;
+    }
+
     public function setScriptFields(array $scriptFields): self
     {
         $this->scriptFields = $scriptFields;
@@ -182,6 +192,7 @@ final class SearchRequest implements ArrayableInterface
             'trackTotalHits' => 'track_total_hits',
             'indicesBoost' => 'indices_boost',
             'trackScores' => 'track_scores',
+            'minScore' => 'min_score',
             'scriptFields' => 'script_fields',
         ] as $property => $requestParameter) {
             if (isset($this->$property)) {
