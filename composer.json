@@ -1,5 +1,5 @@
 {
-    "name": "babenkoivan/elastic-adapter",
+    "name": "akweidler/elastic-adapter",
     "description": "Adapter for official PHP Elasticsearch client",
     "keywords": [
         "elastic",
@@ -14,6 +14,10 @@
         {
             "name": "Ivan Babenko",
             "email": "babenko.i.a@gmail.com"
+        },
+        {
+            "name": "Austin Weidler",
+            "email": "austin@brightspike.io"
         }
     ],
     "funding": [
