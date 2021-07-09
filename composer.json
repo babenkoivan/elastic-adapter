@@ -1,5 +1,5 @@
 {
-    "name": "babenkoivan/elastic-adapter",
+    "name": "akweidler/elastic-adapter",
     "description": "Adapter for official PHP Elasticsearch client",
     "keywords": [
         "elastic",
