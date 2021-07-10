@@ -70,6 +70,10 @@ final class SearchRequest implements ArrayableInterface
      * @var array|null
      */
     private $runtimeMappings;
+    /**
+     * @var array|null
+     */
+    private $fields;
 
     public function __construct(array $query)
     {
@@ -139,6 +143,11 @@ final class SearchRequest implements ArrayableInterface
         return $this;
     }
 
+    public function setFields(array $fields): self{
+        $this->fields = $fields;
+        return $this;
+    }
+
     /**
      * @param int|bool $trackTotalHits
      */
@@ -194,7 +203,8 @@ final class SearchRequest implements ArrayableInterface
             'indicesBoost' => 'indices_boost',
             'trackScores' => 'track_scores',
             'scriptFields' => 'script_fields',
-            'runtimeMappings' => 'runtime_mappings'
+            'runtimeMappings' => 'runtime_mappings',
+            'fields' => 'fields'
         ] as $property => $requestParameter) {
             if (isset($this->$property)) {
                 $request[$requestParameter] = $this->$property;

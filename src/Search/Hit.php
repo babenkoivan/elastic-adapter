@@ -34,6 +34,12 @@ final class Hit implements SearchResponseRawInterface
         );
     }
 
+    public function getFields(): Document{
+        return new Document($this->hit['_id'],
+        $this->hit['fields'] ?? []
+        );
+    }
+
     public function getHighlight(): ?Highlight
     {
         return isset($this->hit['highlight']) ?
