@@ -66,6 +66,10 @@ final class Mapping implements ArrayableInterface
      * @var array
      */
     private $dynamicTemplates = [];
+    /**
+     * @var array
+     */
+    private $runtimeFields = [];
 
     public function enableFieldNames(): self
     {
@@ -112,6 +116,11 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
+    public function runtimeField(string $name, array $parameters): self{
+        $this->runtimeFields[] = [$name => $parameters];
+        return $this;
+    }
+
     public function dynamicTemplate(string $name, array $parameters): self
     {
         $this->dynamicTemplates[] = [$name => $parameters];
@@ -132,6 +141,10 @@ final class Mapping implements ArrayableInterface
             $mapping['_source'] = [
                 'enabled' => $this->isSourceEnabled,
             ];
+        }
+
+        if(count($this->runtimeFields) > 0){
+            $mapping['runtime'] = $this->runtimeFields;
         }
 
         if (count($this->properties) > 0) {
