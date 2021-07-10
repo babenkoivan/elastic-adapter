@@ -116,7 +116,7 @@ final class Mapping implements Arrayable
     }
 
     public function runtimeField(string $name, array $parameters): self{
-        $this->runtimeFields[] = [$name => $parameters];
+        $this->runtimeFields[$name] = $parameters;
         return $this;
     }
 
