@@ -117,7 +117,7 @@ final class Mapping implements ArrayableInterface
     }
 
     public function runtimeField(string $name, array $parameters): self{
-        $this->runtimeFields[] = [$name => $parameters];
+        $this->runtimeFields[$name] = $parameters;
         return $this;
     }
 
