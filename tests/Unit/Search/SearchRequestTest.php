@@ -378,4 +378,20 @@ final class SearchRequestTest extends TestCase
             ],
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_min_score(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->setMinScore(0.5);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'min_score' => 0.5
+        ], $request->toArray());
+    }
 }
