@@ -391,7 +391,7 @@ final class SearchRequestTest extends TestCase
             'query' => [
                 'match_all' => new stdClass(),
             ],
-            'min_score' => 0.5
+            'min_score' => 0.5,
         ], $request->toArray());
     }
 }
