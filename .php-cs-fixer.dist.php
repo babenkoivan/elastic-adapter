@@ -8,7 +8,7 @@ $finder = Finder::create()
     ->in(__DIR__ . '/tests')
     ->name('*.php');
 
-return Config::create()
+return (new Config())
     ->setFinder($finder)
     ->setRules([
         '@PSR2' => true,
@@ -17,7 +17,7 @@ return Config::create()
         'concat_space' => ['spacing' => 'one'],
         'declare_strict_types' => true,
         'dir_constant' => true,
-        'final_static_access' => false,
+        'self_static_accessor' => false,
         'fully_qualified_strict_types' => true,
         'function_to_constant' => true,
         'function_typehint_space' => true,
@@ -76,7 +76,7 @@ return Config::create()
         'ternary_to_null_coalescing' => true,
         'trim_array_spaces' => true,
         'array_indentation' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => true,
         'visibility_required' => true,
         'yoda_style' => false,
     ]);

@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
+use ElasticAdapter\Search\Aggregation;
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResponse;
 use ElasticAdapter\Search\Suggestion;
@@ -10,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \ElasticAdapter\Search\SearchResponse
  *
+ * @uses   \ElasticAdapter\Search\Aggregation
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\Suggestion
  */
@@ -106,9 +108,9 @@ final class SearchResponseTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'min_price' => [
+            'min_price' => new Aggregation([
                 'value' => 10,
-            ],
+            ]),
         ], $searchResponse->getAggregations());
     }
 
