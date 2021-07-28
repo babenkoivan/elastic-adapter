@@ -4,6 +4,7 @@ namespace ElasticAdapter\Tests\Unit\Documents;
 
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
+use ElasticAdapter\Documents\Routing;
 use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
@@ -16,6 +17,7 @@ use stdClass;
  * @covers \ElasticAdapter\Documents\DocumentManager
  *
  * @uses   \ElasticAdapter\Documents\Document
+ * @uses   \ElasticAdapter\Documents\Routing
  * @uses   \ElasticAdapter\Exceptions\BulkRequestException
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchRequest
@@ -101,9 +103,9 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['index' => ['_id' => '1', 'routing' => 'Doc 1']],
+                    ['index' => ['_id' => '1', 'routing' => 'Doc1']],
                     ['title' => 'Doc 1'],
-                    ['index' => ['_id' => '2', 'routing' => 'Doc 2']],
+                    ['index' => ['_id' => '2', 'routing' => 'Doc2']],
                     ['title' => 'Doc 2'],
                 ],
             ])
@@ -113,10 +115,14 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
+        $routing = (new Routing())
+            ->add('1', 'Doc1')
+            ->add('2', 'Doc2');
+
         $this->assertSame($this->documentManager, $this->documentManager->index('test', [
             new Document('1', ['title' => 'Doc 1']),
             new Document('2', ['title' => 'Doc 2']),
-        ], true, 'title'));
+        ], true, $routing));
     }
 
     public function test_documents_can_be_deleted_with_refresh(): void
@@ -138,10 +144,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
-            new Document('1', ['title' => 'Doc 1']),
-            new Document('2', ['title' => 'Doc 2']),
-        ], true));
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', ['1', '2'], true));
     }
 
     public function test_documents_can_be_deleted_without_refresh(): void
@@ -162,9 +165,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
-            new Document('1', ['title' => 'Doc 1']),
-        ], false));
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', ['1'], false));
     }
 
     public function test_documents_can_be_deleted_with_custom_routing(): void
@@ -176,8 +177,8 @@ final class DocumentManagerTest extends TestCase
                 'index' => 'test',
                 'refresh' => 'true',
                 'body' => [
-                    ['delete' => ['_id' => '1', 'routing' => 'Doc 1']],
-                    ['delete' => ['_id' => '2', 'routing' => 'Doc 2']],
+                    ['delete' => ['_id' => '1', 'routing' => 'Doc1']],
+                    ['delete' => ['_id' => '2', 'routing' => 'Doc2']],
                 ],
             ])
             ->willReturn([
@@ -186,10 +187,11 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $this->assertSame($this->documentManager, $this->documentManager->delete('test', [
-            new Document('1', ['title' => 'Doc 1']),
-            new Document('2', ['title' => 'Doc 2']),
-        ], true, 'title'));
+        $routing = (new Routing())
+            ->add('1', 'Doc1')
+            ->add('2', 'Doc2');
+
+        $this->assertSame($this->documentManager, $this->documentManager->delete('test', ['1', '2'], true, $routing));
     }
 
     public function test_documents_can_be_deleted_by_query_with_refresh(): void

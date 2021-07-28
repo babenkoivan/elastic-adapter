@@ -26,7 +26,7 @@ class DocumentManager
         string $indexName,
         array $documents,
         bool $refresh = false,
-        ?string $routingPath = null
+        Routing $routing = null
     ): self {
         $params = [
             'index' => $indexName,
@@ -37,8 +37,8 @@ class DocumentManager
         foreach ($documents as $document) {
             $index = ['_id' => $document->getId()];
 
-            if (isset($routingPath)) {
-                $index['routing'] = $document->getField($routingPath);
+            if ($routing && $routing->has($document->getId())) {
+                $index['routing'] = $routing->get($document->getId());
             }
 
             $params['body'][] = compact('index');
@@ -55,13 +55,13 @@ class DocumentManager
     }
 
     /**
-     * @param Document[] $documents
+     * @param string[] $documentIds
      */
     public function delete(
         string $indexName,
-        array $documents,
+        array $documentIds,
         bool $refresh = false,
-        ?string $routingPath = null
+        Routing $routing = null
     ): self {
         $params = [
             'index' => $indexName,
@@ -69,11 +69,11 @@ class DocumentManager
             'body' => [],
         ];
 
-        foreach ($documents as $document) {
-            $delete = ['_id' => $document->getId()];
+        foreach ($documentIds as $documentId) {
+            $delete = ['_id' => $documentId];
 
-            if (isset($routingPath)) {
-                $delete['routing'] = $document->getField($routingPath);
+            if ($routing && $routing->has($documentId)) {
+                $delete['routing'] = $routing->get($documentId);
             }
 
             $params['body'][] = compact('delete');
