@@ -4,41 +4,78 @@ namespace ElasticAdapter\Tests\Unit\Indices;
 
 use BadMethodCallException;
 use ElasticAdapter\Indices\Settings;
-use ElasticAdapter\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Indices\Settings
- *
- * @uses   \ElasticAdapter\Support\Str
  */
 class SettingsTest extends TestCase
 {
-    public function callParametersProvider(): array
+    public function optionsProvider(): array
     {
         return [
-            ['index', []],
-            ['index', [['number_of_replicas' => 2]]],
-            ['index', [['number_of_replicas' => 2, 'refresh_interval' => -1]]],
-            ['analysis', [['analyzer' => ['content' => ['type' => 'custom', 'tokenizer' => 'whitespace']]]]],
+            [
+                'option' => 'index',
+                'configuration' => [
+                    'number_of_replicas' => 2,
+                ],
+                'expected' => [
+                    'index' => [
+                        'number_of_replicas' => 2,
+                    ],
+                ],
+            ],
+            [
+                'option' => 'index',
+                'configuration' => [
+                    'number_of_replicas' => 2,
+                    'refresh_interval' => -1,
+                ],
+                'expected' => [
+                    'index' => [
+                        'number_of_replicas' => 2,
+                        'refresh_interval' => -1,
+                    ],
+                ],
+            ],
+            [
+                'option' => 'analysis',
+                'configuration' => [
+                    'analyzer' => [
+                        'content' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'whitespace',
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'analysis' => [
+                        'analyzer' => [
+                            'content' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'whitespace',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * @dataProvider callParametersProvider
-     * @testdox Test $method option magic setter
+     * @dataProvider optionsProvider
+     * @testdox Test $option option setter
      */
-    public function test_option_magic_setter(string $method, array $arguments): void
+    public function test_option_setter(string $option, array $configuration, array $expected): void
     {
-        if (count($arguments) == 0 || count($arguments) > 1) {
-            $this->expectException(BadMethodCallException::class);
-        }
+        $actual = (new Settings())->$option($configuration);
+        $this->assertSame($expected, $actual->toArray());
+    }
 
-        $settings = (new Settings())->$method(...$arguments);
-
-        $this->assertSame([
-            Str::toSnakeCase($method) => $arguments[0],
-        ], $settings->toArray());
+    public function test_exception_is_thrown_when_setter_receives_invalid_number_of_arguments(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+        (new Settings())->index();
     }
 
     public function test_default_array_casting(): void

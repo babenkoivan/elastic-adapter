@@ -2,9 +2,10 @@
 
 namespace ElasticAdapter\Indices;
 
+use BadMethodCallException;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Str;
 
 /**
  * @method $this alias(string $name, array $parameters = null)
@@ -34,8 +35,6 @@ use Illuminate\Support\Traits\ForwardsCalls;
  * @method $this keyword(string $name, array $parameters = null)
  * @method $this long(string $name, array $parameters = null)
  * @method $this longRange(string $name, array $parameters = null)
- * @method $this nested(string $name, Closure|array $parameters = null)
- * @method $this object(string $name, Closure|array $parameters = null)
  * @method $this percolator(string $name)
  * @method $this rankFeature(string $name, array $parameters = null)
  * @method $this rankFeatures(string $name)
@@ -48,97 +47,76 @@ use Illuminate\Support\Traits\ForwardsCalls;
  * @method $this tokenCount(string $name, array $parameters = null)
  * @method $this wildcard(string $name, array $parameters = null)
  */
-final class Mapping implements Arrayable
+final class MappingProperties implements Arrayable
 {
-    use ForwardsCalls;
-
-    /**
-     * @var bool|null
-     */
-    private $isFieldNamesEnabled;
-    /**
-     * @var bool|null
-     */
-    private $isSourceEnabled;
-    /**
-     * @var MappingProperties
-     */
-    private $properties;
     /**
      * @var array
      */
-    private $dynamicTemplates = [];
+    private $properties = [];
 
-    public function __construct()
+    /**
+     * @param Closure|array $parameters
+     */
+    public function object(string $name, $parameters = null): self
     {
-        $this->properties = new MappingProperties();
-    }
+        $this->properties[$name] = ['type' => 'object'];
 
-    public function enableFieldNames(): self
-    {
-        $this->isFieldNamesEnabled = true;
+        if (isset($parameters)) {
+            $this->properties[$name] += $this->normalizeParametersWithProperties($parameters);
+        }
 
         return $this;
     }
 
-    public function disableFieldNames(): self
+    /**
+     * @param Closure|array $parameters
+     */
+    public function nested(string $name, $parameters = null): self
     {
-        $this->isFieldNamesEnabled = false;
+        $this->properties[$name] = ['type' => 'nested'];
+
+        if (isset($parameters)) {
+            $this->properties[$name] += $this->normalizeParametersWithProperties($parameters);
+        }
 
         return $this;
     }
 
-    public function enableSource(): self
+    public function __call(string $method, array $arguments): self
     {
-        $this->isSourceEnabled = true;
+        $argumentsCount = count($arguments);
 
-        return $this;
-    }
+        if ($argumentsCount === 0 || $argumentsCount > 2) {
+            throw new BadMethodCallException(sprintf('Invalid number of arguments for %s method', $method));
+        }
 
-    public function disableSource(): self
-    {
-        $this->isSourceEnabled = false;
+        $property = ['type' => Str::snake($method)];
 
-        return $this;
-    }
+        if (isset($arguments[1])) {
+            $property += $arguments[1];
+        }
 
-    public function dynamicTemplate(string $name, array $parameters): self
-    {
-        $this->dynamicTemplates[] = [$name => $parameters];
-        return $this;
-    }
+        $this->properties[$arguments[0]] = $property;
 
-    public function __call(string $method, array $parameters): self
-    {
-        $this->forwardCallTo($this->properties, $method, $parameters);
         return $this;
     }
 
     public function toArray(): array
     {
-        $mapping = [];
-        $properties = $this->properties->toArray();
+        return $this->properties;
+    }
 
-        if (isset($this->isFieldNamesEnabled)) {
-            $mapping['_field_names'] = [
-                'enabled' => $this->isFieldNamesEnabled,
-            ];
+    /**
+     * @param Closure|array $parameters
+     */
+    private function normalizeParametersWithProperties($parameters): array
+    {
+        $parameters = value($parameters, new self());
+
+        if ($parameters['properties'] instanceof self) {
+            $parameters['properties'] = $parameters['properties']->toArray();
         }
 
-        if (isset($this->isSourceEnabled)) {
-            $mapping['_source'] = [
-                'enabled' => $this->isSourceEnabled,
-            ];
-        }
-
-        if (!empty($properties)) {
-            $mapping['properties'] = $properties;
-        }
-
-        if (!empty($this->dynamicTemplates)) {
-            $mapping['dynamic_templates'] = $this->dynamicTemplates;
-        }
-
-        return $mapping;
+        return $parameters;
     }
 }

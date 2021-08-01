@@ -6,6 +6,7 @@ use ElasticAdapter\Exceptions\BulkRequestException;
 use ElasticAdapter\Search\SearchRequest;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
+use Illuminate\Support\Collection;
 
 class DocumentManager
 {
@@ -19,12 +20,9 @@ class DocumentManager
         $this->client = $client;
     }
 
-    /**
-     * @param Document[] $documents
-     */
     public function index(
         string $indexName,
-        array $documents,
+        Collection $documents,
         bool $refresh = false,
         Routing $routing = null
     ): self {
@@ -35,14 +33,14 @@ class DocumentManager
         ];
 
         foreach ($documents as $document) {
-            $index = ['_id' => $document->getId()];
+            $index = ['_id' => $document->id()];
 
-            if ($routing && $routing->has($document->getId())) {
-                $index['routing'] = $routing->get($document->getId());
+            if ($routing && $routing->has($document->id())) {
+                $index['routing'] = $routing->get($document->id());
             }
 
             $params['body'][] = compact('index');
-            $params['body'][] = $document->getContent();
+            $params['body'][] = $document->content();
         }
 
         $response = $this->client->bulk($params);
@@ -54,12 +52,9 @@ class DocumentManager
         return $this;
     }
 
-    /**
-     * @param string[] $documentIds
-     */
     public function delete(
         string $indexName,
-        array $documentIds,
+        Collection $documentIds,
         bool $refresh = false,
         Routing $routing = null
     ): self {

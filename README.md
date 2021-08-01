@@ -61,7 +61,7 @@ The manager provides a list of useful methods, which are listed below.
 Create an index, either with the default settings and mapping:
 
 ```php
-$index = new \ElasticAdapter\Indices\Index('my_index');
+$index = new \ElasticAdapter\Indices\IndexBlueprint('my_index');
 
 $indexManager->create($index);
 ```
@@ -91,7 +91,7 @@ $settings = (new \ElasticAdapter\Indices\Settings())
         'refresh_interval' => -1
     ]);
 
-$index = new \ElasticAdapter\Indices\Index('my_index', $mapping, $settings);
+$index = new \ElasticAdapter\Indices\IndexBlueprint('my_index', $mapping, $settings);
 
 $indexManager->create($index);
 ```

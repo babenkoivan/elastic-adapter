@@ -1,7 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$string of function strtolower expects string, string\\|null given\\.$#"
+			message: "#^Method ElasticAdapter\\\\Indices\\\\MappingProperties\\:\\:text\\(\\) invoked with 0 parameters, 1\\-2 required\\.$#"
 			count: 1
-			path: src/Support/Str.php
+			path: tests/Unit/Indices/MappingPropertiesTest.php
+
+		-
+			message: "#^Method ElasticAdapter\\\\Indices\\\\Settings\\:\\:index\\(\\) invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: tests/Unit/Indices/SettingsTest.php
 

@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Indices;
 
-final class Index
+final class IndexBlueprint
 {
     /**
      * @var string
@@ -24,17 +24,17 @@ final class Index
         $this->settings = $settings;
     }
 
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
 
-    public function getMapping(): ?Mapping
+    public function mapping(): ?Mapping
     {
         return $this->mapping;
     }
 
-    public function getSettings(): ?Settings
+    public function settings(): ?Settings
     {
         return $this->settings;
     }

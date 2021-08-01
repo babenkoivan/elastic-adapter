@@ -2,15 +2,13 @@
 
 namespace ElasticAdapter\Tests\Unit\Indices;
 
-use BadMethodCallException;
 use ElasticAdapter\Indices\Mapping;
-use ElasticAdapter\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Indices\Mapping
  *
- * @uses   \ElasticAdapter\Support\Str
+ * @uses   \ElasticAdapter\Indices\MappingProperties
  */
 class MappingTest extends TestCase
 {
@@ -54,35 +52,6 @@ class MappingTest extends TestCase
         $this->assertSame([
             '_source' => [
                 'enabled' => true,
-            ],
-        ], $mapping->toArray());
-    }
-
-    public function callParametersProvider(): array
-    {
-        return [
-            ['boolean', []],
-            ['geoPoint', ['foo', ['null_value' => null]]],
-            ['text', ['bar', ['boost' => 1], ['store' => true]]],
-            ['keyword', ['foobar']],
-        ];
-    }
-
-    /**
-     * @dataProvider callParametersProvider
-     * @testdox Test $method property magic setter
-     */
-    public function test_property_magic_setter(string $method, array $arguments): void
-    {
-        if (count($arguments) == 0 || count($arguments) > 2) {
-            $this->expectException(BadMethodCallException::class);
-        }
-
-        $mapping = (new Mapping())->$method(...$arguments);
-
-        $this->assertSame([
-            'properties' => [
-                $arguments[0] => ['type' => Str::toSnakeCase($method)] + ($arguments[1] ?? []),
             ],
         ], $mapping->toArray());
     }

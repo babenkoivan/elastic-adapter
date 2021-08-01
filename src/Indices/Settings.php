@@ -3,14 +3,14 @@
 namespace ElasticAdapter\Indices;
 
 use BadMethodCallException;
-use ElasticAdapter\Support\ArrayableInterface;
-use ElasticAdapter\Support\Str;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
 
 /**
  * @method $this index(array $configuration)
  * @method $this analysis(array $configuration)
  */
-final class Settings implements ArrayableInterface
+final class Settings implements Arrayable
 {
     /**
      * @var array
@@ -19,11 +19,13 @@ final class Settings implements ArrayableInterface
 
     public function __call(string $method, array $arguments): self
     {
-        if (count($arguments) == 0 || count($arguments) > 1) {
+        $argumentsCount = count($arguments);
+
+        if ($argumentsCount === 0 || $argumentsCount > 1) {
             throw new BadMethodCallException(sprintf('Invalid number of arguments for %s method', $method));
         }
 
-        $this->settings[Str::toSnakeCase($method)] = $arguments[0];
+        $this->settings[Str::snake($method)] = $arguments[0];
 
         return $this;
     }

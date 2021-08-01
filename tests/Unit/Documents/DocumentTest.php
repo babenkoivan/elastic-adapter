@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ElasticAdapter\Documents\Document
- *
- * @uses   \ElasticAdapter\Support\Arr
  */
 final class DocumentTest extends TestCase
 {
@@ -16,12 +14,9 @@ final class DocumentTest extends TestCase
     {
         $document = new Document('123456', ['title' => 'book', 'price' => 10]);
 
-        $this->assertSame('123456', $document->getId());
-        $this->assertSame(['title' => 'book', 'price' => 10], $document->getContent());
-        $this->assertSame('book', $document->getField('title'));
-        $this->assertSame(10, $document->getField('price'));
-        $this->assertNull($document->getField('not_defined_key'));
-        $this->assertNull($document->getField('user.not_defined_key'));
+        $this->assertSame('123456', $document->id());
+        $this->assertSame(['title' => 'book', 'price' => 10], $document->content());
+        $this->assertSame('book', $document->content('title'));
     }
 
     public function test_array_casting(): void

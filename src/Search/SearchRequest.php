@@ -2,9 +2,9 @@
 
 namespace ElasticAdapter\Search;
 
-use ElasticAdapter\Support\ArrayableInterface;
+use Illuminate\Contracts\Support\Arrayable;
 
-final class SearchRequest implements ArrayableInterface
+final class SearchRequest implements Arrayable
 {
     /**
      * @var array

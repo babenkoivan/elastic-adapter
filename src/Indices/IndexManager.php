@@ -4,6 +4,7 @@ namespace ElasticAdapter\Indices;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Illuminate\Support\Collection;
 
 class IndexManager
 {
@@ -42,20 +43,20 @@ class IndexManager
         ]);
     }
 
-    public function create(Index $index): self
+    public function create(IndexBlueprint $index): self
     {
-        $mapping = $index->getMapping() === null ? [] : $index->getMapping()->toArray();
-        $settings = $index->getSettings() === null ? [] : $index->getSettings()->toArray();
-
         $params = [
-            'index' => $index->getName(),
+            'index' => $index->name(),
         ];
 
-        if (count($mapping) > 0) {
+        $mapping = $index->mapping() === null ? [] : $index->mapping()->toArray();
+        $settings = $index->settings() === null ? [] : $index->settings()->toArray();
+
+        if (!empty($mapping)) {
             $params['body']['mappings'] = $mapping;
         }
 
-        if (count($settings) > 0) {
+        if (!empty($settings)) {
             $params['body']['settings'] = $settings;
         }
 
@@ -95,10 +96,7 @@ class IndexManager
         return $this;
     }
 
-    /**
-     * @return Alias[]
-     */
-    public function getAliases(string $indexName): array
+    public function getAliases(string $indexName): Collection
     {
         $response = $this->indices->getAlias([
             'index' => $indexName,
@@ -106,28 +104,28 @@ class IndexManager
 
         $aliases = $response[$indexName]['aliases'] ?? [];
 
-        return array_map(static function (array $parameters, string $name) {
+        return collect($aliases)->map(static function (array $parameters, string $name) {
             return new Alias(
                 $name,
                 $parameters['filter'] ?? null,
                 $parameters['routing'] ?? null
             );
-        }, $aliases, array_keys($aliases));
+        });
     }
 
     public function putAlias(string $indexName, Alias $alias): self
     {
         $params = [
             'index' => $indexName,
-            'name' => $alias->getName(),
+            'name' => $alias->name(),
         ];
 
-        if ($alias->getRouting()) {
-            $params['body']['routing'] = $alias->getRouting();
+        if ($alias->routing()) {
+            $params['body']['routing'] = $alias->routing();
         }
 
-        if ($alias->getFilter()) {
-            $params['body']['filter'] = $alias->getFilter();
+        if ($alias->filter()) {
+            $params['body']['filter'] = $alias->filter();
         }
 
         $this->indices->putAlias($params);

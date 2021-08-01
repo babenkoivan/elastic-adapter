@@ -3,7 +3,7 @@
 namespace ElasticAdapter\Tests\Unit\Indices;
 
 use ElasticAdapter\Indices\Alias;
-use ElasticAdapter\Indices\Index;
+use ElasticAdapter\Indices\IndexBlueprint;
 use ElasticAdapter\Indices\IndexManager;
 use ElasticAdapter\Indices\Mapping;
 use ElasticAdapter\Indices\Settings;
@@ -16,10 +16,10 @@ use PHPUnit\Framework\TestCase;
  * @covers \ElasticAdapter\Indices\IndexManager
  *
  * @uses   \ElasticAdapter\Indices\Alias
- * @uses   \ElasticAdapter\Indices\Index
+ * @uses   \ElasticAdapter\Indices\IndexBlueprint
  * @uses   \ElasticAdapter\Indices\Mapping
+ * @uses   \ElasticAdapter\Indices\MappingProperties
  * @uses   \ElasticAdapter\Indices\Settings
- * @uses   \ElasticAdapter\Support\Str
  */
 class IndexManagerTest extends TestCase
 {
@@ -91,13 +91,13 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_created_without_mapping_and_settings(): void
     {
-        $index = new Index('foo');
+        $index = new IndexBlueprint('foo');
 
         $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName(),
+                'index' => $index->name(),
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -106,13 +106,13 @@ class IndexManagerTest extends TestCase
     public function test_index_can_be_created_without_mapping(): void
     {
         $settings = (new Settings())->index(['number_of_replicas' => 2]);
-        $index = new Index('foo', null, $settings);
+        $index = new IndexBlueprint('foo', null, $settings);
 
         $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName(),
+                'index' => $index->name(),
                 'body' => [
                     'settings' => [
                         'index' => [
@@ -128,13 +128,13 @@ class IndexManagerTest extends TestCase
     public function test_index_can_be_created_without_settings(): void
     {
         $mapping = (new Mapping())->text('foo');
-        $index = new Index('bar', $mapping);
+        $index = new IndexBlueprint('bar', $mapping);
 
         $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName(),
+                'index' => $index->name(),
                 'body' => [
                     'mappings' => [
                         'properties' => [
@@ -151,13 +151,13 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_created_with_empty_settings_and_mapping(): void
     {
-        $index = new Index('foo', new Mapping(), new Settings());
+        $index = new IndexBlueprint('foo', new Mapping(), new Settings());
 
         $this->indices
             ->expects($this->once())
             ->method('create')
             ->with([
-                'index' => $index->getName(),
+                'index' => $index->name(),
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
@@ -240,7 +240,10 @@ class IndexManagerTest extends TestCase
                 ],
             ]);
 
-        $this->assertEquals([new Alias($aliasName)], $this->indexManager->getAliases($indexName));
+        $this->assertEquals(
+            collect([$aliasName => new Alias($aliasName)]),
+            $this->indexManager->getAliases($indexName)
+        );
     }
 
     public function test_alias_can_be_created(): void
@@ -253,7 +256,7 @@ class IndexManagerTest extends TestCase
             ->method('putAlias')
             ->with([
                 'index' => $indexName,
-                'name' => $alias->getName(),
+                'name' => $alias->name(),
                 'body' => [
                     'routing' => '12',
                     'filter' => [

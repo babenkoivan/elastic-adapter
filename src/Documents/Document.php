@@ -2,10 +2,10 @@
 
 namespace ElasticAdapter\Documents;
 
-use ElasticAdapter\Support\Arr;
-use ElasticAdapter\Support\ArrayableInterface;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 
-final class Document implements ArrayableInterface
+final class Document implements Arrayable
 {
     /**
      * @var string
@@ -22,20 +22,15 @@ final class Document implements ArrayableInterface
         $this->content = $content;
     }
 
-    public function getId(): string
+    public function id(): string
     {
         return $this->id;
-    }
-
-    public function getContent(): array
-    {
-        return $this->content;
     }
 
     /**
      * @return mixed
      */
-    public function getField(string $key)
+    public function content(string $key = null)
     {
         return Arr::get($this->content, $key);
     }
@@ -43,8 +38,8 @@ final class Document implements ArrayableInterface
     public function toArray(): array
     {
         return [
-            'id' => $this->getId(),
-            'content' => $this->getContent(),
+            'id' => $this->id,
+            'content' => $this->content,
         ];
     }
 }

@@ -24,17 +24,17 @@ final class Alias
         $this->routing = $routing;
     }
 
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
 
-    public function getFilter(): ?array
+    public function filter(): ?array
     {
         return $this->filter;
     }
 
-    public function getRouting(): ?string
+    public function routing(): ?string
     {
         return $this->routing;
     }
