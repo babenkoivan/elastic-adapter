@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Search;
 
-final class Bucket implements SearchResponseRawInterface
+final class Bucket implements RawResponseInterface
 {
     /**
      * @var array
@@ -14,17 +14,17 @@ final class Bucket implements SearchResponseRawInterface
         $this->bucket = $bucket;
     }
 
-    public function getDocCount(): int
+    public function docCount(): int
     {
         return $this->bucket['doc_count'] ?? 0;
     }
 
-    public function getKey(): string
+    public function key(): string
     {
         return $this->bucket['key'];
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->bucket;
     }

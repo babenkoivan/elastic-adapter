@@ -279,8 +279,8 @@ final class DocumentManagerTest extends TestCase
             'match' => ['content' => 'foo'],
         ]));
 
-        $this->assertSame(1, $response->getHitsTotal());
-        $this->assertEquals(new Document('1', ['content' => 'foo']), $response->getHits()[0]->getDocument());
+        $this->assertSame(1, $response->total());
+        $this->assertEquals(new Document('1', ['content' => 'foo']), $response->hits()[0]->document());
     }
 
     public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void

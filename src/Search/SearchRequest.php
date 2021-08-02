@@ -9,197 +9,111 @@ final class SearchRequest implements Arrayable
     /**
      * @var array
      */
-    private $query;
-    /**
-     * @var array|null
-     */
-    private $highlight;
-    /**
-     * @var array|null
-     */
-    private $sort;
-    /**
-     * @var array|null
-     */
-    private $rescore;
-    /**
-     * @var int|null
-     */
-    private $from;
-    /**
-     * @var int|null
-     */
-    private $size;
-    /**
-     * @var array|null
-     */
-    private $suggest;
-    /**
-     * @var bool|string|array|null
-     */
-    private $source;
-    /**
-     * @var array|null
-     */
-    private $collapse;
-    /**
-     * @var array|null
-     */
-    private $aggregations;
-    /**
-     * @var array|null
-     */
-    private $postFilter;
-    /**
-     * @var int|bool|null
-     */
-    private $trackTotalHits;
-    /**
-     * @var array|null
-     */
-    private $indicesBoost;
-    /**
-     * @var bool|null
-     */
-    private $trackScores;
-    /**
-     * @var float|null
-     */
-    private $minScore;
-    /**
-     * @var array|null
-     */
-    private $scriptFields;
+    private $request;
 
     public function __construct(array $query)
     {
-        $this->query = $query;
+        $this->request['query'] = $query;
     }
 
-    public function setHighlight(array $highlight): self
+    public function highlight(array $highlight): self
     {
-        $this->highlight = $highlight;
+        $this->request['highlight'] = $highlight;
         return $this;
     }
 
-    public function setSort(array $sort): self
+    public function sort(array $sort): self
     {
-        $this->sort = $sort;
+        $this->request['sort'] = $sort;
         return $this;
     }
 
-    public function setRescore(array $rescore): self
+    public function rescore(array $rescore): self
     {
-        $this->rescore = $rescore;
+        $this->request['rescore'] = $rescore;
         return $this;
     }
 
-    public function setFrom(int $from): self
+    public function from(int $from): self
     {
-        $this->from = $from;
+        $this->request['from'] = $from;
         return $this;
     }
 
-    public function setSize(int $size): self
+    public function size(int $size): self
     {
-        $this->size = $size;
+        $this->request['size'] = $size;
         return $this;
     }
 
-    public function setSuggest(array $suggest): self
+    public function suggest(array $suggest): self
     {
-        $this->suggest = $suggest;
+        $this->request['suggest'] = $suggest;
         return $this;
     }
 
     /**
      * @param bool|string|array $source
      */
-    public function setSource($source): self
+    public function source($source): self
     {
-        $this->source = $source;
+        $this->request['_source'] = $source;
         return $this;
     }
 
-    public function setCollapse(array $collapse): self
+    public function collapse(array $collapse): self
     {
-        $this->collapse = $collapse;
+        $this->request['collapse'] = $collapse;
         return $this;
     }
 
-    public function setAggregations(array $aggregations): self
+    public function aggregations(array $aggregations): self
     {
-        $this->aggregations = $aggregations;
+        $this->request['aggregations'] = $aggregations;
         return $this;
     }
 
-    public function setPostFilter(array $postFilter): self
+    public function postFilter(array $postFilter): self
     {
-        $this->postFilter = $postFilter;
+        $this->request['post_filter'] = $postFilter;
         return $this;
     }
 
     /**
      * @param int|bool $trackTotalHits
      */
-    public function setTrackTotalHits($trackTotalHits): self
+    public function trackTotalHits($trackTotalHits): self
     {
-        $this->trackTotalHits = $trackTotalHits;
+        $this->request['track_total_hits'] = $trackTotalHits;
         return $this;
     }
 
-    public function setIndicesBoost(array $indicesBoost): self
+    public function indicesBoost(array $indicesBoost): self
     {
-        $this->indicesBoost = $indicesBoost;
+        $this->request['indices_boost'] = $indicesBoost;
         return $this;
     }
 
-    public function setTrackScores(bool $trackScores): self
+    public function trackScores(bool $trackScores): self
     {
-        $this->trackScores = $trackScores;
+        $this->request['track_scores'] = $trackScores;
         return $this;
     }
 
-    public function setMinScore(float $minScore): self
+    public function minScore(float $minScore): self
     {
-        $this->minScore = $minScore;
+        $this->request['min_score'] = $minScore;
         return $this;
     }
 
-    public function setScriptFields(array $scriptFields): self
+    public function scriptFields(array $scriptFields): self
     {
-        $this->scriptFields = $scriptFields;
+        $this->request['script_fields'] = $scriptFields;
         return $this;
     }
 
     public function toArray(): array
     {
-        $request = [
-            'query' => $this->query,
-        ];
-
-        foreach ([
-            'highlight' => 'highlight',
-            'sort' => 'sort',
-            'rescore' => 'rescore',
-            'from' => 'from',
-            'size' => 'size',
-            'suggest' => 'suggest',
-            'collapse' => 'collapse',
-            'aggregations' => 'aggregations',
-            'source' => '_source',
-            'postFilter' => 'post_filter',
-            'trackTotalHits' => 'track_total_hits',
-            'indicesBoost' => 'indices_boost',
-            'trackScores' => 'track_scores',
-            'minScore' => 'min_score',
-            'scriptFields' => 'script_fields',
-        ] as $property => $requestParameter) {
-            if (isset($this->$property)) {
-                $request[$requestParameter] = $this->$property;
-            }
-        }
-
-        return $request;
+        return $this->request;
     }
 }

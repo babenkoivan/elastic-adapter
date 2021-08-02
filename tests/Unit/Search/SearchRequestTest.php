@@ -36,7 +36,7 @@ final class SearchRequestTest extends TestCase
             ],
         ]);
 
-        $request->setHighlight([
+        $request->highlight([
             'fields' => [
                 'content' => new stdClass(),
             ],
@@ -62,7 +62,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setSort([
+        $request->sort([
             ['title' => 'asc'],
             '_score',
         ]);
@@ -84,7 +84,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setRescore([
+        $request->rescore([
             'window_size' => 50,
             'query' => [
                 'rescore_query' => [
@@ -128,7 +128,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setFrom(10);
+        $request->from(10);
 
         $this->assertEquals([
             'query' => [
@@ -144,7 +144,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setSize(100);
+        $request->size(100);
 
         $this->assertEquals([
             'query' => [
@@ -160,7 +160,7 @@ final class SearchRequestTest extends TestCase
             'match_none' => new stdClass(),
         ]);
 
-        $request->setSuggest([
+        $request->suggest([
             'color_suggestion' => [
                 'text' => 'red',
                 'term' => [
@@ -205,7 +205,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setSource($source);
+        $request->source($source);
 
         $this->assertEquals([
             'query' => [
@@ -221,7 +221,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setCollapse([
+        $request->collapse([
             'field' => 'user',
         ]);
 
@@ -241,7 +241,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setAggregations([
+        $request->aggregations([
             'min_price' => [
                 'min' => [
                     'field' => 'price',
@@ -269,7 +269,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setPostFilter([
+        $request->postFilter([
             'term' => [
                 'color' => 'red',
             ],
@@ -293,7 +293,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setTrackTotalHits(100);
+        $request->trackTotalHits(100);
 
         $this->assertEquals([
             'query' => [
@@ -309,7 +309,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setIndicesBoost([
+        $request->indicesBoost([
             ['my-alias' => 1.4],
             ['my-index' => 1.3],
         ]);
@@ -331,7 +331,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setTrackScores(true);
+        $request->trackScores(true);
 
         $this->assertEquals([
             'query' => [
@@ -347,7 +347,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setScriptFields([
+        $request->scriptFields([
             'my_doubled_field' => [
                 'script' => [
                     'lang' => 'painless',
@@ -385,7 +385,7 @@ final class SearchRequestTest extends TestCase
             'match_all' => new stdClass(),
         ]);
 
-        $request->setMinScore(0.5);
+        $request->minScore(0.5);
 
         $this->assertEquals([
             'query' => [

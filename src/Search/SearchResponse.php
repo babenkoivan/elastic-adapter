@@ -2,7 +2,9 @@
 
 namespace ElasticAdapter\Search;
 
-final class SearchResponse implements SearchResponseRawInterface
+use Illuminate\Support\Collection;
+
+final class SearchResponse implements RawResponseInterface
 {
     /**
      * @var array
@@ -14,38 +16,41 @@ final class SearchResponse implements SearchResponseRawInterface
         $this->response = $response;
     }
 
-    /**
-     * @return Hit[]
-     */
-    public function getHits(): array
+    public function hits(): Collection
     {
-        return array_map(static function (array $hit) {
+        $hits = $this->response['hits']['hits'];
+
+        return collect($hits)->map(static function (array $hit) {
             return new Hit($hit);
-        }, $this->response['hits']['hits']);
+        });
     }
 
-    public function getHitsTotal(): ?int
+    public function total(): ?int
     {
         return $this->response['hits']['total']['value'] ?? null;
     }
 
-    public function getSuggestions(): array
+    public function suggestions(): Collection
     {
-        return array_map(static function (array $suggestions) {
-            return array_map(static function (array $suggestion) {
+        $suggest = $this->response['suggest'] ?? [];
+
+        return collect($suggest)->map(static function (array $suggestions) {
+            return collect($suggestions)->map(static function (array $suggestion) {
                 return new Suggestion($suggestion);
-            }, $suggestions);
-        }, $this->response['suggest'] ?? []);
+            });
+        });
     }
 
-    public function getAggregations(): array
+    public function aggregations(): Collection
     {
-        return array_map(static function (array $aggregation) {
+        $aggregations = $this->response['aggregations'] ?? [];
+
+        return collect($aggregations)->map(static function (array $aggregation) {
             return new Aggregation($aggregation);
-        }, $this->response['aggregations'] ?? []);
+        });
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->response;
     }

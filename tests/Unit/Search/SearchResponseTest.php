@@ -31,8 +31,8 @@ final class SearchResponseTest extends TestCase
         ]);
 
         $this->assertEquals(
-            [new Hit(['_id' => '1', '_source' => ['title' => 'foo']])],
-            $searchResponse->getHits()
+            collect([new Hit(['_id' => '1', '_source' => ['title' => 'foo']])]),
+            $searchResponse->hits()
         );
     }
 
@@ -44,16 +44,16 @@ final class SearchResponseTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(100, $searchResponse->getHitsTotal());
+        $this->assertSame(100, $searchResponse->total());
     }
 
-    public function test_empty_array_is_returned_when_suggestions_are_not_present(): void
+    public function test_empty_collection_is_returned_when_suggestions_are_not_present(): void
     {
         $searchResponse = new SearchResponse([
             'hits' => [],
         ]);
 
-        $this->assertSame([], $searchResponse->getSuggestions());
+        $this->assertEquals(collect(), $searchResponse->suggestions());
     }
 
     public function test_suggestions_can_be_retrieved(): void
@@ -78,8 +78,8 @@ final class SearchResponseTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
-            'color_suggestion' => [
+        $this->assertEquals(collect([
+            'color_suggestion' => collect([
                 new Suggestion([
                     'text' => 'red',
                     'offset' => 0,
@@ -92,8 +92,8 @@ final class SearchResponseTest extends TestCase
                     'length' => 4,
                     'options' => [],
                 ]),
-            ],
-        ], $searchResponse->getSuggestions());
+            ]),
+        ]), $searchResponse->suggestions());
     }
 
     public function test_aggregations_can_be_retrieved(): void
@@ -107,11 +107,11 @@ final class SearchResponseTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
+        $this->assertEquals(collect([
             'min_price' => new Aggregation([
                 'value' => 10,
             ]),
-        ], $searchResponse->getAggregations());
+        ]), $searchResponse->aggregations());
     }
 
     public function test_raw_representation_can_be_retrieved(): void
@@ -146,6 +146,6 @@ final class SearchResponseTest extends TestCase
                     ],
                 ],
             ],
-        ], $searchResponse->getRaw());
+        ], $searchResponse->raw());
     }
 }

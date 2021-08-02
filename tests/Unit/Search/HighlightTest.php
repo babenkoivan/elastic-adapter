@@ -19,13 +19,13 @@ final class HighlightTest extends TestCase
             ],
         ]);
 
-        $this->assertSame([
+        $this->assertEquals(collect([
             ' with the <em>number</em>',
             '  <em>1</em>',
-        ], $highlight->getSnippets('message'));
+        ]), $highlight->snippets('message'));
     }
 
-    public function test_nothing_is_returned_when_trying_to_retrieve_snippets_for_non_existing_field(): void
+    public function test_empty_collection_is_returned_when_trying_to_retrieve_snippets_for_non_existing_field(): void
     {
         $highlight = new Highlight([
             'foo' => [
@@ -33,7 +33,7 @@ final class HighlightTest extends TestCase
             ],
         ]);
 
-        $this->assertNull($highlight->getSnippets('bar'));
+        $this->assertEquals(collect(), $highlight->snippets('bar'));
     }
 
     public function test_raw_representation_can_be_retrieved(): void
@@ -56,6 +56,6 @@ final class HighlightTest extends TestCase
                 'test fragment 2',
                 'test fragment 3',
             ],
-        ], $highlight->getRaw());
+        ], $highlight->raw());
     }
 }

@@ -2,7 +2,9 @@
 
 namespace ElasticAdapter\Search;
 
-final class Suggestion implements SearchResponseRawInterface
+use Illuminate\Support\Collection;
+
+final class Suggestion implements RawResponseInterface
 {
     /**
      * @var array
@@ -14,27 +16,27 @@ final class Suggestion implements SearchResponseRawInterface
         $this->suggestion = $suggestion;
     }
 
-    public function getText(): string
+    public function text(): string
     {
         return $this->suggestion['text'];
     }
 
-    public function getOffset(): int
+    public function offset(): int
     {
         return $this->suggestion['offset'];
     }
 
-    public function getLength(): int
+    public function length(): int
     {
         return $this->suggestion['length'];
     }
 
-    public function getOptions(): array
+    public function options(): Collection
     {
-        return $this->suggestion['options'];
+        return collect($this->suggestion['options']);
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->suggestion;
     }

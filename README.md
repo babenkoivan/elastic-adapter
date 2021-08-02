@@ -279,7 +279,7 @@ $request = new \ElasticAdapter\Search\SearchRequest([
 ]);
 
 // configure highlighting
-$request->setHighlight([
+$request->highlight([
     'fields' => [
         'message' => [
             'type' => 'plain',
@@ -291,7 +291,7 @@ $request->setHighlight([
 ]);
 
 // add suggestions
-$request->setSuggest([
+$request->suggest([
     'message_suggest' => [
         'text' => 'test',
         'term' => [
@@ -301,15 +301,15 @@ $request->setSuggest([
 ]);
 
 // enable source filtering
-$request->setSource(['message', 'post_date']);
+$request->source(['message', 'post_date']);
 
 // collapse fields
-$request->setCollapse([
+$request->collapse([
     'field' => 'user'
 ]);
 
 // aggregate data
-$request->setAggregations([
+$request->aggregations([
     'max_likes' => [
         'max' => [
             'field' => 'likes'
@@ -318,13 +318,13 @@ $request->setAggregations([
 ]);
 
 // sort documents
-$request->setSort([
+$request->sort([
     ['post_date' => ['order' => 'asc']],
     '_score'
 ]);
 
 // rescore documents
-$request->setRescore([
+$request->rescore([
     'window_size' => 50,
     'query' => [
         'rescore_query' => [
@@ -341,20 +341,20 @@ $request->setRescore([
 ]);
 
 // add a post filter
-$request->setPostFilter([
+$request->postFilter([
     'term' => [
         'cover' => 'hard'
     ]
 ]);
 
 // track total hits
-$request->setTrackTotalHits(true);
+$request->trackTotalHits(true);
 
 // track scores
-$request->setTrackScores(true);
+$request->trackScores(true);
 
 // script fields
-$request->setScriptFields([
+$request->scriptFields([
     'my_doubled_field' => [
         'script' => [
             'lang' => 'painless',
@@ -368,13 +368,13 @@ $request->setScriptFields([
 ]);
 
 // boost indices
-$request->setIndicesBoost([
+$request->indicesBoost([
     ['my-alias' => 1.4],
     ['my-index' => 1.3],
 ]);
 
 // use pagination
-$request->setFrom(0)->setSize(20);
+$request->from(0)->size(20);
 
 // execute the search request and get the response
 $response = $documentManager->search('my_index', $request);

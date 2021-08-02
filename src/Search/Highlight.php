@@ -2,7 +2,9 @@
 
 namespace ElasticAdapter\Search;
 
-final class Highlight implements SearchResponseRawInterface
+use Illuminate\Support\Collection;
+
+final class Highlight implements RawResponseInterface
 {
     /**
      * @var array
@@ -14,12 +16,12 @@ final class Highlight implements SearchResponseRawInterface
         $this->highlight = $highlight;
     }
 
-    public function getSnippets(string $field): ?array
+    public function snippets(string $field): Collection
     {
-        return $this->highlight[$field] ?? null;
+        return collect($this->highlight[$field] ?? []);
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->highlight;
     }

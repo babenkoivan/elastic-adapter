@@ -4,7 +4,7 @@ namespace ElasticAdapter\Search;
 
 use ElasticAdapter\Documents\Document;
 
-final class Hit implements SearchResponseRawInterface
+final class Hit implements RawResponseInterface
 {
     /**
      * @var array
@@ -16,17 +16,17 @@ final class Hit implements SearchResponseRawInterface
         $this->hit = $hit;
     }
 
-    public function getIndexName(): string
+    public function indexName(): string
     {
         return $this->hit['_index'];
     }
 
-    public function getScore(): ?float
+    public function score(): ?float
     {
         return $this->hit['_score'];
     }
 
-    public function getDocument(): Document
+    public function document(): Document
     {
         return new Document(
             $this->hit['_id'],
@@ -34,13 +34,13 @@ final class Hit implements SearchResponseRawInterface
         );
     }
 
-    public function getHighlight(): ?Highlight
+    public function highlight(): ?Highlight
     {
         return isset($this->hit['highlight']) ?
             new Highlight($this->hit['highlight']) : null;
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->hit;
     }

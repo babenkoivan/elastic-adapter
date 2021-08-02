@@ -2,7 +2,9 @@
 
 namespace ElasticAdapter\Search;
 
-final class Aggregation implements SearchResponseRawInterface
+use Illuminate\Support\Collection;
+
+final class Aggregation implements RawResponseInterface
 {
     /**
      * @var array
@@ -14,14 +16,16 @@ final class Aggregation implements SearchResponseRawInterface
         $this->aggregation = $aggregation;
     }
 
-    public function getBuckets(): array
+    public function buckets(): Collection
     {
-        return array_map(static function (array $bucket) {
+        $buckets = $this->aggregation['buckets'] ?? [];
+
+        return collect($buckets)->map(static function (array $bucket) {
             return new Bucket($bucket);
-        }, $this->aggregation['buckets'] ?? []);
+        });
     }
 
-    public function getRaw(): array
+    public function raw(): array
     {
         return $this->aggregation;
     }

@@ -35,14 +35,14 @@ final class HitTest extends TestCase
 
     public function test_index_name_can_be_retrieved(): void
     {
-        $this->assertSame('test', $this->hit->getIndexName());
+        $this->assertSame('test', $this->hit->indexName());
     }
 
     public function test_document_can_be_retrieved(): void
     {
         $this->assertEquals(
             new Document('1', ['title' => 'foo']),
-            $this->hit->getDocument()
+            $this->hit->document()
         );
     }
 
@@ -50,7 +50,7 @@ final class HitTest extends TestCase
     {
         $this->assertEquals(
             new Highlight(['title' => [' <em>foo</em> ']]),
-            $this->hit->getHighlight()
+            $this->hit->highlight()
         );
     }
 
@@ -58,12 +58,12 @@ final class HitTest extends TestCase
     {
         $hit = new Hit(['_id' => '1']);
 
-        $this->assertNull($hit->getHighlight());
+        $this->assertNull($hit->highlight());
     }
 
     public function test_score_can_be_retrieved(): void
     {
-        $this->assertSame(1.3, $this->hit->getScore());
+        $this->assertSame(1.3, $this->hit->score());
     }
 
     public function test_raw_representation_can_be_retrieved(): void
@@ -74,6 +74,6 @@ final class HitTest extends TestCase
             '_source' => ['title' => 'foo'],
             '_score' => 1.3,
             'highlight' => ['title' => [' <em>foo</em> ']],
-        ], $this->hit->getRaw());
+        ], $this->hit->raw());
     }
 }

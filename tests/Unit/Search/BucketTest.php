@@ -27,12 +27,12 @@ final class BucketTest extends TestCase
 
     public function test_key_can_be_retrieved(): void
     {
-        $this->assertSame('electronic', $this->bucket->getKey());
+        $this->assertSame('electronic', $this->bucket->key());
     }
 
     public function test_doc_count_can_be_retrieved(): void
     {
-        $this->assertSame(6, $this->bucket->getDocCount());
+        $this->assertSame(6, $this->bucket->docCount());
     }
 
     public function test_raw_representation_can_be_retrieved(): void
@@ -40,6 +40,6 @@ final class BucketTest extends TestCase
         $this->assertSame([
             'key' => 'electronic',
             'doc_count' => 6,
-        ], $this->bucket->getRaw());
+        ], $this->bucket->raw());
     }
 }
