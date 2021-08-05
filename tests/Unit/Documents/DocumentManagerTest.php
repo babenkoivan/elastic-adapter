@@ -148,7 +148,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $documentIds = collect(['1', '2']);
+        $documentIds = ['1', '2'];
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', $documentIds, true));
     }
@@ -171,7 +171,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $documentIds = collect(['1']);
+        $documentIds = ['1'];
 
         $this->assertSame($this->documentManager, $this->documentManager->delete('test', $documentIds, false));
     }
@@ -195,7 +195,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $documentIds = collect(['1', '2']);
+        $documentIds = ['1', '2'];
 
         $routing = (new Routing())
             ->add('1', 'Doc1')

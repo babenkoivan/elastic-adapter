@@ -20,6 +20,9 @@ class DocumentManager
         $this->client = $client;
     }
 
+    /**
+     * @param Collection|Document[] $documents
+     */
     public function index(
         string $indexName,
         Collection $documents,
@@ -52,9 +55,12 @@ class DocumentManager
         return $this;
     }
 
+    /**
+     * @param string[] $documentIds
+     */
     public function delete(
         string $indexName,
-        Collection $documentIds,
+        array $documentIds,
         bool $refresh = false,
         Routing $routing = null
     ): self {

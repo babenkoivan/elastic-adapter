@@ -16,6 +16,9 @@ final class Highlight implements RawResponseInterface
         $this->highlight = $highlight;
     }
 
+    /**
+     * @return Collection|string[]
+     */
     public function snippets(string $field): Collection
     {
         return collect($this->highlight[$field] ?? []);

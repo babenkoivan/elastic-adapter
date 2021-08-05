@@ -16,6 +16,9 @@ final class SearchResponse implements RawResponseInterface
         $this->response = $response;
     }
 
+    /**
+     * @return Collection|Hit[]
+     */
     public function hits(): Collection
     {
         $hits = $this->response['hits']['hits'];
@@ -41,6 +44,9 @@ final class SearchResponse implements RawResponseInterface
         });
     }
 
+    /**
+     * @return Collection|Aggregation[]
+     */
     public function aggregations(): Collection
     {
         $aggregations = $this->response['aggregations'] ?? [];

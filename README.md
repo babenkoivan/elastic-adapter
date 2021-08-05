@@ -30,6 +30,7 @@ The current version of Elastic Adapter has been tested with the following config
 
 * PHP 7.2-8.0
 * Elasticsearch 7.x
+* Laravel 6.x-8.x
 
 ## Installation
 
@@ -54,7 +55,7 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
 $indexManager = new \ElasticAdapter\Indices\IndexManager($client);
 ``` 
 
-The manager provides a list of useful methods, which are listed below. 
+The manager provides a set of useful methods, which are listed below. 
 
 ### Create
 
@@ -212,10 +213,10 @@ $documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
 Add a document to the index:
 
 ```php
-$documents = [
+$documents = collect([
     new ElasticAdapter\Documents\Document('1', ['title' => 'foo']),
     new ElasticAdapter\Documents\Document('2', ['title' => 'bar']),
-];
+]);
 
 $documentManager->index('my_index', $documents);
 ```
@@ -226,38 +227,40 @@ There is also an option to refresh index immediately:
 $documentManager->index('my_index', $documents, true);
 ```
 
-In addition, you can set a custom routing path:
+Finally, you can set a custom routing:
 
 ```php
-$documentManager->index('my_index', $documents, false, 'my_field');
-```
+$routing = (new ElasticAdapter\Documents\Routing())
+    ->add('1', 'value1')
+    ->add('2', 'value2');
 
-This will route documents to an Elasticsearch shard based on the document's `my_field` value. 
-Routing path can be specified using "dot" notation to access nested fields.
+$documentManager->index('my_index', $documents, false, $routing);
+```
 
 ### Delete
 
 Remove a document from the index:
 
 ```php
-$documents = [
-    new ElasticAdapter\Documents\Document('1', ['title' => 'foo']),
-    new ElasticAdapter\Documents\Document('2', ['title' => 'bar']),
-];
+$documentIds = ['1', '2'];
 
-$documentManager->delete('my_index', $documents);
+$documentManager->delete('my_index', $documentIds);
 ```
 
 If you want the index to be refreshed immediately pass `true` as the third argument:
 
 ```php
-$documentManager->delete('my_index', $documents, true);
+$documentManager->delete('my_index', $documentIds, true);
 ```
 
-You can also set a custom routing path to delete the document from a specific shard:
+You can also set a custom routing:
 
 ```php
-$documentManager->delete('my_index', $documents, false, 'my_field');
+$routing = (new ElasticAdapter\Documents\Routing())
+    ->add('1', 'value1')
+    ->add('2', 'value2');
+
+$documentManager->delete('my_index', $documentIds, false, $routing);
 ```
 
 Finally, you can delete documents using query:
@@ -380,24 +383,24 @@ $request->from(0)->size(20);
 $response = $documentManager->search('my_index', $request);
 
 // get the total number of matching documents
-$total = $response->getHitsTotal(); 
+$total = $response->total(); 
 
 // get the corresponding hits
-$hits = $response->getHits();
+$hits = $response->hits();
 
 // every hit provides an access to the related index name, the score, the document and the highlight
 // in addition, you can get a raw representation of the hit
 foreach ($hits as $hit) {
-    $indexName = $hit->getIndexName();
-    $score = $hit->getScore();
-    $document = $hit->getDocument();
-    $highlight = $hit->getHighlight();
-    $raw = $hit->getRaw();
+    $indexName = $hit->indexName();
+    $score = $hit->score();
+    $document = $hit->document();
+    $highlight = $hit->highlight();
+    $raw = $hit->raw();
 }
 
 // get the suggestions
-$suggestions = $response->getSuggestions();
+$suggestions = $response->suggestions();
 
 // get the aggregations
-$aggregations = $response->getAggregations();
+$aggregations = $response->aggregations();
 ```

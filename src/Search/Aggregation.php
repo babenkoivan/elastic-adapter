@@ -16,6 +16,9 @@ final class Aggregation implements RawResponseInterface
         $this->aggregation = $aggregation;
     }
 
+    /**
+     * @return Collection|Bucket[]
+     */
     public function buckets(): Collection
     {
         $buckets = $this->aggregation['buckets'] ?? [];

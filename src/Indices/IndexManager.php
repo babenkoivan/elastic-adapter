@@ -96,6 +96,9 @@ class IndexManager
         return $this;
     }
 
+    /**
+     * @return Collection|Alias[]
+     */
     public function getAliases(string $indexName): Collection
     {
         $response = $this->indices->getAlias([
