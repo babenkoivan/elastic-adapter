@@ -111,7 +111,9 @@ final class MappingProperties implements Arrayable
      */
     private function normalizeParametersWithProperties($parameters): array
     {
-        $parameters = value($parameters, new self());
+        if ($parameters instanceof Closure) {
+            $parameters = $parameters(new self());
+        }
 
         if ($parameters['properties'] instanceof self) {
             $parameters['properties'] = $parameters['properties']->toArray();
