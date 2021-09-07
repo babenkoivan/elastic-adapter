@@ -13,7 +13,7 @@ final class BulkRequestException extends ErrorException
 
     public function __construct(array $response)
     {
-        parent::__construct('One or more operations in the bulk request did not complete successfully');
+        parent::__construct('One or more operations in the bulk request did not complete successfully: ' . print_r($response, true));
         $this->response = $response;
     }
 
