@@ -136,4 +136,50 @@ class MappingTest extends TestCase
             ],
         ], $mapping->toArray());
     }
+
+    public function test_on_serialize_callback(): void
+    {
+        $mapping = (new Mapping())
+            ->setOnBeforeSerializeCallback(function (array $mapping) {
+                $mapping['dynamic'] = false;
+                $mapping['date_detection'] = false;
+
+                return $mapping;
+            })
+            ->text('last_name')
+            ->toArray();
+
+        $this->assertSame([
+            'properties' => [
+                'last_name' => [
+                    'type' => 'text'
+                ]
+            ],
+            'dynamic' => false,
+            'date_detection' => false
+        ], $mapping);
+    }
+
+    public function test_can_remove_on_serialize_callback(): void
+    {
+        $mapping = (new Mapping())
+            ->setOnBeforeSerializeCallback(function (array $mapping) {
+                $mapping['dynamic'] = false;
+                $mapping['date_detection'] = false;
+
+                return $mapping;
+            })
+            // I changed my mind and don't want a callback anymore
+            ->setOnBeforeSerializeCallback()
+            ->text('last_name')
+            ->toArray();
+
+        $this->assertSame([
+            'properties' => [
+                'last_name' => [
+                    'type' => 'text'
+                ]
+            ]
+        ], $mapping);
+    }
 }

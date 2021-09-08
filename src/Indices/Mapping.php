@@ -67,6 +67,14 @@ final class Mapping implements ArrayableInterface
      */
     private $dynamicTemplates = [];
 
+    /**
+     * @var callable|null
+     *
+     * function will receive $mapping array and should return a
+     * customized array that will be used instead.
+     */
+    private $onSerializeCallback = null;
+
     public function enableFieldNames(): self
     {
         $this->isFieldNamesEnabled = true;
@@ -112,6 +120,13 @@ final class Mapping implements ArrayableInterface
         return $this;
     }
 
+    public function setOnBeforeSerializeCallback(callable $callback = null)
+    {
+        $this->onSerializeCallback = $callback;
+
+        return $this;
+    }
+
     public function dynamicTemplate(string $name, array $parameters): self
     {
         $this->dynamicTemplates[] = [$name => $parameters];
@@ -140,6 +155,14 @@ final class Mapping implements ArrayableInterface
 
         if (count($this->dynamicTemplates) > 0) {
             $mapping['dynamic_templates'] = $this->dynamicTemplates;
+        }
+
+        if (is_callable($this->onSerializeCallback)) {
+            $mapping = ($this->onSerializeCallback)($mapping);
+
+            if (!is_array($mapping)) {
+                throw new \InvalidArgumentException('The custom mapping should be an array');
+            }
         }
 
         return $mapping;
