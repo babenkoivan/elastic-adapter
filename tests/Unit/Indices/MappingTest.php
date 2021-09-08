@@ -4,6 +4,7 @@ namespace ElasticAdapter\Tests\Unit\Indices;
 
 use BadMethodCallException;
 use ElasticAdapter\Indices\Mapping;
+use ElasticAdapter\Indices\RawMapping;
 use ElasticAdapter\Support\Str;
 use PHPUnit\Framework\TestCase;
 
@@ -194,5 +195,20 @@ class MappingTest extends TestCase
             })
             ->text('last_name')
             ->toArray();
+    }
+
+    public function test_raw_mapping(): void
+    {
+        $mappingValue = [
+            'properties' => [
+                'last_name' => [
+                    'type' => 'text'
+                ]
+            ]
+        ];
+
+        $mapping = (new RawMapping($mappingValue));
+
+        $this->assertSame($mappingValue, $mapping->toArray());
     }
 }

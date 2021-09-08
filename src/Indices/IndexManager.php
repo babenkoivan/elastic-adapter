@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Indices;
 
+use ElasticAdapter\Support\ArrayableInterface;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
 
@@ -64,7 +65,7 @@ class IndexManager
         return $this;
     }
 
-    public function putMapping(string $indexName, Mapping $mapping): self
+    public function putMapping(string $indexName, ArrayableInterface $mapping): self
     {
         $this->indices->putMapping([
             'index' => $indexName,
