@@ -182,4 +182,17 @@ class MappingTest extends TestCase
             ]
         ], $mapping);
     }
+
+    public function test_on_serialize_callback_with_invalid_return(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('The custom mapping should be an array');
+
+        (new Mapping())
+            ->setOnBeforeSerializeCallback(function (array $mapping) {
+                return true;
+            })
+            ->text('last_name')
+            ->toArray();
+    }
 }

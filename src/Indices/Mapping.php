@@ -161,7 +161,7 @@ final class Mapping implements ArrayableInterface
             $mapping = ($this->onSerializeCallback)($mapping);
 
             if (!is_array($mapping)) {
-                throw new \InvalidArgumentException('The custom mapping should be an array');
+                throw new \UnexpectedValueException('The custom mapping should be an array');
             }
         }
 
