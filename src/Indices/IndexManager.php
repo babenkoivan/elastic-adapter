@@ -65,11 +65,40 @@ class IndexManager
         return $this;
     }
 
+    public function createRaw(string $indexName, ?array $mapping = null, ?array $settings = null): self
+    {
+        $params = [
+            'index' => $indexName,
+        ];
+
+        if (isset($mapping)) {
+            $params['body']['mappings'] = $mapping;
+        }
+
+        if (isset($settings)) {
+            $params['body']['settings'] = $settings;
+        }
+
+        $this->indices->create($params);
+
+        return $this;
+    }
+
     public function putMapping(string $indexName, Mapping $mapping): self
     {
         $this->indices->putMapping([
             'index' => $indexName,
             'body' => $mapping->toArray(),
+        ]);
+
+        return $this;
+    }
+
+    public function putMappingRaw(string $indexName, array $mapping): self
+    {
+        $this->indices->putMapping([
+            'index' => $indexName,
+            'body' => $mapping,
         ]);
 
         return $this;
@@ -81,6 +110,18 @@ class IndexManager
             'index' => $indexName,
             'body' => [
                 'settings' => $settings->toArray(),
+            ],
+        ]);
+
+        return $this;
+    }
+
+    public function putSettingsRaw(string $indexName, array $settings): self
+    {
+        $this->indices->putSettings([
+            'index' => $indexName,
+            'body' => [
+                'settings' => $settings,
             ],
         ]);
 

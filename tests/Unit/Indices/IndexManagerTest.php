@@ -163,6 +163,26 @@ class IndexManagerTest extends TestCase
         $this->assertSame($this->indexManager, $this->indexManager->create($index));
     }
 
+    public function test_index_can_be_created_with_raw_mapping_and_settings(): void
+    {
+        $indexName = 'foo';
+        $mapping = ['properties' => ['bar' => ['type' => 'text']]];
+        $settings = ['index' => ['number_of_replicas' => 2]];
+
+        $this->indices
+            ->expects($this->once())
+            ->method('create')
+            ->with([
+                'index' => $indexName,
+                'body' => [
+                    'mappings' => $mapping,
+                    'settings' => $settings,
+                ],
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->createRaw($indexName, $mapping, $settings));
+    }
+
     public function test_mapping_can_be_updated(): void
     {
         $indexName = 'foo';
@@ -185,6 +205,22 @@ class IndexManagerTest extends TestCase
         $this->assertSame($this->indexManager, $this->indexManager->putMapping($indexName, $mapping));
     }
 
+    public function test_mapping_can_be_updated_with_raw_data(): void
+    {
+        $indexName = 'foo';
+        $mapping = ['properties' => ['bar' => ['type' => 'text']]];
+
+        $this->indices
+            ->expects($this->once())
+            ->method('putMapping')
+            ->with([
+                'index' => $indexName,
+                'body' => $mapping,
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->putMappingRaw($indexName, $mapping));
+    }
+
     public function test_settings_can_be_updated(): void
     {
         $indexName = 'foo';
@@ -205,6 +241,24 @@ class IndexManagerTest extends TestCase
             ]);
 
         $this->assertSame($this->indexManager, $this->indexManager->putSettings($indexName, $settings));
+    }
+
+    public function test_settings_can_be_updated_with_raw_data(): void
+    {
+        $indexName = 'foo';
+        $settings = ['index' => ['number_of_replicas' => 2]];
+
+        $this->indices
+            ->expects($this->once())
+            ->method('putSettings')
+            ->with([
+                'index' => $indexName,
+                'body' => [
+                    'settings' => $settings,
+                ],
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->putSettingsRaw($indexName, $settings));
     }
 
     public function test_index_can_be_dropped(): void

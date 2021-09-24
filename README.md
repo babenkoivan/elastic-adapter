@@ -97,6 +97,24 @@ $index = new \ElasticAdapter\Indices\IndexBlueprint('my_index', $mapping, $setti
 $indexManager->create($index);
 ```
 
+Alternatively, you can create an index using raw input:
+
+```php
+$mapping = [
+    'properties' => [
+        'title' => [
+            'type' => 'text'
+        ]   
+    ]
+];
+
+$settings = [
+    'number_of_replicas' => 2
+];
+
+$indexManager->createRaw('my_index', $mapping, $settings);
+```
+
 ### Drop
 
 Delete an index:
@@ -107,7 +125,7 @@ $indexManager->drop('my_index');
 
 ### Put Mapping
 
-Update an index mapping:
+Update an index mapping using builder:
 
 ```php
 $mapping = (new \ElasticAdapter\Indices\Mapping())
@@ -122,9 +140,23 @@ $mapping = (new \ElasticAdapter\Indices\Mapping())
 $indexManager->putMapping('my_index', $mapping);
 ```
 
+or using raw input:
+
+```php
+$mapping = [
+    'properties' => [
+        'title' => [
+            'type' => 'text'
+        ]   
+    ]
+];
+
+$indexManager->putMappingRaw('my_index', $mapping);
+```
+
 ### Put Settings
 
-Update an index settings:
+Update an index settings using builder:
 
 ```php
 $settings = (new \ElasticAdapter\Indices\Settings())
@@ -138,6 +170,16 @@ $settings = (new \ElasticAdapter\Indices\Settings())
     ]);
 
 $indexManager->putSettings('my_index', $settings);
+```
+
+or using raw input:
+
+```php
+$settings = [
+    'number_of_replicas' => 2
+];
+
+$indexManager->putSettingsRaw('my_index', $settings);
 ```
 
 ### Exists
