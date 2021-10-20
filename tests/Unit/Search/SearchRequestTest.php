@@ -394,4 +394,42 @@ final class SearchRequestTest extends TestCase
             'min_score' => 0.5,
         ], $request->toArray());
     }
+
+    public function test_array_casting_with_search_after(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->searchAfter(['1624169819000']);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'search_after' => ['1624169819000'],
+        ], $request->toArray());
+    }
+
+    public function test_array_casting_with_pit(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->pit([
+            'id' => '<pit_id>',
+            'keep_alive' => '1m',
+        ]);
+
+        $this->assertEquals([
+            'query' => [
+                'match_all' => new stdClass(),
+            ],
+            'pit' => [
+                'id' => '<pit_id>',
+                'keep_alive' => '1m',
+            ],
+        ], $request->toArray());
+    }
 }

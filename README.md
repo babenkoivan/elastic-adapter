@@ -421,6 +421,15 @@ $request->indicesBoost([
 // use pagination
 $request->from(0)->size(20);
 
+// use search after
+$request->searchAfter(['1624169819000']);
+
+// assign a point in time id
+$request->pit([
+    'id' => 'pit_id',
+    'keep_alive' => '1m',
+]);
+
 // execute the search request and get the response
 $response = $documentManager->search('my_index', $request);
 

@@ -112,6 +112,18 @@ final class SearchRequest implements Arrayable
         return $this;
     }
 
+    public function searchAfter(array $searchAfter): self
+    {
+        $this->request['search_after'] = $searchAfter;
+        return $this;
+    }
+
+    public function pit(array $pit): self
+    {
+        $this->request['pit'] = $pit;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->request;
