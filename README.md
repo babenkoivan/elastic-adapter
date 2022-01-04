@@ -436,13 +436,14 @@ $total = $response->total();
 // get the corresponding hits
 $hits = $response->hits();
 
-// every hit provides an access to the related index name, the score, the document and the highlight
+// every hit provides access to the related index name, the score, the document, the highlight and the inner hits
 // in addition, you can get a raw representation of the hit
 foreach ($hits as $hit) {
     $indexName = $hit->indexName();
     $score = $hit->score();
     $document = $hit->document();
     $highlight = $hit->highlight();
+    $innerHits = $hit->innerHits();
     $raw = $hit->raw();
 }
 
