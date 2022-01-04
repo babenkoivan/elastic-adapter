@@ -27,9 +27,27 @@ final class HitTest extends TestCase
         $this->hit = new Hit([
             '_id' => '1',
             '_index' => 'test',
-            '_source' => ['title' => 'foo'],
+            '_source' => [
+                'title' => 'foo',
+            ],
             '_score' => 1.3,
-            'highlight' => ['title' => [' <em>foo</em> ']],
+            'highlight' => [
+                'title' => [
+                    ' <em>foo</em> ',
+                ],
+            ],
+            'inner_hits' => [
+                'nested' => [
+                    'hits' => [
+                        '_id' => '2',
+                        '_index' => 'test',
+                        '_source' => [
+                            'name' => 'bar',
+                        ],
+                        '_score' => 1.6,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -66,14 +84,49 @@ final class HitTest extends TestCase
         $this->assertSame(1.3, $this->hit->score());
     }
 
+    public function test_inner_hits_can_be_retrieved(): void
+    {
+        $innerHit = new Hit([
+            '_id' => '2',
+            '_index' => 'test',
+            '_source' => [
+                'name' => 'bar',
+            ],
+            '_score' => 1.6,
+        ]);
+
+        $nestedInnerHits = $this->hit->innerHits()->get('nested');
+
+        $this->assertCount(1, $nestedInnerHits);
+        $this->assertEquals($innerHit, $nestedInnerHits->first());
+    }
+
     public function test_raw_representation_can_be_retrieved(): void
     {
         $this->assertSame([
             '_id' => '1',
             '_index' => 'test',
-            '_source' => ['title' => 'foo'],
+            '_source' => [
+                'title' => 'foo',
+            ],
             '_score' => 1.3,
-            'highlight' => ['title' => [' <em>foo</em> ']],
+            'highlight' => [
+                'title' => [
+                    ' <em>foo</em> ',
+                ],
+            ],
+            'inner_hits' => [
+                'nested' => [
+                    'hits' => [
+                        '_id' => '2',
+                        '_index' => 'test',
+                        '_source' => [
+                            'name' => 'bar',
+                        ],
+                        '_score' => 1.6,
+                    ],
+                ],
+            ],
         ], $this->hit->raw());
     }
 }

@@ -3,6 +3,7 @@
 namespace ElasticAdapter\Search;
 
 use ElasticAdapter\Documents\Document;
+use Illuminate\Support\Collection;
 
 final class Hit implements RawResponseInterface
 {
@@ -38,6 +39,17 @@ final class Hit implements RawResponseInterface
     {
         return isset($this->hit['highlight']) ?
             new Highlight($this->hit['highlight']) : null;
+    }
+
+    public function innerHits(): Collection
+    {
+        $innerHits = $this->hit['inner_hits'] ?? [];
+
+        return collect($innerHits)->map(static function (array $innerHitGroup) {
+            return collect($innerHitGroup)->map(static function (array $innerHit) {
+                return new self($innerHit);
+            });
+        });
     }
 
     public function raw(): array
