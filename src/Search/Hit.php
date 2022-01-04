@@ -45,9 +45,9 @@ final class Hit implements RawResponseInterface
     {
         $innerHits = $this->hit['inner_hits'] ?? [];
 
-        return collect($innerHits)->map(static function (array $innerHitGroup) {
-            return collect($innerHitGroup)->map(static function (array $innerHit) {
-                return new self($innerHit);
+        return collect($innerHits)->map(static function (array $hits) {
+            return collect($hits['hits']['hits'])->map(static function (array $hit) {
+                return new self($hit);
             });
         });
     }

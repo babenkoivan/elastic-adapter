@@ -39,12 +39,19 @@ final class HitTest extends TestCase
             'inner_hits' => [
                 'nested' => [
                     'hits' => [
-                        '_id' => '2',
-                        '_index' => 'test',
-                        '_source' => [
-                            'name' => 'bar',
+                        'total' => [
+                            'value' => 1,
                         ],
-                        '_score' => 1.6,
+                        'hits' => [
+                            [
+                                '_id' => '2',
+                                '_index' => 'test',
+                                '_source' => [
+                                    'name' => 'bar',
+                                ],
+                                '_score' => 1.6,
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -118,12 +125,19 @@ final class HitTest extends TestCase
             'inner_hits' => [
                 'nested' => [
                     'hits' => [
-                        '_id' => '2',
-                        '_index' => 'test',
-                        '_source' => [
-                            'name' => 'bar',
+                        'total' => [
+                            'value' => 1,
                         ],
-                        '_score' => 1.6,
+                        'hits' => [
+                            [
+                                '_id' => '2',
+                                '_index' => 'test',
+                                '_source' => [
+                                    'name' => 'bar',
+                                ],
+                                '_score' => 1.6,
+                            ],
+                        ],
                     ],
                 ],
             ],
