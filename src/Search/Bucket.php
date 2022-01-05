@@ -19,7 +19,10 @@ final class Bucket implements RawResponseInterface
         return $this->bucket['doc_count'] ?? 0;
     }
 
-    public function key(): string
+    /**
+     * @return mixed
+     */
+    public function key()
     {
         return $this->bucket['key'];
     }
