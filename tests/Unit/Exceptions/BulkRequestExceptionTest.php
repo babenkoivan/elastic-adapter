@@ -106,7 +106,7 @@ final class BulkRequestExceptionTest extends TestCase
                             'index' => 'index1',
                         ],
                     ],
-                ]
+                ],
             ],
         ];
 
