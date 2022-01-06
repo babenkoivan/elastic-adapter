@@ -39,7 +39,7 @@ final class BulkRequestExceptionTest extends TestCase
         $this->assertSame($response, $exception->getResponse());
     }
 
-    public function test_first_error_message_from_response_is_given_in_exception_message()
+    public function test_first_error_message_from_response_is_given_in_exception_message(): void
     {
         $response = [
             'took' => 486,
@@ -71,7 +71,7 @@ final class BulkRequestExceptionTest extends TestCase
         );
     }
 
-    public function test_exception_can_be_throw_with_many_errors_in_response()
+    public function test_exception_can_be_throw_with_many_errors_in_response(): void
     {
         $response = [
             'took' => 486,
@@ -118,7 +118,7 @@ final class BulkRequestExceptionTest extends TestCase
         );
     }
 
-    public function test_exception_can_be_throw_with_missing_error_in_response()
+    public function test_exception_can_be_throw_with_missing_error_in_response(): void
     {
         $response = [
             'took' => 486,
@@ -143,7 +143,7 @@ final class BulkRequestExceptionTest extends TestCase
         );
     }
 
-    public function test_exception_can_be_throw_with_missing_items_in_response()
+    public function test_exception_can_be_throw_with_missing_items_in_response(): void
     {
         $response = [
             'took' => 486,
