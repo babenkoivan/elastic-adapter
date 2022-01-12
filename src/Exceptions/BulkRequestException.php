@@ -21,6 +21,13 @@ final class BulkRequestException extends ErrorException
         );
     }
 
+    public function context(): array
+    {
+        return [
+            'response' => $this->getResponse(),
+        ];
+    }
+
     public function getResponse(): array
     {
         return $this->response;
