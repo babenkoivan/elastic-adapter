@@ -15,10 +15,7 @@ final class BulkRequestException extends ErrorException
     {
         $this->response = $response;
 
-        parent::__construct(
-            ($this->getFirstErrorFromResponse() ?? 'One or more bulk operations did not complete successfully.') .
-            ' Catch the exception and use the BulkRequestException::getResponse() method to get more details.'
-        );
+        parent::__construct($this->makeErrorFromResponse());
     }
 
     public function context(): array
@@ -33,27 +30,21 @@ final class BulkRequestException extends ErrorException
         return $this->response;
     }
 
-    public function getResponseItems(): array
+    private function makeErrorFromResponse(): string
     {
-        return $this->response['items'] ?? [];
-    }
+        $items = $this->response['items'] ?? [];
+        $count = count($items);
 
-    private function getFirstErrorFromResponse(): ?string
-    {
-        $items = $this->getResponseItems();
+        $reason = sprintf('%s did not complete successfully.', $count > 0 ? $count . ' bulk operation(s)' : 'One or more');
 
-        foreach ($items as $item) {
-            foreach ($item ?? [] as $response) {
-                $count = count($items);
-                $type = $response['error']['type'] ?? 'NULL';
-                $reason = $response['error']['reason'] ?? 'NULL';
+        $failedOperations = $items[0] ?? [];
+        $firstOperation = reset($failedOperations);
+        $firstError = ($firstOperation ?? [])['error'] ?? null;
 
-                return "$count bulk operation(s) did not complete successfully. " .
-                    ($count > 1 ? "First error: " : "Error: ") .
-                    "$type. Reason: $reason.";
-            }
+        if (isset($firstError) && isset($firstError['type']) && isset($firstError['reason'])) {
+            $reason .= sprintf(' %s: %s. Reason: %s.', $count > 1 ? 'First error' : 'Error', $firstError['type'], $firstError['reason']);
         }
 
-        return null;
+        return sprintf('%s Catch the exception and use the %s::getResponse() method to get more details.', $reason, self::class);
     }
 }
