@@ -237,9 +237,7 @@ final class SearchRequestTest extends TestCase
 
     public function test_array_casting_with_aggregations(): void
     {
-        $request = new SearchRequest();
-
-        $request->aggregations([
+        (new SearchRequest())->aggregations([
             'min_price' => [
                 'min' => [
                     'field' => 'price',
