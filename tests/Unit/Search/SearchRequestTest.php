@@ -237,9 +237,7 @@ final class SearchRequestTest extends TestCase
 
     public function test_array_casting_with_aggregations(): void
     {
-        $request = new SearchRequest([
-            'match_all' => new stdClass(),
-        ]);
+        $request = new SearchRequest();
 
         $request->aggregations([
             'min_price' => [
@@ -250,9 +248,6 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
             'aggregations' => [
                 'min_price' => [
                     'min' => [

@@ -11,9 +11,11 @@ final class SearchRequest implements Arrayable
      */
     private $request;
 
-    public function __construct(array $query)
+    public function __construct(?array $query)
     {
-        $this->request['query'] = $query;
+        if (isset($query)) {
+            $this->request['query'] = $query;
+        }
     }
 
     public function highlight(array $highlight): self
