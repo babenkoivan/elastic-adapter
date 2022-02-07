@@ -11,7 +11,7 @@ final class SearchRequest implements Arrayable
      */
     private $request;
 
-    public function __construct(?array $query)
+    public function __construct(?array $query = null)
     {
         if (isset($query)) {
             $this->request['query'] = $query;
