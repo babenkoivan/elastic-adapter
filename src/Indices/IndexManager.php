@@ -4,6 +4,7 @@ namespace ElasticAdapter\Indices;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Elasticsearch\Namespaces\CatNamespace;
 use Illuminate\Support\Collection;
 
 class IndexManager
@@ -16,6 +17,16 @@ class IndexManager
     public function __construct(Client $client)
     {
         $this->indices = $client->indices();
+        $this->cat = $client->cat();
+    }
+    
+    public function all(): array
+    {
+        // filtered list of all indices, as dot-indices are usually
+        // generated and mainainted by the system itself
+        return array_filter($this->cat->indices(), function ($index) {
+            return substr($index['index'], 0, 1) !== '.';
+        });
     }
 
     public function open(string $indexName): self
