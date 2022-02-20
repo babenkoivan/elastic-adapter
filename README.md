@@ -418,6 +418,12 @@ $request->indicesBoost([
     ['my-index' => 1.3],
 ]);
 
+// define the search type
+$request->searchType('query_then_fetch');
+
+// set the preference
+$request->preference('_local');
+
 // use pagination
 $request->from(0)->size(20);
 

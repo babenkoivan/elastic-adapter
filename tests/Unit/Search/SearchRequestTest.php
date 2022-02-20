@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
@@ -20,9 +22,11 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertSame([
-            'query' => [
-                'term' => [
-                    'user' => 'foo',
+            'body' => [
+                'query' => [
+                    'term' => [
+                        'user' => 'foo',
+                    ],
                 ],
             ],
         ], $request->toArray());
@@ -43,14 +47,16 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match' => [
-                    'content' => 'foo',
+            'body' => [
+                'query' => [
+                    'match' => [
+                        'content' => 'foo',
+                    ],
                 ],
-            ],
-            'highlight' => [
-                'fields' => [
-                    'content' => new stdClass(),
+                'highlight' => [
+                    'fields' => [
+                        'content' => new stdClass(),
+                    ],
                 ],
             ],
         ], $request->toArray());
@@ -68,12 +74,14 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'sort' => [
-                ['title' => 'asc'],
-                '_score',
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'sort' => [
+                    ['title' => 'asc'],
+                    '_score',
+                ],
             ],
         ], $request->toArray());
     }
@@ -101,22 +109,24 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'rescore' => [
-                'window_size' => 50,
+            'body' => [
                 'query' => [
-                    'rescore_query' => [
-                        'match_phrase' => [
-                            'message' => [
-                                'query' => 'the quick brown',
-                                'slop' => 2,
+                    'match_all' => new stdClass(),
+                ],
+                'rescore' => [
+                    'window_size' => 50,
+                    'query' => [
+                        'rescore_query' => [
+                            'match_phrase' => [
+                                'message' => [
+                                    'query' => 'the quick brown',
+                                    'slop' => 2,
+                                ],
                             ],
                         ],
+                        'query_weight' => 0.7,
+                        'rescore_query_weight' => 1.2,
                     ],
-                    'query_weight' => 0.7,
-                    'rescore_query_weight' => 1.2,
                 ],
             ],
         ], $request->toArray());
@@ -131,10 +141,12 @@ final class SearchRequestTest extends TestCase
         $request->from(10);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'from' => 10,
             ],
-            'from' => 10,
         ], $request->toArray());
     }
 
@@ -147,10 +159,12 @@ final class SearchRequestTest extends TestCase
         $request->size(100);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'size' => 100,
             ],
-            'size' => 100,
         ], $request->toArray());
     }
 
@@ -170,14 +184,16 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_none' => new stdClass(),
-            ],
-            'suggest' => [
-                'color_suggestion' => [
-                    'text' => 'red',
-                    'term' => [
-                        'field' => 'color',
+            'body' => [
+                'query' => [
+                    'match_none' => new stdClass(),
+                ],
+                'suggest' => [
+                    'color_suggestion' => [
+                        'text' => 'red',
+                        'term' => [
+                            'field' => 'color',
+                        ],
                     ],
                 ],
             ],
@@ -208,10 +224,12 @@ final class SearchRequestTest extends TestCase
         $request->source($source);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                '_source' => $source,
             ],
-            '_source' => $source,
         ], $request->toArray());
     }
 
@@ -226,11 +244,13 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'collapse' => [
-                'field' => 'user',
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'collapse' => [
+                    'field' => 'user',
+                ],
             ],
         ], $request->toArray());
     }
@@ -248,10 +268,12 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'aggregations' => [
-                'min_price' => [
-                    'min' => [
-                        'field' => 'price',
+            'body' => [
+                'aggregations' => [
+                    'min_price' => [
+                        'min' => [
+                            'field' => 'price',
+                        ],
                     ],
                 ],
             ],
@@ -271,12 +293,14 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'post_filter' => [
-                'term' => [
-                    'color' => 'red',
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'post_filter' => [
+                    'term' => [
+                        'color' => 'red',
+                    ],
                 ],
             ],
         ], $request->toArray());
@@ -291,10 +315,12 @@ final class SearchRequestTest extends TestCase
         $request->trackTotalHits(100);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'track_total_hits' => 100,
             ],
-            'track_total_hits' => 100,
         ], $request->toArray());
     }
 
@@ -310,12 +336,14 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'indices_boost' => [
-                ['my-alias' => 1.4],
-                ['my-index' => 1.3],
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'indices_boost' => [
+                    ['my-alias' => 1.4],
+                    ['my-index' => 1.3],
+                ],
             ],
         ], $request->toArray());
     }
@@ -329,10 +357,12 @@ final class SearchRequestTest extends TestCase
         $request->trackScores(true);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'track_scores' => true,
             ],
-            'track_scores' => true,
         ], $request->toArray());
     }
 
@@ -356,17 +386,19 @@ final class SearchRequestTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
-            ],
-            'script_fields' => [
-                'my_doubled_field' => [
-                    'script' => [
-                        'lang' => 'painless',
-                        'source' => 'doc[params.field] * params.multiplier',
-                        'params' => [
-                            'field' => 'my_field',
-                            'multiplier' => 2,
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'script_fields' => [
+                    'my_doubled_field' => [
+                        'script' => [
+                            'lang' => 'painless',
+                            'source' => 'doc[params.field] * params.multiplier',
+                            'params' => [
+                                'field' => 'my_field',
+                                'multiplier' => 2,
+                            ],
                         ],
                     ],
                 ],
@@ -383,10 +415,48 @@ final class SearchRequestTest extends TestCase
         $request->minScore(0.5);
 
         $this->assertEquals([
-            'query' => [
-                'match_all' => new stdClass(),
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'min_score' => 0.5,
             ],
-            'min_score' => 0.5,
+        ], $request->toArray());
+    }
+
+    public function test_array_casting_with_search_type(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->searchType('query_then_fetch');
+
+        $this->assertEquals([
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+            ],
+            'search_type' => 'query_then_fetch',
+        ], $request->toArray());
+    }
+
+    public function test_array_casting_with_preference(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->preference('_local');
+
+        $this->assertEquals([
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+            ],
+            'preference' => '_local',
         ], $request->toArray());
     }
 }

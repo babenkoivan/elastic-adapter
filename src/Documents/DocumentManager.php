@@ -104,13 +104,8 @@ class DocumentManager
 
     public function search(string $indexName, SearchRequest $request): SearchResponse
     {
-        $params = [
-            'index' => $indexName,
-            'body' => $request->toArray(),
-        ];
-
+        $params = array_merge($request->toArray(), ['index' => $indexName]);
         $response = $this->client->search($params);
-
         return new SearchResponse($response);
     }
 }
