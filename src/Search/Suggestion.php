@@ -6,10 +6,7 @@ use Illuminate\Support\Collection;
 
 final class Suggestion implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $suggestion;
+    private array $suggestion;
 
     public function __construct(array $suggestion)
     {

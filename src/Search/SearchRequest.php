@@ -6,10 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 
 final class SearchRequest implements Arrayable
 {
-    /**
-     * @var array
-     */
-    private $request;
+    private array $request;
 
     public function __construct(?array $query = null)
     {

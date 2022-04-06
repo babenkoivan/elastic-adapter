@@ -4,18 +4,9 @@ namespace ElasticAdapter\Indices;
 
 final class IndexBlueprint
 {
-    /**
-     * @var string
-     */
-    private $name;
-    /**
-     * @var Mapping|null
-     */
-    private $mapping;
-    /**
-     * @var Settings|null
-     */
-    private $settings;
+    private string $name;
+    private ?Mapping $mapping;
+    private ?Settings $settings;
 
     public function __construct(string $name, Mapping $mapping = null, Settings $settings = null)
     {

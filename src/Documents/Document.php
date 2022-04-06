@@ -7,14 +7,8 @@ use Illuminate\Support\Arr;
 
 final class Document implements Arrayable
 {
-    /**
-     * @var string
-     */
-    private $id;
-    /**
-     * @var array
-     */
-    private $content;
+    private string $id;
+    private array $content;
 
     public function __construct(string $id, array $content)
     {

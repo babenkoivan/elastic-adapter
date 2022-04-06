@@ -49,10 +49,7 @@ use Illuminate\Support\Str;
  */
 final class MappingProperties implements Arrayable
 {
-    /**
-     * @var array
-     */
-    private $properties = [];
+    private array $properties = [];
 
     /**
      * @param Closure|array $parameters

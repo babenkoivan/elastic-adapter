@@ -24,14 +24,8 @@ use stdClass;
  */
 final class DocumentManagerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $client;
-    /**
-     * @var DocumentManager
-     */
-    private $documentManager;
+    private MockObject $client;
+    private DocumentManager $documentManager;
 
     protected function setUp(): void
     {

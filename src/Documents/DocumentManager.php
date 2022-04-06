@@ -10,10 +10,7 @@ use Illuminate\Support\Collection;
 
 class DocumentManager
 {
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {

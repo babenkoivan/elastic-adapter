@@ -12,10 +12,7 @@ use Illuminate\Support\Str;
  */
 final class Settings implements Arrayable
 {
-    /**
-     * @var array
-     */
-    private $settings = [];
+    private array $settings = [];
 
     public function __call(string $method, array $arguments): self
     {

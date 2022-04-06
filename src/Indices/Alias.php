@@ -4,18 +4,9 @@ namespace ElasticAdapter\Indices;
 
 final class Alias
 {
-    /**
-     * @var string
-     */
-    private $name;
-    /**
-     * @var array|null
-     */
-    private $filter;
-    /**
-     * @var string|null
-     */
-    private $routing;
+    private string $name;
+    private ?array $filter;
+    private ?string $routing;
 
     public function __construct(string $name, ?array $filter = null, ?string $routing = null)
     {

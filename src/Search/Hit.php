@@ -7,10 +7,7 @@ use Illuminate\Support\Collection;
 
 final class Hit implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $hit;
+    private array $hit;
 
     public function __construct(array $hit)
     {

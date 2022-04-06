@@ -4,10 +4,7 @@ namespace ElasticAdapter\Documents;
 
 final class Routing
 {
-    /**
-     * @var array
-     */
-    private $routing = [];
+    private array $routing = [];
 
     public function add(string $documentId, string $value): self
     {

@@ -23,14 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 class IndexManagerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $indices;
-    /**
-     * @var IndexManager
-     */
-    private $indexManager;
+    private MockObject $indices;
+    private IndexManager $indexManager;
 
     protected function setUp(): void
     {

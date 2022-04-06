@@ -4,10 +4,7 @@ namespace ElasticAdapter\Search;
 
 final class Bucket implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $bucket;
+    private array $bucket;
 
     public function __construct(array $bucket)
     {

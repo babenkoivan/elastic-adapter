@@ -6,10 +6,7 @@ use Illuminate\Support\Collection;
 
 final class Aggregation implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $aggregation;
+    private array $aggregation;
 
     public function __construct(array $aggregation)
     {

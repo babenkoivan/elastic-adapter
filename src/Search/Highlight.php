@@ -6,10 +6,7 @@ use Illuminate\Support\Collection;
 
 final class Highlight implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $highlight;
+    private array $highlight;
 
     public function __construct(array $highlight)
     {

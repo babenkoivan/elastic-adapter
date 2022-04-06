@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class AggregationTest extends TestCase
 {
-    /**
-     * @var Aggregation
-     */
-    private $aggregation;
+    private Aggregation $aggregation;
 
     protected function setUp(): void
     {

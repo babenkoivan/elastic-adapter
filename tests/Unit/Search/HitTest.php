@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class HitTest extends TestCase
 {
-    /**
-     * @var Hit
-     */
-    private $hit;
+    private Hit $hit;
 
     protected function setUp(): void
     {

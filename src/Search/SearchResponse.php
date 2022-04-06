@@ -6,10 +6,7 @@ use Illuminate\Support\Collection;
 
 final class SearchResponse implements RawResponseInterface
 {
-    /**
-     * @var array
-     */
-    private $response;
+    private array $response;
 
     public function __construct(array $response)
     {

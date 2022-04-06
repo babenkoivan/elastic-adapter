@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class BucketTest extends TestCase
 {
-    /**
-     * @var Bucket
-     */
-    private $bucket;
+    private Bucket $bucket;
 
     protected function setUp(): void
     {

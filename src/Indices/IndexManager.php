@@ -8,10 +8,7 @@ use Illuminate\Support\Collection;
 
 class IndexManager
 {
-    /**
-     * @var IndicesNamespace
-     */
-    private $indices;
+    private IndicesNamespace $indices;
 
     public function __construct(Client $client)
     {
