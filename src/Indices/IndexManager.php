@@ -145,13 +145,11 @@ class IndexManager
 
         $aliases = $response[$indexName]['aliases'] ?? [];
 
-        return collect($aliases)->map(static function (array $parameters, string $name) {
-            return new Alias(
-                $name,
-                $parameters['filter'] ?? null,
-                $parameters['routing'] ?? null
-            );
-        });
+        return collect($aliases)->map(static fn (array $parameters, string $name) => new Alias(
+            $name,
+            $parameters['filter'] ?? null,
+            $parameters['routing'] ?? null
+        ));
     }
 
     public function putAlias(string $indexName, Alias $alias): self

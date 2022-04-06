@@ -34,19 +34,18 @@ final class Hit implements RawResponseInterface
 
     public function highlight(): ?Highlight
     {
-        return isset($this->hit['highlight']) ?
-            new Highlight($this->hit['highlight']) : null;
+        return isset($this->hit['highlight']) ? new Highlight($this->hit['highlight']) : null;
     }
 
     public function innerHits(): Collection
     {
         $innerHits = $this->hit['inner_hits'] ?? [];
 
-        return collect($innerHits)->map(static function (array $hits) {
-            return collect($hits['hits']['hits'])->map(static function (array $hit) {
-                return new self($hit);
-            });
-        });
+        return collect($innerHits)->map(
+            static fn (array $hits) => collect($hits['hits']['hits'])->map(
+                static fn (array $hit) => new self($hit)
+            )
+        );
     }
 
     public function raw(): array
