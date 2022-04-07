@@ -25,6 +25,7 @@ final class AggregationTest extends TestCase
         $this->aggregation = new Aggregation([
             'doc_count_error_upper_bound' => 0,
             'sum_other_doc_count' => 0,
+            'max_price' => 1111,
             'buckets' => [
                 [
                     'key' => 'electronic',
@@ -49,6 +50,7 @@ final class AggregationTest extends TestCase
         $this->assertSame([
             'doc_count_error_upper_bound' => 0,
             'sum_other_doc_count' => 0,
+            'max_price' => 1111,
             'buckets' => [
                 [
                     'key' => 'electronic',
@@ -57,4 +59,21 @@ final class AggregationTest extends TestCase
             ],
         ], $this->aggregation->raw());
     }
+
+    public function test_aggregation_get_value_success(): void
+    {
+        $this->assertEquals(
+            1111,
+            $this->aggregation->max_price
+        );
+    }
+
+    public function test_aggregation_get_value_is_null(): void
+    {
+        $this->assertSame(
+            null,
+            $this->aggregation->aaa
+        );
+    }
+    
 }

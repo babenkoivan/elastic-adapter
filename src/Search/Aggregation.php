@@ -32,4 +32,12 @@ final class Aggregation implements RawResponseInterface
     {
         return $this->aggregation;
     }
+
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->aggregation)) {
+            return $this->aggregation[$name];
+        }
+        return null;
+    }
 }
