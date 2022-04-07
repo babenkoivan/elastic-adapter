@@ -30,6 +30,10 @@ final class AggregationTest extends TestCase
                     'key' => 'electronic',
                     'doc_count' => 6,
                 ],
+                [
+                    'key' => 'dog',
+                    'doc_count' => 2,
+                ],
             ],
         ]);
     }
@@ -40,7 +44,11 @@ final class AggregationTest extends TestCase
             new Bucket([
                 'key' => 'electronic',
                 'doc_count' => 6,
-            ]),
+            ],),
+            new Bucket([
+                'key' => 'dog',
+                'doc_count' => 2,
+            ],),
         ]), $this->aggregation->buckets());
     }
 
@@ -54,7 +62,19 @@ final class AggregationTest extends TestCase
                     'key' => 'electronic',
                     'doc_count' => 6,
                 ],
+                [
+                    'key' => 'dog',
+                    'doc_count' => 2,
+                ],
             ],
         ], $this->aggregation->raw());
+    }
+
+    public function test_buckets_can_be_pluck(): void
+    {
+        $this->assertEquals(
+            collect(['electronic', 'dog']),
+            $this->aggregation->buckets()->pluck('key')
+        );
     }
 }

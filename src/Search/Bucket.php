@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Search;
 
-final class Bucket implements RawResponseInterface
+final class Bucket implements RawResponseInterface, \ArrayAccess
 {
     /**
      * @var array
@@ -30,5 +30,29 @@ final class Bucket implements RawResponseInterface
     public function raw(): array
     {
         return $this->bucket;
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        if (is_null($offset)) {
+            $this->bucket[] = $value;
+        } else {
+            $this->bucket[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return isset($this->bucket[$offset]);
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->bucket[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return isset($this->bucket[$offset]) ? $this->bucket[$offset] : null;
     }
 }
