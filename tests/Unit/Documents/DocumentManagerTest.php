@@ -269,9 +269,11 @@ final class DocumentManagerTest extends TestCase
                 ],
             ]);
 
-        $response = $this->documentManager->search('test', new SearchRequest([
+        $request = (new SearchRequest())->query([
             'match' => ['content' => 'foo'],
-        ]));
+        ]);
+
+        $response = $this->documentManager->search('test', $request);
 
         $this->assertSame(1, $response->total());
         $this->assertEquals(new Document('1', ['content' => 'foo']), $response->hits()[0]->document());

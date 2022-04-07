@@ -317,7 +317,10 @@ Search documents in the index:
 
 ```php
 // create a search request
-$request = new \ElasticAdapter\Search\SearchRequest([
+$request = new \ElasticAdapter\Search\SearchRequest();
+
+// define the query
+$request->query([
     'match' => [
         'message' => 'test'
     ]
