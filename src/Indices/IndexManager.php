@@ -139,13 +139,13 @@ class IndexManager
      */
     public function getAliases(string $indexName): Collection
     {
-        $response = $this->indices->getAlias([
+        $rawResult = $this->indices->getAlias([
             'index' => $indexName,
         ]);
 
-        $aliases = $response[$indexName]['aliases'] ?? [];
+        $rawAliases = $rawResult[$indexName]['aliases'] ?? [];
 
-        return collect($aliases)->map(static fn (array $parameters, string $name) => new Alias(
+        return collect($rawAliases)->map(static fn (array $parameters, string $name) => new Alias(
             $name,
             $parameters['filter'] ?? null,
             $parameters['routing'] ?? null

@@ -20,7 +20,7 @@ use stdClass;
  * @uses   \ElasticAdapter\Exceptions\BulkOperationException
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchParameters
- * @uses   \ElasticAdapter\Search\SearchResponse
+ * @uses   \ElasticAdapter\Search\SearchResult
  */
 final class DocumentManagerTest extends TestCase
 {
@@ -273,10 +273,10 @@ final class DocumentManagerTest extends TestCase
             'match' => ['content' => 'foo'],
         ]);
 
-        $response = $this->documentManager->search('test', $searchParameters);
+        $searchResult = $this->documentManager->search('test', $searchParameters);
 
-        $this->assertSame(1, $response->total());
-        $this->assertEquals(new Document('1', ['content' => 'foo']), $response->hits()[0]->document());
+        $this->assertSame(1, $searchResult->total());
+        $this->assertEquals(new Document('1', ['content' => 'foo']), $searchResult->hits()[0]->document());
     }
 
     public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void

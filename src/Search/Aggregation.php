@@ -4,13 +4,13 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Support\Collection;
 
-final class Aggregation implements RawResponseInterface
+final class Aggregation implements RawInterface
 {
-    private array $aggregation;
+    private array $rawAggregation;
 
-    public function __construct(array $aggregation)
+    public function __construct(array $rawAggregation)
     {
-        $this->aggregation = $aggregation;
+        $this->rawAggregation = $rawAggregation;
     }
 
     /**
@@ -18,12 +18,12 @@ final class Aggregation implements RawResponseInterface
      */
     public function buckets(): Collection
     {
-        $buckets = $this->aggregation['buckets'] ?? [];
-        return collect($buckets)->map(static fn (array $bucket) => new Bucket($bucket));
+        $rawBuckets = $this->rawAggregation['buckets'] ?? [];
+        return collect($rawBuckets)->map(static fn (array $bucket) => new Bucket($bucket));
     }
 
     public function raw(): array
     {
-        return $this->aggregation;
+        return $this->rawAggregation;
     }
 }

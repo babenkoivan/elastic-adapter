@@ -430,14 +430,14 @@ $searchParameters->preference('_local');
 // use pagination
 $searchParameters->from(0)->size(20);
 
-// execute the search request and get the response
-$response = $documentManager->search('my_index', $searchParameters);
+// perform the search and get the result
+$searchResult = $documentManager->search('my_index', $searchParameters);
 
 // get the total number of matching documents
-$total = $response->total(); 
+$total = $searchResult->total(); 
 
 // get the corresponding hits
-$hits = $response->hits();
+$hits = $searchResult->hits();
 
 // every hit provides access to the related index name, the score, the document, the highlight and the inner hits
 // in addition, you can get a raw representation of the hit
@@ -451,8 +451,8 @@ foreach ($hits as $hit) {
 }
 
 // get the suggestions
-$suggestions = $response->suggestions();
+$suggestions = $searchResult->suggestions();
 
 // get the aggregations
-$aggregations = $response->aggregations();
+$aggregations = $searchResult->aggregations();
 ```

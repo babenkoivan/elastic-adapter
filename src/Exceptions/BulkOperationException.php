@@ -6,30 +6,30 @@ use ErrorException;
 
 final class BulkOperationException extends ErrorException
 {
-    private array $response;
+    private array $rawResult;
 
-    public function __construct(array $response)
+    public function __construct(array $rawResult)
     {
-        $this->response = $response;
+        $this->rawResult = $rawResult;
 
-        parent::__construct($this->makeErrorFromResponse());
+        parent::__construct($this->makeErrorMessage());
     }
 
     public function context(): array
     {
         return [
-            'response' => $this->getResponse(),
+            'rawResult' => $this->rawResult,
         ];
     }
 
-    public function getResponse(): array
+    public function rawResult(): array
     {
-        return $this->response;
+        return $this->rawResult;
     }
 
-    private function makeErrorFromResponse(): string
+    private function makeErrorMessage(): string
     {
-        $items = $this->response['items'] ?? [];
+        $items = $this->rawResult['items'] ?? [];
         $count = count($items);
 
         $reason = sprintf(
@@ -51,7 +51,7 @@ final class BulkOperationException extends ErrorException
         }
 
         return sprintf(
-            '%s Catch the exception and use the %s::getResponse() method to get more details.',
+            '%s Catch the exception and use the %s::rawResult() method to get more details.',
             $reason,
             self::class
         );

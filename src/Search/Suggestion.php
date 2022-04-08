@@ -4,37 +4,37 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Support\Collection;
 
-final class Suggestion implements RawResponseInterface
+final class Suggestion implements RawInterface
 {
-    private array $suggestion;
+    private array $rawSuggestion;
 
-    public function __construct(array $suggestion)
+    public function __construct(array $rawSuggestion)
     {
-        $this->suggestion = $suggestion;
+        $this->rawSuggestion = $rawSuggestion;
     }
 
     public function text(): string
     {
-        return $this->suggestion['text'];
+        return $this->rawSuggestion['text'];
     }
 
     public function offset(): int
     {
-        return $this->suggestion['offset'];
+        return $this->rawSuggestion['offset'];
     }
 
     public function length(): int
     {
-        return $this->suggestion['length'];
+        return $this->rawSuggestion['length'];
     }
 
     public function options(): Collection
     {
-        return collect($this->suggestion['options']);
+        return collect($this->rawSuggestion['options']);
     }
 
     public function raw(): array
     {
-        return $this->suggestion;
+        return $this->rawSuggestion;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Search;
 
-interface RawResponseInterface
+interface RawInterface
 {
     public function raw(): array;
 }
