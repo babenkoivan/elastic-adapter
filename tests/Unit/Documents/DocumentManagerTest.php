@@ -5,7 +5,7 @@ namespace ElasticAdapter\Tests\Unit\Documents;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
 use ElasticAdapter\Documents\Routing;
-use ElasticAdapter\Exceptions\BulkRequestException;
+use ElasticAdapter\Exceptions\BulkOperationException;
 use ElasticAdapter\Search\SearchParameters;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,7 +17,7 @@ use stdClass;
  *
  * @uses   \ElasticAdapter\Documents\Document
  * @uses   \ElasticAdapter\Documents\Routing
- * @uses   \ElasticAdapter\Exceptions\BulkRequestException
+ * @uses   \ElasticAdapter\Exceptions\BulkOperationException
  * @uses   \ElasticAdapter\Search\Hit
  * @uses   \ElasticAdapter\Search\SearchParameters
  * @uses   \ElasticAdapter\Search\SearchResponse
@@ -298,7 +298,7 @@ final class DocumentManagerTest extends TestCase
                 'items' => [],
             ]);
 
-        $this->expectException(BulkRequestException::class);
+        $this->expectException(BulkOperationException::class);
 
         $documents = collect([
             new Document('1', ['title' => 'Doc 1']),

@@ -4,7 +4,7 @@ namespace ElasticAdapter\Exceptions;
 
 use ErrorException;
 
-final class BulkRequestException extends ErrorException
+final class BulkOperationException extends ErrorException
 {
     private array $response;
 

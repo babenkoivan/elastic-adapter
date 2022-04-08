@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Documents;
 
-use ElasticAdapter\Exceptions\BulkRequestException;
+use ElasticAdapter\Exceptions\BulkOperationException;
 use ElasticAdapter\Search\SearchParameters;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
@@ -46,7 +46,7 @@ class DocumentManager
         $response = $this->client->bulk($params);
 
         if ($response['errors']) {
-            throw new BulkRequestException($response);
+            throw new BulkOperationException($response);
         }
 
         return $this;
@@ -80,7 +80,7 @@ class DocumentManager
         $response = $this->client->bulk($params);
 
         if ($response['errors']) {
-            throw new BulkRequestException($response);
+            throw new BulkOperationException($response);
         }
 
         return $this;
