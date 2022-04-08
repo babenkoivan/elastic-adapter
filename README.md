@@ -316,18 +316,18 @@ $documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
 Search documents in the index:
 
 ```php
-// create a search request
-$request = new \ElasticAdapter\Search\SearchRequest();
+// configure search parameters
+$searchParameters = new \ElasticAdapter\Search\SearchParameters();
 
 // define the query
-$request->query([
+$searchParameters->query([
     'match' => [
         'message' => 'test'
     ]
 ]);
 
 // configure highlighting
-$request->highlight([
+$searchParameters->highlight([
     'fields' => [
         'message' => [
             'type' => 'plain',
@@ -339,7 +339,7 @@ $request->highlight([
 ]);
 
 // add suggestions
-$request->suggest([
+$searchParameters->suggest([
     'message_suggest' => [
         'text' => 'test',
         'term' => [
@@ -349,15 +349,15 @@ $request->suggest([
 ]);
 
 // enable source filtering
-$request->source(['message', 'post_date']);
+$searchParameters->source(['message', 'post_date']);
 
 // collapse fields
-$request->collapse([
+$searchParameters->collapse([
     'field' => 'user'
 ]);
 
 // aggregate data
-$request->aggregations([
+$searchParameters->aggregations([
     'max_likes' => [
         'max' => [
             'field' => 'likes'
@@ -366,13 +366,13 @@ $request->aggregations([
 ]);
 
 // sort documents
-$request->sort([
+$searchParameters->sort([
     ['post_date' => ['order' => 'asc']],
     '_score'
 ]);
 
 // rescore documents
-$request->rescore([
+$searchParameters->rescore([
     'window_size' => 50,
     'query' => [
         'rescore_query' => [
@@ -389,20 +389,20 @@ $request->rescore([
 ]);
 
 // add a post filter
-$request->postFilter([
+$searchParameters->postFilter([
     'term' => [
         'cover' => 'hard'
     ]
 ]);
 
 // track total hits
-$request->trackTotalHits(true);
+$searchParameters->trackTotalHits(true);
 
 // track scores
-$request->trackScores(true);
+$searchParameters->trackScores(true);
 
 // script fields
-$request->scriptFields([
+$searchParameters->scriptFields([
     'my_doubled_field' => [
         'script' => [
             'lang' => 'painless',
@@ -416,22 +416,22 @@ $request->scriptFields([
 ]);
 
 // boost indices
-$request->indicesBoost([
+$searchParameters->indicesBoost([
     ['my-alias' => 1.4],
     ['my-index' => 1.3],
 ]);
 
 // define the search type
-$request->searchType('query_then_fetch');
+$searchParameters->searchType('query_then_fetch');
 
 // set the preference
-$request->preference('_local');
+$searchParameters->preference('_local');
 
 // use pagination
-$request->from(0)->size(20);
+$searchParameters->from(0)->size(20);
 
 // execute the search request and get the response
-$response = $documentManager->search('my_index', $request);
+$response = $documentManager->search('my_index', $searchParameters);
 
 // get the total number of matching documents
 $total = $response->total(); 

@@ -3,7 +3,7 @@
 namespace ElasticAdapter\Documents;
 
 use ElasticAdapter\Exceptions\BulkRequestException;
-use ElasticAdapter\Search\SearchRequest;
+use ElasticAdapter\Search\SearchParameters;
 use ElasticAdapter\Search\SearchResponse;
 use Elasticsearch\Client;
 use Illuminate\Support\Collection;
@@ -99,9 +99,11 @@ class DocumentManager
         return $this;
     }
 
-    public function search(string $indexName, SearchRequest $request): SearchResponse
+    public function search(string $indexName, SearchParameters $searchParameters): SearchResponse
     {
-        $params = array_merge($request->toArray(), ['index' => $indexName]);
+        $params = $searchParameters->toArray();
+        $params['index'] = $indexName;
+
         $response = $this->client->search($params);
         return new SearchResponse($response);
     }

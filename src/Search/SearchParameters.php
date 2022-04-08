@@ -4,49 +4,49 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-final class SearchRequest implements Arrayable
+final class SearchParameters implements Arrayable
 {
-    private array $request;
+    private array $params;
 
     public function query(array $query): self
     {
-        $this->request['body']['query'] = $query;
+        $this->params['body']['query'] = $query;
         return $this;
     }
 
     public function highlight(array $highlight): self
     {
-        $this->request['body']['highlight'] = $highlight;
+        $this->params['body']['highlight'] = $highlight;
         return $this;
     }
 
     public function sort(array $sort): self
     {
-        $this->request['body']['sort'] = $sort;
+        $this->params['body']['sort'] = $sort;
         return $this;
     }
 
     public function rescore(array $rescore): self
     {
-        $this->request['body']['rescore'] = $rescore;
+        $this->params['body']['rescore'] = $rescore;
         return $this;
     }
 
     public function from(int $from): self
     {
-        $this->request['body']['from'] = $from;
+        $this->params['body']['from'] = $from;
         return $this;
     }
 
     public function size(int $size): self
     {
-        $this->request['body']['size'] = $size;
+        $this->params['body']['size'] = $size;
         return $this;
     }
 
     public function suggest(array $suggest): self
     {
-        $this->request['body']['suggest'] = $suggest;
+        $this->params['body']['suggest'] = $suggest;
         return $this;
     }
 
@@ -55,25 +55,25 @@ final class SearchRequest implements Arrayable
      */
     public function source($source): self
     {
-        $this->request['body']['_source'] = $source;
+        $this->params['body']['_source'] = $source;
         return $this;
     }
 
     public function collapse(array $collapse): self
     {
-        $this->request['body']['collapse'] = $collapse;
+        $this->params['body']['collapse'] = $collapse;
         return $this;
     }
 
     public function aggregations(array $aggregations): self
     {
-        $this->request['body']['aggregations'] = $aggregations;
+        $this->params['body']['aggregations'] = $aggregations;
         return $this;
     }
 
     public function postFilter(array $postFilter): self
     {
-        $this->request['body']['post_filter'] = $postFilter;
+        $this->params['body']['post_filter'] = $postFilter;
         return $this;
     }
 
@@ -82,48 +82,48 @@ final class SearchRequest implements Arrayable
      */
     public function trackTotalHits($trackTotalHits): self
     {
-        $this->request['body']['track_total_hits'] = $trackTotalHits;
+        $this->params['body']['track_total_hits'] = $trackTotalHits;
         return $this;
     }
 
     public function indicesBoost(array $indicesBoost): self
     {
-        $this->request['body']['indices_boost'] = $indicesBoost;
+        $this->params['body']['indices_boost'] = $indicesBoost;
         return $this;
     }
 
     public function trackScores(bool $trackScores): self
     {
-        $this->request['body']['track_scores'] = $trackScores;
+        $this->params['body']['track_scores'] = $trackScores;
         return $this;
     }
 
     public function minScore(float $minScore): self
     {
-        $this->request['body']['min_score'] = $minScore;
+        $this->params['body']['min_score'] = $minScore;
         return $this;
     }
 
     public function scriptFields(array $scriptFields): self
     {
-        $this->request['body']['script_fields'] = $scriptFields;
+        $this->params['body']['script_fields'] = $scriptFields;
         return $this;
     }
 
     public function searchType(string $searchType): self
     {
-        $this->request['search_type'] = $searchType;
+        $this->params['search_type'] = $searchType;
         return $this;
     }
 
     public function preference(string $preference): self
     {
-        $this->request['preference'] = $preference;
+        $this->params['preference'] = $preference;
         return $this;
     }
 
     public function toArray(): array
     {
-        return $this->request;
+        return $this->params;
     }
 }

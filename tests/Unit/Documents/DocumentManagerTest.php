@@ -6,7 +6,7 @@ use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Documents\DocumentManager;
 use ElasticAdapter\Documents\Routing;
 use ElasticAdapter\Exceptions\BulkRequestException;
-use ElasticAdapter\Search\SearchRequest;
+use ElasticAdapter\Search\SearchParameters;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ use stdClass;
  * @uses   \ElasticAdapter\Documents\Routing
  * @uses   \ElasticAdapter\Exceptions\BulkRequestException
  * @uses   \ElasticAdapter\Search\Hit
- * @uses   \ElasticAdapter\Search\SearchRequest
+ * @uses   \ElasticAdapter\Search\SearchParameters
  * @uses   \ElasticAdapter\Search\SearchResponse
  */
 final class DocumentManagerTest extends TestCase
@@ -269,11 +269,11 @@ final class DocumentManagerTest extends TestCase
                 ],
             ]);
 
-        $request = (new SearchRequest())->query([
+        $searchParameters = (new SearchParameters())->query([
             'match' => ['content' => 'foo'],
         ]);
 
-        $response = $this->documentManager->search('test', $request);
+        $response = $this->documentManager->search('test', $searchParameters);
 
         $this->assertSame(1, $response->total());
         $this->assertEquals(new Document('1', ['content' => 'foo']), $response->hits()[0]->document());
