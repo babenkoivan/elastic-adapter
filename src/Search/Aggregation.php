@@ -19,7 +19,7 @@ final class Aggregation implements RawResultInterface
     public function buckets(): Collection
     {
         $rawBuckets = $this->rawAggregation['buckets'] ?? [];
-        return collect($rawBuckets)->map(static fn (array $rawBucket) => new Bucket($rawBucket));
+        return collect($rawBuckets)->mapInto(Bucket::class);
     }
 
     public function raw(): array

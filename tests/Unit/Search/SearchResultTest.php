@@ -79,21 +79,19 @@ final class SearchResultTest extends TestCase
         ]);
 
         $this->assertEquals(collect([
-            'color_suggestion' => collect([
-                new Suggestion([
-                    'text' => 'red',
-                    'offset' => 0,
-                    'length' => 3,
-                    'options' => [],
-                ]),
-                new Suggestion([
-                    'text' => 'blue',
-                    'offset' => 4,
-                    'length' => 4,
-                    'options' => [],
-                ]),
+            new Suggestion([
+                'text' => 'red',
+                'offset' => 0,
+                'length' => 3,
+                'options' => [],
             ]),
-        ]), $searchResult->suggestions());
+            new Suggestion([
+                'text' => 'blue',
+                'offset' => 4,
+                'length' => 4,
+                'options' => [],
+            ]),
+        ]), $searchResult->suggestions()->get('color_suggestion'));
     }
 
     public function test_aggregations_can_be_retrieved(): void
@@ -107,11 +105,10 @@ final class SearchResultTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(collect([
-            'min_price' => new Aggregation([
-                'value' => 10,
-            ]),
-        ]), $searchResult->aggregations());
+        $this->assertEquals(
+            new Aggregation(['value' => 10]),
+            $searchResult->aggregations()->get('min_price')
+        );
     }
 
     public function test_raw_representation_can_be_retrieved(): void

@@ -143,6 +143,6 @@ final class HitTest extends TestCase
 
     public function test_inner_hits_total_can_be_retrieved(): void
     {
-        $this->assertSame(1, $this->hit->innerHitsTotal('nested'));
+        $this->assertSame(1, $this->hit->innerHitsTotal()->get('nested'));
     }
 }

@@ -42,15 +42,17 @@ final class Hit implements RawResultInterface
         $rawInnerHits = $this->rawHit['inner_hits'] ?? [];
 
         return collect($rawInnerHits)->map(
-            static fn (array $rawHits) => collect($rawHits['hits']['hits'])->map(
-                static fn (array $rawHit) => new self($rawHit)
-            )
+            static fn (array $rawHits) => collect($rawHits['hits']['hits'])->mapInto(self::class)
         );
     }
 
-    public function innerHitsTotal(string $innerHitsName): ?int
+    public function innerHitsTotal(): Collection
     {
-        return $this->rawHit['inner_hits'][$innerHitsName]['hits']['total']['value'] ?? null;
+        $rawInnerHits = $this->rawHit['inner_hits'] ?? [];
+
+        return collect($rawInnerHits)->map(
+            static fn (array $rawHits) => $rawHits['hits']['total']['value'] ?? null
+        );
     }
 
     public function raw(): array
