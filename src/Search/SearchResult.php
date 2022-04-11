@@ -19,7 +19,7 @@ final class SearchResult implements RawResultInterface
     public function hits(): Collection
     {
         $rawHits = $this->rawResult['hits']['hits'];
-        return collect($rawHits)->map(static fn (array $hit) => new Hit($hit));
+        return collect($rawHits)->map(static fn (array $rawHit) => new Hit($rawHit));
     }
 
     public function total(): ?int
@@ -32,8 +32,8 @@ final class SearchResult implements RawResultInterface
         $rawSuggest = $this->rawResult['suggest'] ?? [];
 
         return collect($rawSuggest)->map(
-            static fn (array $suggestions) => collect($suggestions)->map(
-                static fn (array $suggestion) => new Suggestion($suggestion)
+            static fn (array $rawSuggestions) => collect($rawSuggestions)->map(
+                static fn (array $rawSuggestion) => new Suggestion($rawSuggestion)
             )
         );
     }
@@ -44,7 +44,7 @@ final class SearchResult implements RawResultInterface
     public function aggregations(): Collection
     {
         $rawAggregations = $this->rawResult['aggregations'] ?? [];
-        return collect($rawAggregations)->map(static fn (array $aggregation) => new Aggregation($aggregation));
+        return collect($rawAggregations)->map(static fn (array $rawAggregation) => new Aggregation($rawAggregation));
     }
 
     public function raw(): array

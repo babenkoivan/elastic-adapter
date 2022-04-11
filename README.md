@@ -447,6 +447,7 @@ foreach ($hits as $hit) {
     $document = $hit->document();
     $highlight = $hit->highlight();
     $innerHits = $hit->innerHits();
+    $innerHitsTotal = $hit->innerHitsTotal($innerHitsName);
     $raw = $hit->raw();
 }
 
