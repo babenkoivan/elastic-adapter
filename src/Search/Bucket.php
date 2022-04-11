@@ -2,7 +2,7 @@
 
 namespace ElasticAdapter\Search;
 
-final class Bucket implements RawInterface
+final class Bucket implements RawResultInterface
 {
     private array $rawBucket;
 

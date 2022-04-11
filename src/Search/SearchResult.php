@@ -4,7 +4,7 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Support\Collection;
 
-final class SearchResult implements RawInterface
+final class SearchResult implements RawResultInterface
 {
     private array $rawResult;
 

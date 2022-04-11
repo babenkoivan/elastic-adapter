@@ -4,7 +4,7 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Support\Collection;
 
-final class Aggregation implements RawInterface
+final class Aggregation implements RawResultInterface
 {
     private array $rawAggregation;
 

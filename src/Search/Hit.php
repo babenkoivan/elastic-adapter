@@ -5,7 +5,7 @@ namespace ElasticAdapter\Search;
 use ElasticAdapter\Documents\Document;
 use Illuminate\Support\Collection;
 
-final class Hit implements RawInterface
+final class Hit implements RawResultInterface
 {
     private array $rawHit;
 

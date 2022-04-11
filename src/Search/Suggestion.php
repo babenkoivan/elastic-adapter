@@ -4,7 +4,7 @@ namespace ElasticAdapter\Search;
 
 use Illuminate\Support\Collection;
 
-final class Suggestion implements RawInterface
+final class Suggestion implements RawResultInterface
 {
     private array $rawSuggestion;
 
