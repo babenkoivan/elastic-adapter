@@ -2,15 +2,16 @@
 
 namespace ElasticAdapter\Search;
 
+use ArrayAccess;
 use Illuminate\Support\Collection;
 
-final class Aggregation implements RawResultInterface
+final class Aggregation implements ArrayAccess
 {
-    private array $rawAggregation;
+    use RawResult;
 
     public function __construct(array $rawAggregation)
     {
-        $this->rawAggregation = $rawAggregation;
+        $this->raw = $rawAggregation;
     }
 
     /**
@@ -18,12 +19,6 @@ final class Aggregation implements RawResultInterface
      */
     public function buckets(): Collection
     {
-        $rawBuckets = $this->rawAggregation['buckets'] ?? [];
-        return collect($rawBuckets)->mapInto(Bucket::class);
-    }
-
-    public function raw(): array
-    {
-        return $this->rawAggregation;
+        return collect($this->raw['buckets'] ?? [])->mapInto(Bucket::class);
     }
 }

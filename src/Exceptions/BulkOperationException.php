@@ -2,9 +2,9 @@
 
 namespace ElasticAdapter\Exceptions;
 
-use ErrorException;
+use Exception;
 
-final class BulkOperationException extends ErrorException
+final class BulkOperationException extends Exception
 {
     private array $rawResult;
 

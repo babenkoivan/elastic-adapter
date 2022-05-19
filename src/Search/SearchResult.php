@@ -2,15 +2,16 @@
 
 namespace ElasticAdapter\Search;
 
+use ArrayAccess;
 use Illuminate\Support\Collection;
 
-final class SearchResult implements RawResultInterface
+final class SearchResult implements ArrayAccess
 {
-    private array $rawResult;
+    use RawResult;
 
     public function __construct(array $rawResult)
     {
-        $this->rawResult = $rawResult;
+        $this->raw = $rawResult;
     }
 
     /**
@@ -18,20 +19,17 @@ final class SearchResult implements RawResultInterface
      */
     public function hits(): Collection
     {
-        $rawHits = $this->rawResult['hits']['hits'];
-        return collect($rawHits)->mapInto(Hit::class);
+        return collect($this->raw['hits']['hits'])->mapInto(Hit::class);
     }
 
     public function total(): ?int
     {
-        return $this->rawResult['hits']['total']['value'] ?? null;
+        return $this->raw['hits']['total']['value'] ?? null;
     }
 
     public function suggestions(): Collection
     {
-        $rawSuggest = $this->rawResult['suggest'] ?? [];
-
-        return collect($rawSuggest)->map(
+        return collect($this->raw['suggest'] ?? [])->map(
             static fn (array $rawSuggestions) => collect($rawSuggestions)->mapInto(Suggestion::class)
         );
     }
@@ -41,12 +39,6 @@ final class SearchResult implements RawResultInterface
      */
     public function aggregations(): Collection
     {
-        $rawAggregations = $this->rawResult['aggregations'] ?? [];
-        return collect($rawAggregations)->mapInto(Aggregation::class);
-    }
-
-    public function raw(): array
-    {
-        return $this->rawResult;
+        return collect($this->raw['aggregations'] ?? [])->mapInto(Aggregation::class);
     }
 }

@@ -33,12 +33,23 @@ final class AggregationTest extends TestCase
 
     public function test_buckets_can_be_retrieved(): void
     {
-        $this->assertEquals(collect([
-            new Bucket([
-                'key' => 'electronic',
-                'doc_count' => 6,
+        $this->assertEquals(
+            collect([
+                new Bucket([
+                    'key' => 'electronic',
+                    'doc_count' => 6,
+                ]),
             ]),
-        ]), $this->aggregation->buckets());
+            $this->aggregation->buckets()
+        );
+    }
+
+    public function test_bucket_keys_can_be_plucked(): void
+    {
+        $this->assertEquals(
+            collect(['electronic']),
+            $this->aggregation->buckets()->pluck('key')
+        );
     }
 
     public function test_raw_representation_can_be_retrieved(): void

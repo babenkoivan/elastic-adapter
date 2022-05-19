@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Tests\Unit\Search;
 
+use ElasticAdapter\Exceptions\RawResultReadOnlyException;
 use ElasticAdapter\Search\Aggregation;
 use ElasticAdapter\Search\Hit;
 use ElasticAdapter\Search\SearchResult;
@@ -109,6 +110,28 @@ final class SearchResultTest extends TestCase
             new Aggregation(['value' => 10]),
             $searchResult->aggregations()->get('min_price')
         );
+    }
+
+    public function test_raw_total_can_be_retrieved(): void
+    {
+        $searchResult = new SearchResult([
+            'hits' => [
+                'total' => ['value' => 1],
+            ],
+        ]);
+
+        $this->assertSame(
+            ['value' => 1],
+            $searchResult['hits']['total']
+        );
+    }
+
+    public function test_raw_data_can_not_be_modified(): void
+    {
+        $this->expectException(RawResultReadOnlyException::class);
+
+        $searchResult = new SearchResult([]);
+        $searchResult['total'] = 100;
     }
 
     public function test_raw_representation_can_be_retrieved(): void

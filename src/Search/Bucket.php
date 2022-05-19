@@ -2,18 +2,20 @@
 
 namespace ElasticAdapter\Search;
 
-final class Bucket implements RawResultInterface
+use ArrayAccess;
+
+final class Bucket implements ArrayAccess
 {
-    private array $rawBucket;
+    use RawResult;
 
     public function __construct(array $rawBucket)
     {
-        $this->rawBucket = $rawBucket;
+        $this->raw = $rawBucket;
     }
 
     public function docCount(): int
     {
-        return $this->rawBucket['doc_count'] ?? 0;
+        return $this->raw['doc_count'] ?? 0;
     }
 
     /**
@@ -21,11 +23,6 @@ final class Bucket implements RawResultInterface
      */
     public function key()
     {
-        return $this->rawBucket['key'];
-    }
-
-    public function raw(): array
-    {
-        return $this->rawBucket;
+        return $this->raw['key'];
     }
 }
