@@ -20,7 +20,8 @@ operations.
 ## Contents
 
 * [Compatibility](#compatibility)
-* [Installation](#installation) 
+* [Installation](#installation)
+* [Configuration](#configuration)
 * [Index Management](#index-management)
 * [Document Management](#document-management)
 
@@ -39,6 +40,18 @@ The library can be installed via Composer:
 ```bash
 composer require babenkoivan/elastic-adapter
 ```
+
+## Configuration
+
+Elastic Adapter uses [babenkoivan/elastic-client](https://github.com/babenkoivan/elastic-client) as a dependency.
+To change the client settings you need to publish the configuration file first:
+
+```bash
+php artisan vendor:publish --provider="Elastic\Client\ServiceProvider"
+```
+
+In the newly created `config/elastic.client.php` file you can define the default connection name and describe multiple
+connections using configuration hashes. Please refer to the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
 
 ## Index Management
 
