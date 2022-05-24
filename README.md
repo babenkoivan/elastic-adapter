@@ -52,7 +52,7 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
   ]
 ]);
 
-$indexManager = new \ElasticAdapter\Indices\IndexManager($client);
+$indexManager = new \Elastic\Adapter\Indices\IndexManager($client);
 ``` 
 
 The manager provides a set of useful methods, which are listed below. 
@@ -62,7 +62,7 @@ The manager provides a set of useful methods, which are listed below.
 Create an index, either with the default settings and mapping:
 
 ```php
-$index = new \ElasticAdapter\Indices\IndexBlueprint('my_index');
+$index = new \Elastic\Adapter\Indices\IndexBlueprint('my_index');
 
 $indexManager->create($index);
 ```
@@ -70,7 +70,7 @@ $indexManager->create($index);
 or configured according to your needs:
 
 ```php
-$mapping = (new \ElasticAdapter\Indices\Mapping())
+$mapping = (new \Elastic\Adapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -86,13 +86,13 @@ $mapping = (new \ElasticAdapter\Indices\Mapping())
         ],
     ]);
 
-$settings = (new \ElasticAdapter\Indices\Settings())
+$settings = (new \Elastic\Adapter\Indices\Settings())
     ->index([
         'number_of_replicas' => 2,
         'refresh_interval' => -1
     ]);
 
-$index = new \ElasticAdapter\Indices\IndexBlueprint('my_index', $mapping, $settings);
+$index = new \Elastic\Adapter\Indices\IndexBlueprint('my_index', $mapping, $settings);
 
 $indexManager->create($index);
 ```
@@ -128,7 +128,7 @@ $indexManager->drop('my_index');
 Update an index mapping using builder:
 
 ```php
-$mapping = (new \ElasticAdapter\Indices\Mapping())
+$mapping = (new \Elastic\Adapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -159,7 +159,7 @@ $indexManager->putMappingRaw('my_index', $mapping);
 Update an index settings using builder:
 
 ```php
-$settings = (new \ElasticAdapter\Indices\Settings())
+$settings = (new \Elastic\Adapter\Indices\Settings())
     ->analysis([
         'analyzer' => [
             'content' => [
@@ -211,7 +211,7 @@ $indexManager->close('my_index');
 Create an alias:
 
 ```php
-$alias = new \ElasticAdapter\Indices\Alias('my_alias', [
+$alias = new \Elastic\Adapter\Indices\Alias('my_alias', [
     'term' => [
         'user_id' => 12,
     ],
@@ -247,7 +247,7 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
   ]
 ]);
 
-$documentManager = new \ElasticAdapter\Documents\DocumentManager($client);
+$documentManager = new \Elastic\Adapter\Documents\DocumentManager($client);
 ``` 
 
 ### Index
@@ -256,8 +256,8 @@ Add a document to the index:
 
 ```php
 $documents = collect([
-    new ElasticAdapter\Documents\Document('1', ['title' => 'foo']),
-    new ElasticAdapter\Documents\Document('2', ['title' => 'bar']),
+    new \Elastic\Adapter\Documents\Document('1', ['title' => 'foo']),
+    new \Elastic\Adapter\Documents\Document('2', ['title' => 'bar']),
 ]);
 
 $documentManager->index('my_index', $documents);
@@ -272,7 +272,7 @@ $documentManager->index('my_index', $documents, true);
 Finally, you can set a custom routing:
 
 ```php
-$routing = (new ElasticAdapter\Documents\Routing())
+$routing = (new \Elastic\Adapter\Documents\Routing())
     ->add('1', 'value1')
     ->add('2', 'value2');
 
@@ -298,7 +298,7 @@ $documentManager->delete('my_index', $documentIds, true);
 You can also set a custom routing:
 
 ```php
-$routing = (new ElasticAdapter\Documents\Routing())
+$routing = (new \Elastic\Adapter\Documents\Routing())
     ->add('1', 'value1')
     ->add('2', 'value2');
 
@@ -317,7 +317,7 @@ Search documents in the index:
 
 ```php
 // configure search parameters
-$searchParameters = new \ElasticAdapter\Search\SearchParameters();
+$searchParameters = new \Elastic\Adapter\Search\SearchParameters();
 
 // define the query
 $searchParameters->query([

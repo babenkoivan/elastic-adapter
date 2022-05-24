@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Search;
+namespace Elastic\Adapter\Tests\Unit\Search;
 
-use ElasticAdapter\Exceptions\RawResultReadOnlyException;
-use ElasticAdapter\Search\Aggregation;
-use ElasticAdapter\Search\Hit;
-use ElasticAdapter\Search\SearchResult;
-use ElasticAdapter\Search\Suggestion;
+use Elastic\Adapter\Exceptions\RawResultReadOnlyException;
+use Elastic\Adapter\Search\Aggregation;
+use Elastic\Adapter\Search\Hit;
+use Elastic\Adapter\Search\SearchResult;
+use Elastic\Adapter\Search\Suggestion;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdapter\Search\SearchResult
+ * @covers \Elastic\Adapter\Search\SearchResult
  *
- * @uses   \ElasticAdapter\Search\Aggregation
- * @uses   \ElasticAdapter\Search\Hit
- * @uses   \ElasticAdapter\Search\Suggestion
+ * @uses   \Elastic\Adapter\Search\Aggregation
+ * @uses   \Elastic\Adapter\Search\Hit
+ * @uses   \Elastic\Adapter\Search\Suggestion
  */
 final class SearchResultTest extends TestCase
 {

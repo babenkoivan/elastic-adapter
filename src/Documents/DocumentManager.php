@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Documents;
+namespace Elastic\Adapter\Documents;
 
+use Elastic\Adapter\Client;
+use Elastic\Adapter\Exceptions\BulkOperationException;
+use Elastic\Adapter\Search\SearchParameters;
+use Elastic\Adapter\Search\SearchResult;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use ElasticAdapter\Client;
-use ElasticAdapter\Exceptions\BulkOperationException;
-use ElasticAdapter\Search\SearchParameters;
-use ElasticAdapter\Search\SearchResult;
 use Illuminate\Support\Collection;
 
 class DocumentManager

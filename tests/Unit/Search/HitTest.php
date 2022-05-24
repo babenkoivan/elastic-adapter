@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Search;
+namespace Elastic\Adapter\Tests\Unit\Search;
 
-use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Search\Highlight;
-use ElasticAdapter\Search\Hit;
+use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Search\Highlight;
+use Elastic\Adapter\Search\Hit;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdapter\Search\Hit
+ * @covers \Elastic\Adapter\Search\Hit
  *
- * @uses   \ElasticAdapter\Documents\Document
- * @uses   \ElasticAdapter\Search\Highlight
+ * @uses   \Elastic\Adapter\Documents\Document
+ * @uses   \Elastic\Adapter\Search\Highlight
  */
 final class HitTest extends TestCase
 {

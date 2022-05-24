@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Indices;
+namespace Elastic\Adapter\Indices;
 
+use Elastic\Adapter\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use ElasticAdapter\Client;
 use Illuminate\Support\Collection;
 
 class IndexManager

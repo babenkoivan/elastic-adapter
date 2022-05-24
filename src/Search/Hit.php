@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Search;
+namespace Elastic\Adapter\Search;
 
 use ArrayAccess;
-use ElasticAdapter\Documents\Document;
+use Elastic\Adapter\Documents\Document;
 use Illuminate\Support\Collection;
 
 final class Hit implements ArrayAccess

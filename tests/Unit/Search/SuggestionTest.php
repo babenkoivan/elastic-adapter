@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Search;
+namespace Elastic\Adapter\Tests\Unit\Search;
 
-use ElasticAdapter\Search\Suggestion;
+use Elastic\Adapter\Search\Suggestion;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdapter\Search\Suggestion
+ * @covers \Elastic\Adapter\Search\Suggestion
  */
 final class SuggestionTest extends TestCase
 {

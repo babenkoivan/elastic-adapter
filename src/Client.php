@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter;
+namespace Elastic\Adapter;
 
 use Elastic\Client\ClientBuilderInterface as ElasticClientBuilderInterface;
 use Elastic\Elasticsearch\Client as ElasticClient;

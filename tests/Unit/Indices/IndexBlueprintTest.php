@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Indices;
+namespace Elastic\Adapter\Tests\Unit\Indices;
 
-use ElasticAdapter\Indices\IndexBlueprint;
-use ElasticAdapter\Indices\Mapping;
-use ElasticAdapter\Indices\Settings;
+use Elastic\Adapter\Indices\IndexBlueprint;
+use Elastic\Adapter\Indices\Mapping;
+use Elastic\Adapter\Indices\Settings;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdapter\Indices\IndexBlueprint
+ * @covers \Elastic\Adapter\Indices\IndexBlueprint
  *
- * @uses   ElasticAdapter\Indices\Mapping
+ * @uses   \Elastic\Adapter\Indices\Mapping
  */
 class IndexBlueprintTest extends TestCase
 {

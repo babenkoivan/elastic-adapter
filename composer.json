@@ -28,12 +28,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "ElasticAdapter\\": "src"
+            "Elastic\\Adapter\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ElasticAdapter\\Tests\\": "tests"
+            "Elastic\\Adapter\\Tests\\": "tests"
         }
     },
     "require": {

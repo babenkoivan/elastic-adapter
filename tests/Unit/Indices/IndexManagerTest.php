@@ -1,27 +1,27 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Indices;
+namespace Elastic\Adapter\Tests\Unit\Indices;
 
+use Elastic\Adapter\Indices\Alias;
+use Elastic\Adapter\Indices\IndexBlueprint;
+use Elastic\Adapter\Indices\IndexManager;
+use Elastic\Adapter\Indices\Mapping;
+use Elastic\Adapter\Indices\Settings;
 use Elastic\Client\ClientBuilderInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Endpoints\Indices;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use ElasticAdapter\Indices\Alias;
-use ElasticAdapter\Indices\IndexBlueprint;
-use ElasticAdapter\Indices\IndexManager;
-use ElasticAdapter\Indices\Mapping;
-use ElasticAdapter\Indices\Settings;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ElasticAdapter\Indices\IndexManager
+ * @covers \Elastic\Adapter\Indices\IndexManager
  *
- * @uses   \ElasticAdapter\Indices\Alias
- * @uses   \ElasticAdapter\Indices\IndexBlueprint
- * @uses   \ElasticAdapter\Indices\Mapping
- * @uses   \ElasticAdapter\Indices\MappingProperties
- * @uses   \ElasticAdapter\Indices\Settings
+ * @uses   \Elastic\Adapter\Indices\Alias
+ * @uses   \Elastic\Adapter\Indices\IndexBlueprint
+ * @uses   \Elastic\Adapter\Indices\Mapping
+ * @uses   \Elastic\Adapter\Indices\MappingProperties
+ * @uses   \Elastic\Adapter\Indices\Settings
  */
 class IndexManagerTest extends TestCase
 {

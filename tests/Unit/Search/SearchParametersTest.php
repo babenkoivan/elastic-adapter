@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Search;
+namespace Elastic\Adapter\Tests\Unit\Search;
 
-use ElasticAdapter\Search\SearchParameters;
+use Elastic\Adapter\Search\SearchParameters;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticAdapter\Search\SearchParameters
+ * @covers \Elastic\Adapter\Search\SearchParameters
  */
 final class SearchParametersTest extends TestCase
 {

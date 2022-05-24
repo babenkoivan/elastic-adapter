@@ -1,29 +1,29 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Unit\Documents;
+namespace Elastic\Adapter\Tests\Unit\Documents;
 
+use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Documents\DocumentManager;
+use Elastic\Adapter\Documents\Routing;
+use Elastic\Adapter\Exceptions\BulkOperationException;
+use Elastic\Adapter\Search\Hit;
+use Elastic\Adapter\Search\SearchParameters;
 use Elastic\Client\ClientBuilderInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use ElasticAdapter\Documents\Document;
-use ElasticAdapter\Documents\DocumentManager;
-use ElasticAdapter\Documents\Routing;
-use ElasticAdapter\Exceptions\BulkOperationException;
-use ElasticAdapter\Search\Hit;
-use ElasticAdapter\Search\SearchParameters;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @covers \ElasticAdapter\Documents\DocumentManager
+ * @covers \Elastic\Adapter\Documents\DocumentManager
  *
- * @uses   \ElasticAdapter\Documents\Document
- * @uses   \ElasticAdapter\Documents\Routing
- * @uses   \ElasticAdapter\Exceptions\BulkOperationException
- * @uses   \ElasticAdapter\Search\Hit
- * @uses   \ElasticAdapter\Search\SearchParameters
- * @uses   \ElasticAdapter\Search\SearchResult
+ * @uses   \Elastic\Adapter\Documents\Document
+ * @uses   \Elastic\Adapter\Documents\Routing
+ * @uses   \Elastic\Adapter\Exceptions\BulkOperationException
+ * @uses   \Elastic\Adapter\Search\Hit
+ * @uses   \Elastic\Adapter\Search\SearchParameters
+ * @uses   \Elastic\Adapter\Search\SearchResult
  */
 final class DocumentManagerTest extends TestCase
 {

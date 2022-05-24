@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ElasticAdapter\Tests\Extensions;
+namespace Elastic\Adapter\Tests\Extensions;
 
 use DG\BypassFinals;
 use PHPUnit\Runner\BeforeTestHook;
