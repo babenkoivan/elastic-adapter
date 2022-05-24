@@ -14,9 +14,6 @@ final class Highlight implements ArrayAccess
         $this->raw = $rawHighlight;
     }
 
-    /**
-     * @return Collection|string[]
-     */
     public function snippets(string $field): Collection
     {
         return collect($this->raw[$field] ?? []);

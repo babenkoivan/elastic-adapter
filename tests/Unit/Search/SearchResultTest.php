@@ -120,12 +120,14 @@ final class SearchResultTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(
-            ['value' => 1],
-            $searchResult['hits']['total']
-        );
+        /** @var array $hits */
+        $hits = $searchResult['hits'];
+        $this->assertSame(['value' => 1], $hits['total']);
     }
 
+    /**
+     * @noinspection OnlyWritesOnParameterInspection
+     */
     public function test_raw_data_can_not_be_modified(): void
     {
         $this->expectException(RawResultReadOnlyException::class);

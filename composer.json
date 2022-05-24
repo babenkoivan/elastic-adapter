@@ -38,13 +38,14 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "elasticsearch/elasticsearch": "^7.3"
+        "babenkoivan/elastic-client": "2.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "phpstan/phpstan": "^0.12.32",
-        "orchestra/testbench": "^6.20"
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpstan/phpstan": "^1.6",
+        "orchestra/testbench": "^7.5",
+        "dg/bypass-finals": "^1.3"
     },
     "config": {
         "bin-dir": "bin"

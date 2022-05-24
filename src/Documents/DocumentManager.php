@@ -2,20 +2,16 @@
 
 namespace ElasticAdapter\Documents;
 
+use Elastic\Elasticsearch\Response\Elasticsearch;
+use ElasticAdapter\Client;
 use ElasticAdapter\Exceptions\BulkOperationException;
 use ElasticAdapter\Search\SearchParameters;
 use ElasticAdapter\Search\SearchResult;
-use Elasticsearch\Client;
 use Illuminate\Support\Collection;
 
 class DocumentManager
 {
-    private Client $client;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
+    use Client;
 
     /**
      * @param Collection|Document[] $documents
@@ -43,9 +39,11 @@ class DocumentManager
             $params['body'][] = $document->content();
         }
 
-        $rawResult = $this->client->bulk($params);
+        /** @var Elasticsearch $response */
+        $response = $this->client->bulk($params);
+        $rawResult = $response->asArray();
 
-        if ($rawResult['errors']) {
+        if ($rawResult['errors'] ?? false) {
             throw new BulkOperationException($rawResult);
         }
 
@@ -77,9 +75,11 @@ class DocumentManager
             $params['body'][] = compact('delete');
         }
 
-        $rawResult = $this->client->bulk($params);
+        /** @var Elasticsearch $response */
+        $response = $this->client->bulk($params);
+        $rawResult = $response->asArray();
 
-        if ($rawResult['errors']) {
+        if ($rawResult['errors'] ?? false) {
             throw new BulkOperationException($rawResult);
         }
 
@@ -104,7 +104,10 @@ class DocumentManager
         $params = $searchParameters->toArray();
         $params['index'] = $indexName;
 
-        $rawResult = $this->client->search($params);
+        /** @var Elasticsearch $response */
+        $response = $this->client->search($params);
+        $rawResult = $response->asArray();
+
         return new SearchResult($rawResult);
     }
 }

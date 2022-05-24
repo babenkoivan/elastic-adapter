@@ -5,6 +5,7 @@ namespace ElasticAdapter\Tests\Unit\Search;
 use ElasticAdapter\Documents\Document;
 use ElasticAdapter\Search\Highlight;
 use ElasticAdapter\Search\Hit;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -99,6 +100,7 @@ final class HitTest extends TestCase
             '_score' => 1.6,
         ]);
 
+        /** @var Collection $nestedInnerHits */
         $nestedInnerHits = $this->hit->innerHits()->get('nested');
 
         $this->assertCount(1, $nestedInnerHits);

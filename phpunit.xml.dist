@@ -9,6 +9,9 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
          colors="true">
+  <extensions>
+    <extension class="ElasticAdapter\Tests\Extensions\BypassFinalExtension" />
+  </extensions>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">src</directory>
