@@ -7,7 +7,12 @@ use ReturnTypeWillChange;
 
 trait RawResult
 {
-    private array $raw;
+    private array $rawResult;
+
+    public function __construct(array $rawResult)
+    {
+        $this->rawResult = $rawResult;
+    }
 
     /**
      * @param mixed $offset
@@ -17,7 +22,7 @@ trait RawResult
     #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
-        return isset($this->raw[$offset]);
+        return isset($this->rawResult[$offset]);
     }
 
     /**
@@ -28,7 +33,7 @@ trait RawResult
     #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        return $this->raw[$offset] ?? null;
+        return $this->rawResult[$offset] ?? null;
     }
 
     /**
@@ -56,6 +61,6 @@ trait RawResult
 
     public function raw(): array
     {
-        return $this->raw;
+        return $this->rawResult;
     }
 }

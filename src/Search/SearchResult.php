@@ -9,27 +9,22 @@ final class SearchResult implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawResult)
-    {
-        $this->raw = $rawResult;
-    }
-
     /**
      * @return Collection|Hit[]
      */
     public function hits(): Collection
     {
-        return collect($this->raw['hits']['hits'])->mapInto(Hit::class);
+        return collect($this->rawResult['hits']['hits'])->mapInto(Hit::class);
     }
 
     public function total(): ?int
     {
-        return $this->raw['hits']['total']['value'] ?? null;
+        return $this->rawResult['hits']['total']['value'] ?? null;
     }
 
     public function suggestions(): Collection
     {
-        return collect($this->raw['suggest'] ?? [])->map(
+        return collect($this->rawResult['suggest'] ?? [])->map(
             static fn (array $rawSuggestions) => collect($rawSuggestions)->mapInto(Suggestion::class)
         );
     }
@@ -39,6 +34,6 @@ final class SearchResult implements ArrayAccess
      */
     public function aggregations(): Collection
     {
-        return collect($this->raw['aggregations'] ?? [])->mapInto(Aggregation::class);
+        return collect($this->rawResult['aggregations'] ?? [])->mapInto(Aggregation::class);
     }
 }

@@ -8,14 +8,9 @@ final class Bucket implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawBucket)
-    {
-        $this->raw = $rawBucket;
-    }
-
     public function docCount(): int
     {
-        return $this->raw['doc_count'] ?? 0;
+        return $this->rawResult['doc_count'] ?? 0;
     }
 
     /**
@@ -23,6 +18,6 @@ final class Bucket implements ArrayAccess
      */
     public function key()
     {
-        return $this->raw['key'];
+        return $this->rawResult['key'];
     }
 }

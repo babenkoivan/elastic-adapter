@@ -10,41 +10,36 @@ final class Hit implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawHit)
-    {
-        $this->raw = $rawHit;
-    }
-
     public function indexName(): string
     {
-        return $this->raw['_index'];
+        return $this->rawResult['_index'];
     }
 
     public function score(): ?float
     {
-        return $this->raw['_score'];
+        return $this->rawResult['_score'];
     }
 
     public function document(): Document
     {
-        return new Document($this->raw['_id'], $this->raw['_source'] ?? []);
+        return new Document($this->rawResult['_id'], $this->rawResult['_source'] ?? []);
     }
 
     public function highlight(): ?Highlight
     {
-        return isset($this->raw['highlight']) ? new Highlight($this->raw['highlight']) : null;
+        return isset($this->rawResult['highlight']) ? new Highlight($this->rawResult['highlight']) : null;
     }
 
     public function innerHits(): Collection
     {
-        return collect($this->raw['inner_hits'] ?? [])->map(
+        return collect($this->rawResult['inner_hits'] ?? [])->map(
             static fn (array $rawHits) => collect($rawHits['hits']['hits'])->mapInto(self::class)
         );
     }
 
     public function innerHitsTotal(): Collection
     {
-        return collect($this->raw['inner_hits'] ?? [])->map(
+        return collect($this->rawResult['inner_hits'] ?? [])->map(
             static fn (array $rawHits) => $rawHits['hits']['total']['value'] ?? null
         );
     }

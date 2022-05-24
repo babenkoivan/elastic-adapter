@@ -9,28 +9,23 @@ final class Suggestion implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawSuggestion)
-    {
-        $this->raw = $rawSuggestion;
-    }
-
     public function text(): string
     {
-        return $this->raw['text'];
+        return $this->rawResult['text'];
     }
 
     public function offset(): int
     {
-        return $this->raw['offset'];
+        return $this->rawResult['offset'];
     }
 
     public function length(): int
     {
-        return $this->raw['length'];
+        return $this->rawResult['length'];
     }
 
     public function options(): Collection
     {
-        return collect($this->raw['options']);
+        return collect($this->rawResult['options']);
     }
 }

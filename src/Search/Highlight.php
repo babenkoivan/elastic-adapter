@@ -9,13 +9,8 @@ final class Highlight implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawHighlight)
-    {
-        $this->raw = $rawHighlight;
-    }
-
     public function snippets(string $field): Collection
     {
-        return collect($this->raw[$field] ?? []);
+        return collect($this->rawResult[$field] ?? []);
     }
 }

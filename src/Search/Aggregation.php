@@ -9,16 +9,11 @@ final class Aggregation implements ArrayAccess
 {
     use RawResult;
 
-    public function __construct(array $rawAggregation)
-    {
-        $this->raw = $rawAggregation;
-    }
-
     /**
      * @return Collection|Bucket[]
      */
     public function buckets(): Collection
     {
-        return collect($this->raw['buckets'] ?? [])->mapInto(Bucket::class);
+        return collect($this->rawResult['buckets'] ?? [])->mapInto(Bucket::class);
     }
 }
