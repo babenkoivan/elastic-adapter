@@ -147,6 +147,7 @@ class IndexManager
         return collect($rawResult[$indexName]['aliases'] ?? [])->map(
             static fn (array $parameters, string $name) => new Alias(
                 $name,
+                $parameters['is_write_index'] ?? false,
                 $parameters['filter'] ?? null,
                 $parameters['routing'] ?? null
             )
@@ -159,6 +160,10 @@ class IndexManager
             'index' => $indexName,
             'name' => $alias->name(),
         ];
+
+        if ($alias->isWriteIndex()) {
+            $params['body']['is_write_index'] = $alias->isWriteIndex();
+        }
 
         if ($alias->routing()) {
             $params['body']['routing'] = $alias->routing();

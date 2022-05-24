@@ -315,7 +315,7 @@ class IndexManagerTest extends TestCase
     public function test_alias_can_be_created(): void
     {
         $indexName = 'foo';
-        $alias = (new Alias('bar', ['term' => ['user_id' => 12]], '12'));
+        $alias = (new Alias('bar', true, ['term' => ['user_id' => 12]], '12'));
 
         $this->indices
             ->expects($this->once())
@@ -324,6 +324,7 @@ class IndexManagerTest extends TestCase
                 'index' => $indexName,
                 'name' => $alias->name(),
                 'body' => [
+                    'is_write_index' => true,
                     'routing' => '12',
                     'filter' => [
                         'term' => [

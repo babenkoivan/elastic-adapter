@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Elastic\Adapter\Search\SearchResult
  *
+ * @uses   \Elastic\Adapter\Exceptions\RawResultReadOnlyException
  * @uses   \Elastic\Adapter\Search\Aggregation
  * @uses   \Elastic\Adapter\Search\Hit
  * @uses   \Elastic\Adapter\Search\Suggestion
