@@ -10,5 +10,5 @@ parameters:
     - tests
   ignoreErrors:
     - '#Unable to resolve the template type (TKey|TValue) in call to function collect#'
-    - '#Parameter \#1 \$callback of method Illuminate\\Support\\Collection<.+?>::map\(\) expects callable\(.+?\): .+? given#'
+    - '#Parameter \#1 \$callback of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'
     - '#Return type of call to method PHPUnit\\Framework\\TestCase::createMock\(\) contains unresolvable type#'

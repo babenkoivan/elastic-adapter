@@ -51,7 +51,7 @@ php artisan vendor:publish --provider="Elastic\Client\ServiceProvider"
 ```
 
 In the newly created `config/elastic.client.php` file you can define the default connection name and describe multiple
-connections using configuration hashes. Please refer to the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
+connections using configuration hashes. Please, refer to the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
 
 ## Index Management
 
