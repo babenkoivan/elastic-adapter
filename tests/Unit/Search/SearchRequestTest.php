@@ -306,6 +306,45 @@ final class SearchRequestTest extends TestCase
         ], $request->toArray());
     }
 
+    public function test_array_casting_with_runtime_mapping(): void
+    {
+        $request = new SearchRequest([
+            'match_all' => new stdClass(),
+        ]);
+
+        $request->runtimeMappings([
+            [
+                'field1' => [
+                    'type' => 'keyword',
+                    'script' => 'for(i=0;i<5;i++) echo "hi"'
+                ],
+                'field2' => [
+                    'type' => 'keyword',
+                    'script' => 'for(i=0;i<10;i++) echo "hi"'
+                ],
+            ]
+        ]);
+        $this->assertEquals([
+            'body' => [
+                'query' => [
+                    'match_all' => new stdClass(),
+                ],
+                'runtime_mappings' => [
+                    [
+                        'field1' => [
+                            'type' => 'keyword',
+                            'script' => 'for(i=0;i<5;i++) echo "hi"'
+                        ],
+                        'field2' => [
+                            'type' => 'keyword',
+                            'script' => 'for(i=0;i<10;i++) echo "hi"'
+                        ],
+                    ]
+                ],
+            ],
+        ], $request->toArray());
+    }
+
     public function test_array_casting_with_track_total_hits(): void
     {
         $request = new SearchRequest([

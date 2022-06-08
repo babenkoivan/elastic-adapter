@@ -126,6 +126,12 @@ final class SearchRequest implements Arrayable
         return $this;
     }
 
+    public function runtimeMappings(array $runtimeMappings): self
+    {
+        $this->request['body']['runtime_mappings'] = $runtimeMappings;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->request;
