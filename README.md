@@ -14,7 +14,7 @@
 
 ---
 
-Elastic Adapter is an adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document 
+Elastic Adapter is an adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document
 operations.
 
 ## Contents
@@ -51,7 +51,8 @@ php artisan vendor:publish --provider="Elastic\Client\ServiceProvider"
 ```
 
 In the newly created `config/elastic.client.php` file you can define the default connection name and describe multiple
-connections using configuration hashes. Please, refer to the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
+connections using configuration hashes. Please, refer to
+the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
 
 ## Index Management
 
@@ -68,14 +69,14 @@ $client = \Elasticsearch\ClientBuilder::fromConfig([
 $indexManager = new \Elastic\Adapter\Indices\IndexManager($client);
 ``` 
 
-The manager provides a set of useful methods, which are listed below. 
+The manager provides a set of useful methods, which are listed below.
 
 ### Create
 
 Create an index, either with the default settings and mapping:
 
 ```php
-$index = new \Elastic\Adapter\Indices\IndexBlueprint('my_index');
+$index = new \Elastic\Adapter\Indices\Index('my_index');
 
 $indexManager->create($index);
 ```
@@ -105,7 +106,7 @@ $settings = (new \Elastic\Adapter\Indices\Settings())
         'refresh_interval' => -1
     ]);
 
-$index = new \Elastic\Adapter\Indices\IndexBlueprint('my_index', $mapping, $settings);
+$index = new \Elastic\Adapter\Indices\Index('my_index', $mapping, $settings);
 
 $indexManager->create($index);
 ```
@@ -224,13 +225,28 @@ $indexManager->close('my_index');
 Create an alias:
 
 ```php
-$alias = new \Elastic\Adapter\Indices\Alias('my_alias', [
+$alias = new \Elastic\Adapter\Indices\Alias('my_alias', true, [
     'term' => [
         'user_id' => 12,
     ],
 ]);
 
 $indexManager->putAlias('my_index', $alias);
+```
+
+The same with raw input:
+
+```php
+$settings = [
+    'is_write_index' => true,
+    'filter' => [
+        'term' => [
+            'user_id' => 12,
+        ],
+    ],
+];
+
+$indexManager->putSettingsRaw('my_index', 'my_alias', $settings);
 ```
 
 ### Get Aliases

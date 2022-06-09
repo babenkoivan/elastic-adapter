@@ -2,7 +2,7 @@
 
 namespace Elastic\Adapter\Indices;
 
-final class IndexBlueprint
+final class Index
 {
     private string $name;
     private ?Mapping $mapping;

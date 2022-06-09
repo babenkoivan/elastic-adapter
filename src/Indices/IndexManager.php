@@ -38,7 +38,7 @@ class IndexManager
         return $response->asBool();
     }
 
-    public function create(IndexBlueprint $index): self
+    public function create(Index $index): self
     {
         $params = [
             'index' => $index->name(),
@@ -132,28 +132,6 @@ class IndexManager
         return $this;
     }
 
-    /**
-     * @return Collection|Alias[]
-     */
-    public function getAliases(string $indexName): Collection
-    {
-        /** @var Elasticsearch $response */
-        $response = $this->client->indices()->getAlias([
-            'index' => $indexName,
-        ]);
-
-        $rawResult = $response->asArray();
-
-        return collect($rawResult[$indexName]['aliases'] ?? [])->map(
-            static fn (array $parameters, string $name) => new Alias(
-                $name,
-                $parameters['is_write_index'] ?? false,
-                $parameters['filter'] ?? null,
-                $parameters['routing'] ?? null
-            )
-        );
-    }
-
     public function putAlias(string $indexName, Alias $alias): self
     {
         $params = [
@@ -178,6 +156,22 @@ class IndexManager
         return $this;
     }
 
+    public function putAliasRaw(string $indexName, string $aliasName, ?array $settings = null): self
+    {
+        $params = [
+            'index' => $indexName,
+            'name' => $aliasName,
+        ];
+
+        if (isset($settings)) {
+            $params['body'] = $settings;
+        }
+
+        $this->client->indices()->putAlias($params);
+
+        return $this;
+    }
+
     public function deleteAlias(string $indexName, string $aliasName): self
     {
         $this->client->indices()->deleteAlias([
@@ -186,5 +180,17 @@ class IndexManager
         ]);
 
         return $this;
+    }
+
+    public function getAliases(string $indexName): Collection
+    {
+        /** @var Elasticsearch $response */
+        $response = $this->client->indices()->getAlias([
+            'index' => $indexName,
+        ]);
+
+        $rawResult = $response->asArray();
+
+        return collect(array_keys($rawResult[$indexName]['aliases'] ?? []));
     }
 }

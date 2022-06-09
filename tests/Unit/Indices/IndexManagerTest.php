@@ -3,7 +3,7 @@
 namespace Elastic\Adapter\Tests\Unit\Indices;
 
 use Elastic\Adapter\Indices\Alias;
-use Elastic\Adapter\Indices\IndexBlueprint;
+use Elastic\Adapter\Indices\Index;
 use Elastic\Adapter\Indices\IndexManager;
 use Elastic\Adapter\Indices\Mapping;
 use Elastic\Adapter\Indices\Settings;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Elastic\Adapter\Indices\IndexManager
  *
  * @uses   \Elastic\Adapter\Indices\Alias
- * @uses   \Elastic\Adapter\Indices\IndexBlueprint
+ * @uses   \Elastic\Adapter\Indices\Index
  * @uses   \Elastic\Adapter\Indices\Mapping
  * @uses   \Elastic\Adapter\Indices\MappingProperties
  * @uses   \Elastic\Adapter\Indices\Settings
@@ -96,7 +96,7 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_created_without_mapping_and_settings(): void
     {
-        $index = new IndexBlueprint('foo');
+        $index = new Index('foo');
 
         $this->indices
             ->expects($this->once())
@@ -111,7 +111,7 @@ class IndexManagerTest extends TestCase
     public function test_index_can_be_created_without_mapping(): void
     {
         $settings = (new Settings())->index(['number_of_replicas' => 2]);
-        $index = new IndexBlueprint('foo', null, $settings);
+        $index = new Index('foo', null, $settings);
 
         $this->indices
             ->expects($this->once())
@@ -133,7 +133,7 @@ class IndexManagerTest extends TestCase
     public function test_index_can_be_created_without_settings(): void
     {
         $mapping = (new Mapping())->text('foo');
-        $index = new IndexBlueprint('bar', $mapping);
+        $index = new Index('bar', $mapping);
 
         $this->indices
             ->expects($this->once())
@@ -156,7 +156,7 @@ class IndexManagerTest extends TestCase
 
     public function test_index_can_be_created_with_empty_settings_and_mapping(): void
     {
-        $index = new IndexBlueprint('foo', new Mapping(), new Settings());
+        $index = new Index('foo', new Mapping(), new Settings());
 
         $this->indices
             ->expects($this->once())
@@ -280,6 +280,67 @@ class IndexManagerTest extends TestCase
         $this->assertSame($this->indexManager, $this->indexManager->drop($indexName));
     }
 
+    public function test_alias_can_be_created(): void
+    {
+        $indexName = 'foo';
+        $alias = (new Alias('bar', true, ['term' => ['user_id' => 12]], '12'));
+
+        $this->indices
+            ->expects($this->once())
+            ->method('putAlias')
+            ->with([
+                'index' => $indexName,
+                'name' => $alias->name(),
+                'body' => [
+                    'is_write_index' => true,
+                    'routing' => '12',
+                    'filter' => [
+                        'term' => [
+                            'user_id' => 12,
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->putAlias($indexName, $alias));
+    }
+
+    public function test_alias_can_be_created_with_raw_data(): void
+    {
+        $indexName = 'foo';
+        $aliasName = 'bar';
+        $settings = ['routing' => '1'];
+
+        $this->indices
+            ->expects($this->once())
+            ->method('putAlias')
+            ->with([
+                'index' => $indexName,
+                'name' => $aliasName,
+                'body' => [
+                    'routing' => '1',
+                ],
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->putAliasRaw($indexName, $aliasName, $settings));
+    }
+
+    public function test_alias_can_be_deleted(): void
+    {
+        $indexName = 'foo';
+        $aliasName = 'bar';
+
+        $this->indices
+            ->expects($this->once())
+            ->method('deleteAlias')
+            ->with([
+                'index' => $indexName,
+                'name' => $aliasName,
+            ]);
+
+        $this->assertSame($this->indexManager, $this->indexManager->deleteAlias($indexName, $aliasName));
+    }
+
     public function test_aliases_can_be_retrieved(): void
     {
         $indexName = 'foo';
@@ -307,50 +368,9 @@ class IndexManagerTest extends TestCase
             ->willReturn($response);
 
         $this->assertEquals(
-            collect([$aliasName => new Alias($aliasName)]),
+            collect([$aliasName]),
             $this->indexManager->getAliases($indexName)
         );
-    }
-
-    public function test_alias_can_be_created(): void
-    {
-        $indexName = 'foo';
-        $alias = (new Alias('bar', true, ['term' => ['user_id' => 12]], '12'));
-
-        $this->indices
-            ->expects($this->once())
-            ->method('putAlias')
-            ->with([
-                'index' => $indexName,
-                'name' => $alias->name(),
-                'body' => [
-                    'is_write_index' => true,
-                    'routing' => '12',
-                    'filter' => [
-                        'term' => [
-                            'user_id' => 12,
-                        ],
-                    ],
-                ],
-            ]);
-
-        $this->assertSame($this->indexManager, $this->indexManager->putAlias($indexName, $alias));
-    }
-
-    public function test_alias_can_be_deleted(): void
-    {
-        $indexName = 'foo';
-        $aliasName = 'bar';
-
-        $this->indices
-            ->expects($this->once())
-            ->method('deleteAlias')
-            ->with([
-                'index' => $indexName,
-                'name' => $aliasName,
-            ]);
-
-        $this->assertSame($this->indexManager, $this->indexManager->deleteAlias($indexName, $aliasName));
     }
 
     /**
