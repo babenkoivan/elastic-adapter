@@ -246,7 +246,7 @@ $settings = [
     ],
 ];
 
-$indexManager->putSettingsRaw('my_index', 'my_alias', $settings);
+$indexManager->putAliasRaw('my_index', 'my_alias', $settings);
 ```
 
 ### Get Aliases
