@@ -29,6 +29,10 @@ final class HitTest extends TestCase
                 'title' => 'foo',
             ],
             '_score' => 1.3,
+            'sort' => [
+                '2021-05-20T05:30:04.832Z',
+                4294967298,
+            ],
             'highlight' => [
                 'title' => [
                     ' <em>foo</em> ',
@@ -61,6 +65,16 @@ final class HitTest extends TestCase
         $this->assertSame('test', $this->hit->indexName());
     }
 
+    public function test_score_can_be_retrieved(): void
+    {
+        $this->assertSame(1.3, $this->hit->score());
+    }
+
+    public function test_sort_can_be_retrieved(): void
+    {
+        $this->assertSame(['2021-05-20T05:30:04.832Z', 4294967298], $this->hit->sort());
+    }
+
     public function test_document_can_be_retrieved(): void
     {
         $this->assertEquals(
@@ -82,11 +96,6 @@ final class HitTest extends TestCase
         $hit = new Hit(['_id' => '1']);
 
         $this->assertNull($hit->highlight());
-    }
-
-    public function test_score_can_be_retrieved(): void
-    {
-        $this->assertSame(1.3, $this->hit->score());
     }
 
     public function test_inner_hits_can_be_retrieved(): void
@@ -116,6 +125,10 @@ final class HitTest extends TestCase
                 'title' => 'foo',
             ],
             '_score' => 1.3,
+            'sort' => [
+                '2021-05-20T05:30:04.832Z',
+                4294967298,
+            ],
             'highlight' => [
                 'title' => [
                     ' <em>foo</em> ',

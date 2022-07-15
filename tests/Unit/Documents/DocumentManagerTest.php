@@ -330,16 +330,12 @@ final class DocumentManagerTest extends TestCase
         $defaultClient = $this->createMock(Client::class);
         $defaultClient->method('setAsync')->willReturnSelf();
 
-        $testClient = $this->createMock(Client::class);
-        $testClient->method('setAsync')->willReturnSelf();
-
-        $clientBuilder = $this->createMock(ClientBuilderInterface::class);
-        $clientBuilder->method('default')->willReturn($defaultClient);
-        $clientBuilder->method('connection')->with('test')->willReturn($testClient);
-
         $defaultClient
             ->expects($this->never())
             ->method('bulk');
+
+        $testClient = $this->createMock(Client::class);
+        $testClient->method('setAsync')->willReturnSelf();
 
         $testClient
             ->expects($this->once())
@@ -355,6 +351,10 @@ final class DocumentManagerTest extends TestCase
             ->willReturn(
                 $this->createMock(Elasticsearch::class)
             );
+
+        $clientBuilder = $this->createMock(ClientBuilderInterface::class);
+        $clientBuilder->method('default')->willReturn($defaultClient);
+        $clientBuilder->method('connection')->with('test')->willReturn($testClient);
 
         (new DocumentManager($clientBuilder))
             ->connection('test')

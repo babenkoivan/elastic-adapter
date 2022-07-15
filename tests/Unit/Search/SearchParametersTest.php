@@ -337,4 +337,34 @@ final class SearchParametersTest extends TestCase
             'preference' => '_local',
         ], $searchParameters->toArray());
     }
+
+    public function test_array_casting_with_point_in_time(): void
+    {
+        $searchParameters = (new SearchParameters())->pointInTime([
+            'id' => '46ToAwMDaWR5BXV1',
+            'keep_alive' => '1m',
+        ]);
+
+        $this->assertEquals([
+            'pit' => [
+                'id' => '46ToAwMDaWR5BXV1',
+                'keep_alive' => '1m',
+            ],
+        ], $searchParameters->toArray());
+    }
+
+    public function test_array_casting_with_search_after(): void
+    {
+        $searchParameters = (new SearchParameters())->searchAfter([
+            '2021-05-20T05:30:04.832Z',
+            4294967298,
+        ]);
+
+        $this->assertEquals([
+            'search_after' => [
+                '2021-05-20T05:30:04.832Z',
+                4294967298,
+            ],
+        ], $searchParameters->toArray());
+    }
 }

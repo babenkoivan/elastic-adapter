@@ -14,7 +14,7 @@
 
 ---
 
-Elastic Adapter is an adapter for official PHP Elasticsearch client. It's designed to simplify basic index and document
+Elastic Adapter is an adapter for the official PHP Elasticsearch client. It's designed to simplify basic index and document
 operations.
 
 ## Contents
@@ -24,6 +24,7 @@ operations.
 * [Configuration](#configuration)
 * [Index Management](#index-management)
 * [Document Management](#document-management)
+* [Point in Time Management](#point-in-time-management)
 
 ## Compatibility
 
@@ -56,20 +57,7 @@ the [elastic-client documentation](https://github.com/babenkoivan/elastic-client
 
 ## Index Management
 
-`IndexManager` can be used to manipulate indices. It uses Elasticsearch client as a dependency,
-therefore you need to initiate the client before you create an `IndexManager` instance:
-
-```php
-$client = \Elasticsearch\ClientBuilder::fromConfig([
-  'hosts' => [
-      'localhost:9200'
-  ]
-]);
-
-$indexManager = new \Elastic\Adapter\Indices\IndexManager($client);
-``` 
-
-The manager provides a set of useful methods, which are listed below.
+`\Elastic\Adapter\Indices\IndexManager` is used to manipulate indices.
 
 ### Create
 
@@ -265,19 +253,17 @@ Delete an alias:
 $indexManager->deleteAlias('my_index', 'my_alias');
 ```
 
-## Document Management
+### Connection
 
-Similarly to `IndexManager`, the `DocumentManager` class also depends on Elasticsearch client:
+Switch Elasticsearch connection:
 
 ```php
-$client = \Elasticsearch\ClientBuilder::fromConfig([
-  'hosts' => [
-      'localhost:9200'
-  ]
-]);
+$indexManager->connection('my_connection');
+```
 
-$documentManager = new \Elastic\Adapter\Documents\DocumentManager($client);
-``` 
+## Document Management
+
+`\Elastic\Adapter\Documents\DocumentManager` is used to manage and search documents. 
 
 ### Index
 
@@ -459,6 +445,17 @@ $searchParameters->preference('_local');
 // use pagination
 $searchParameters->from(0)->size(20);
 
+// search after
+$searchParameters->pointInTime([
+    'id' => '46ToAwMDaWR5BXV1',
+    'keep_alive' => '1m',
+]);
+
+$searchParameters->searchAfter([
+    '2021-05-20T05:30:04.832Z',
+    4294967298,
+]);
+
 // perform the search and get the result
 $searchResult = $documentManager->search('my_index', $searchParameters);
 
@@ -480,9 +477,44 @@ foreach ($hits as $hit) {
     $raw = $hit->raw();
 }
 
-// get the suggestions
+// get suggestions
 $suggestions = $searchResult->suggestions();
 
-// get the aggregations
+// get aggregations
 $aggregations = $searchResult->aggregations();
+```
+
+### Connection
+
+Switch Elasticsearch connection:
+
+```php
+$documentManager->connection('my_connection');
+```
+
+## Point in Time Management
+
+`\Elastic\Adapter\Search\PointInTimeManager` is used to control points in time.
+
+### Open
+
+Open a point in time:
+
+```php
+$pointInTimeId = $pointInTimeManager->open('my_index', '1m');
+```
+### Close
+
+Close a point in time:
+
+```php
+$pointInTimeManager->close($pointInTimeId);
+```
+
+### Connection
+
+Switch Elasticsearch connection:
+
+```php
+$pointInTimeManager->connection('my_connection');
 ```

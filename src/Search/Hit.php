@@ -17,7 +17,12 @@ final class Hit implements ArrayAccess
 
     public function score(): ?float
     {
-        return $this->rawResult['_score'];
+        return $this->rawResult['_score'] ?? null;
+    }
+
+    public function sort(): ?array
+    {
+        return $this->rawResult['sort'] ?? null;
     }
 
     public function document(): Document

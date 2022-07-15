@@ -122,6 +122,18 @@ final class SearchParameters implements Arrayable
         return $this;
     }
 
+    public function pointInTime(array $pointInTime): self
+    {
+        $this->params['pit'] = $pointInTime;
+        return $this;
+    }
+
+    public function searchAfter(array $searchAfter): self
+    {
+        $this->params['search_after'] = $searchAfter;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->params;
