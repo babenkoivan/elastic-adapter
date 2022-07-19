@@ -99,10 +99,9 @@ class DocumentManager
         return $this;
     }
 
-    public function search(string $indexName, SearchParameters $searchParameters): SearchResult
+    public function search(SearchParameters $searchParameters): SearchResult
     {
         $params = $searchParameters->toArray();
-        $params['index'] = $indexName;
 
         /** @var Elasticsearch $response */
         $response = $this->client->search($params);

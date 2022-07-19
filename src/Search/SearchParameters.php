@@ -8,6 +8,12 @@ final class SearchParameters implements Arrayable
 {
     private array $params;
 
+    public function index(string ...$indexName): self
+    {
+        $this->params['index'] = implode(',', $indexName);
+        return $this;
+    }
+
     public function query(array $query): self
     {
         $this->params['body']['query'] = $query;
@@ -124,13 +130,13 @@ final class SearchParameters implements Arrayable
 
     public function pointInTime(array $pointInTime): self
     {
-        $this->params['pit'] = $pointInTime;
+        $this->params['body']['pit'] = $pointInTime;
         return $this;
     }
 
     public function searchAfter(array $searchAfter): self
     {
-        $this->params['search_after'] = $searchAfter;
+        $this->params['body']['search_after'] = $searchAfter;
         return $this;
     }
 

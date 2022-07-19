@@ -334,6 +334,9 @@ Search documents in the index:
 // configure search parameters
 $searchParameters = new \Elastic\Adapter\Search\SearchParameters();
 
+// specify one or more indices to search in
+$searchParameters->index('my_index1', 'my_index2');
+
 // define the query
 $searchParameters->query([
     'match' => [
@@ -457,7 +460,7 @@ $searchParameters->searchAfter([
 ]);
 
 // perform the search and get the result
-$searchResult = $documentManager->search('my_index', $searchParameters);
+$searchResult = $documentManager->search($searchParameters);
 
 // get the total number of matching documents
 $total = $searchResult->total(); 

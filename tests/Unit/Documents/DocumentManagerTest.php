@@ -272,13 +272,15 @@ final class DocumentManagerTest extends TestCase
             ])
             ->willReturn($response);
 
-        $searchParameters = (new SearchParameters())->query([
-            'match' => [
-                'content' => 'foo',
-            ],
-        ]);
+        $searchParameters = (new SearchParameters())
+            ->index('test')
+            ->query([
+                'match' => [
+                    'content' => 'foo',
+                ],
+            ]);
 
-        $searchResult = $this->documentManager->search('test', $searchParameters);
+        $searchResult = $this->documentManager->search($searchParameters);
         $this->assertSame(1, $searchResult->total());
 
         /** @var Hit $firstHit */

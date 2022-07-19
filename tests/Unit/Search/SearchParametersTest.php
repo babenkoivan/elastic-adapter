@@ -13,6 +13,12 @@ use stdClass;
  */
 final class SearchParametersTest extends TestCase
 {
+    public function test_array_casting_with_index_names(): void
+    {
+        $searchParameters = (new SearchParameters())->index('foo', 'bar');
+        $this->assertSame(['index' => 'foo,bar'], $searchParameters->toArray());
+    }
+
     public function test_array_casting_with_query(): void
     {
         $searchParameters = (new SearchParameters())->query([
@@ -346,9 +352,11 @@ final class SearchParametersTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'pit' => [
-                'id' => '46ToAwMDaWR5BXV1',
-                'keep_alive' => '1m',
+            'body' => [
+                'pit' => [
+                    'id' => '46ToAwMDaWR5BXV1',
+                    'keep_alive' => '1m',
+                ],
             ],
         ], $searchParameters->toArray());
     }
@@ -361,9 +369,11 @@ final class SearchParametersTest extends TestCase
         ]);
 
         $this->assertEquals([
-            'search_after' => [
-                '2021-05-20T05:30:04.832Z',
-                4294967298,
+            'body' => [
+                'search_after' => [
+                    '2021-05-20T05:30:04.832Z',
+                    4294967298,
+                ],
             ],
         ], $searchParameters->toArray());
     }
