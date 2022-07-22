@@ -273,7 +273,7 @@ final class DocumentManagerTest extends TestCase
             ->willReturn($response);
 
         $searchParameters = (new SearchParameters())
-            ->index('test')
+            ->indices(['test'])
             ->query([
                 'match' => [
                     'content' => 'foo',

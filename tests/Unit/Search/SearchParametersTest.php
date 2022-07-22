@@ -13,9 +13,9 @@ use stdClass;
  */
 final class SearchParametersTest extends TestCase
 {
-    public function test_array_casting_with_index_names(): void
+    public function test_array_casting_with_indices(): void
     {
-        $searchParameters = (new SearchParameters())->index('foo', 'bar');
+        $searchParameters = (new SearchParameters())->indices(['foo', 'bar']);
         $this->assertSame(['index' => 'foo,bar'], $searchParameters->toArray());
     }
 
@@ -376,5 +376,11 @@ final class SearchParametersTest extends TestCase
                 ],
             ],
         ], $searchParameters->toArray());
+    }
+
+    public function test_array_casting_with_routing(): void
+    {
+        $searchParameters = (new SearchParameters())->routing(['foo', 'bar']);
+        $this->assertSame(['routing' => 'foo,bar'], $searchParameters->toArray());
     }
 }

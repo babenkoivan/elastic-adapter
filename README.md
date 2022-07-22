@@ -334,8 +334,8 @@ Search documents in the index:
 // configure search parameters
 $searchParameters = new \Elastic\Adapter\Search\SearchParameters();
 
-// specify one or more indices to search in
-$searchParameters->index('my_index1', 'my_index2');
+// specify indices to search in
+$searchParameters->indices(['my_index1', 'my_index2']);
 
 // define the query
 $searchParameters->query([
@@ -458,6 +458,9 @@ $searchParameters->searchAfter([
     '2021-05-20T05:30:04.832Z',
     4294967298,
 ]);
+
+// use custom routing
+$searchParameters->routing(['user1', 'user2']);
 
 // perform the search and get the result
 $searchResult = $documentManager->search($searchParameters);
