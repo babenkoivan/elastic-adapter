@@ -1,21 +1,6 @@
-# Elastic Adapter
+# OpenSearch Adapter
 
-[![Latest Stable Version](https://poser.pugx.org/babenkoivan/elastic-adapter/v/stable)](https://packagist.org/packages/babenkoivan/elastic-adapter)
-[![Total Downloads](https://poser.pugx.org/babenkoivan/elastic-adapter/downloads)](https://packagist.org/packages/babenkoivan/elastic-adapter)
-[![License](https://poser.pugx.org/babenkoivan/elastic-adapter/license)](https://packagist.org/packages/babenkoivan/elastic-adapter)
-[![Tests](https://github.com/babenkoivan/elastic-adapter/workflows/Tests/badge.svg)](https://github.com/babenkoivan/elastic-adapter/actions?query=workflow%3ATests)
-[![Code style](https://github.com/babenkoivan/elastic-adapter/workflows/Code%20style/badge.svg)](https://github.com/babenkoivan/elastic-adapter/actions?query=workflow%3A%22Code+style%22)
-[![Static analysis](https://github.com/babenkoivan/elastic-adapter/workflows/Static%20analysis/badge.svg)](https://github.com/babenkoivan/elastic-adapter/actions?query=workflow%3A%22Static+analysis%22)
-[![Donate PayPal](https://img.shields.io/badge/donate-paypal-blue)](https://paypal.me/babenkoi)
-
-<p align="center">
-    <a href="https://ko-fi.com/ivanbabenko" target="_blank"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support the project!"></a>
-</p>
-
----
-
-Elastic Adapter is an adapter for the official PHP Elasticsearch client. It's designed to simplify basic index and document
-operations.
+OpenSearch Adapter is an adapter for the official PHP OpenSearch client. It's designed to simplify basic index and document operations.
 
 ## Contents
 
@@ -28,10 +13,10 @@ operations.
 
 ## Compatibility
 
-The current version of Elastic Adapter has been tested with the following configuration:
+The current version of OpenSearch Adapter has been tested with the following configuration:
 
 * PHP 7.4-8.x
-* Elasticsearch 8.x
+* OpenSearch 1.x
 * Laravel 6.x-8.x
 
 ## Installation
@@ -39,32 +24,32 @@ The current version of Elastic Adapter has been tested with the following config
 The library can be installed via Composer:
 
 ```bash
-composer require babenkoivan/elastic-adapter
+composer require friendsofcat/opensearch-adapter
 ```
 
 ## Configuration
 
-Elastic Adapter uses [babenkoivan/elastic-client](https://github.com/babenkoivan/elastic-client) as a dependency.
+OpenSearch Adapter uses [`friendsofcat/opensearch-client`](https://github.com/friendsofcat/opensearch-client) as a dependency.
 To change the client settings you need to publish the configuration file first:
 
 ```bash
-php artisan vendor:publish --provider="Elastic\Client\ServiceProvider"
+php artisan vendor:publish --provider="OpenSearch\Laravel\Client\ServiceProvider"
 ```
 
-In the newly created `config/elastic.client.php` file you can define the default connection name and describe multiple
+In the newly created `config/opensearch.client.php` file you can define the default connection name and describe multiple
 connections using configuration hashes. Please, refer to
-the [elastic-client documentation](https://github.com/babenkoivan/elastic-client) for more details.
+the [opensearch-client documentation](https://github.com/friendsofcat/opensearch-client) for more details.
 
 ## Index Management
 
-`\Elastic\Adapter\Indices\IndexManager` is used to manipulate indices.
+`\OpenSearch\Adapter\Indices\IndexManager` is used to manipulate indices.
 
 ### Create
 
 Create an index, either with the default settings and mapping:
 
 ```php
-$index = new \Elastic\Adapter\Indices\Index('my_index');
+$index = new \OpenSearch\Adapter\Indices\Index('my_index');
 
 $indexManager->create($index);
 ```
@@ -72,7 +57,7 @@ $indexManager->create($index);
 or configured according to your needs:
 
 ```php
-$mapping = (new \Elastic\Adapter\Indices\Mapping())
+$mapping = (new \OpenSearch\Adapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -88,13 +73,13 @@ $mapping = (new \Elastic\Adapter\Indices\Mapping())
         ],
     ]);
 
-$settings = (new \Elastic\Adapter\Indices\Settings())
+$settings = (new \OpenSearch\Adapter\Indices\Settings())
     ->index([
         'number_of_replicas' => 2,
         'refresh_interval' => -1
     ]);
 
-$index = new \Elastic\Adapter\Indices\Index('my_index', $mapping, $settings);
+$index = new \OpenSearch\Adapter\Indices\Index('my_index', $mapping, $settings);
 
 $indexManager->create($index);
 ```
@@ -130,7 +115,7 @@ $indexManager->drop('my_index');
 Update an index mapping using builder:
 
 ```php
-$mapping = (new \Elastic\Adapter\Indices\Mapping())
+$mapping = (new \OpenSearch\Adapter\Indices\Mapping())
     ->text('title', [
         'boost' => 2,
     ])
@@ -161,7 +146,7 @@ $indexManager->putMappingRaw('my_index', $mapping);
 Update an index settings using builder:
 
 ```php
-$settings = (new \Elastic\Adapter\Indices\Settings())
+$settings = (new \OpenSearch\Adapter\Indices\Settings())
     ->analysis([
         'analyzer' => [
             'content' => [
@@ -213,7 +198,7 @@ $indexManager->close('my_index');
 Create an alias:
 
 ```php
-$alias = new \Elastic\Adapter\Indices\Alias('my_alias', true, [
+$alias = new \OpenSearch\Adapter\Indices\Alias('my_alias', true, [
     'term' => [
         'user_id' => 12,
     ],
@@ -255,7 +240,7 @@ $indexManager->deleteAlias('my_index', 'my_alias');
 
 ### Connection
 
-Switch Elasticsearch connection:
+Switch OpenSearch connection:
 
 ```php
 $indexManager->connection('my_connection');
@@ -263,7 +248,7 @@ $indexManager->connection('my_connection');
 
 ## Document Management
 
-`\Elastic\Adapter\Documents\DocumentManager` is used to manage and search documents. 
+`\OpenSearch\Adapter\Documents\DocumentManager` is used to manage and search documents. 
 
 ### Index
 
@@ -271,8 +256,8 @@ Add a document to the index:
 
 ```php
 $documents = collect([
-    new \Elastic\Adapter\Documents\Document('1', ['title' => 'foo']),
-    new \Elastic\Adapter\Documents\Document('2', ['title' => 'bar']),
+    new \OpenSearch\Adapter\Documents\Document('1', ['title' => 'foo']),
+    new \OpenSearch\Adapter\Documents\Document('2', ['title' => 'bar']),
 ]);
 
 $documentManager->index('my_index', $documents);
@@ -287,7 +272,7 @@ $documentManager->index('my_index', $documents, true);
 Finally, you can set a custom routing:
 
 ```php
-$routing = (new \Elastic\Adapter\Documents\Routing())
+$routing = (new \OpenSearch\Adapter\Documents\Routing())
     ->add('1', 'value1')
     ->add('2', 'value2');
 
@@ -313,7 +298,7 @@ $documentManager->delete('my_index', $documentIds, true);
 You can also set a custom routing:
 
 ```php
-$routing = (new \Elastic\Adapter\Documents\Routing())
+$routing = (new \OpenSearch\Adapter\Documents\Routing())
     ->add('1', 'value1')
     ->add('2', 'value2');
 
@@ -332,7 +317,7 @@ Search documents in the index:
 
 ```php
 // configure search parameters
-$searchParameters = new \Elastic\Adapter\Search\SearchParameters();
+$searchParameters = new \OpenSearch\Adapter\Search\SearchParameters();
 
 // specify indices to search in
 $searchParameters->indices(['my_index1', 'my_index2']);
@@ -492,7 +477,7 @@ $aggregations = $searchResult->aggregations();
 
 ### Connection
 
-Switch Elasticsearch connection:
+Switch OpenSearch connection:
 
 ```php
 $documentManager->connection('my_connection');
@@ -500,7 +485,7 @@ $documentManager->connection('my_connection');
 
 ## Point in Time Management
 
-`\Elastic\Adapter\Search\PointInTimeManager` is used to control points in time.
+`\OpenSearch\Adapter\Search\PointInTimeManager` is used to control points in time.
 
 ### Open
 
@@ -519,7 +504,7 @@ $pointInTimeManager->close($pointInTimeId);
 
 ### Connection
 
-Switch Elasticsearch connection:
+Switch OpenSearch connection:
 
 ```php
 $pointInTimeManager->connection('my_connection');

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Documents;
+namespace OpenSearch\Adapter\Documents;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;

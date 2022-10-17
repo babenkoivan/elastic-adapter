@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Search;
+namespace OpenSearch\Adapter\Tests\Unit\Search;
 
-use Elastic\Adapter\Search\Bucket;
+use OpenSearch\Adapter\Search\Bucket;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Search\Bucket
+ * @covers \OpenSearch\Adapter\Search\Bucket
  */
 final class BucketTest extends TestCase
 {

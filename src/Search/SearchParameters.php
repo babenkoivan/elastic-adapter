@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Search;
+namespace OpenSearch\Adapter\Search;
 
 use Illuminate\Contracts\Support\Arrayable;
 

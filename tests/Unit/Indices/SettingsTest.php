@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Indices;
+namespace OpenSearch\Adapter\Tests\Unit\Indices;
 
 use BadMethodCallException;
-use Elastic\Adapter\Indices\Settings;
+use OpenSearch\Adapter\Indices\Settings;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Indices\Settings
+ * @covers \OpenSearch\Adapter\Indices\Settings
  */
 class SettingsTest extends TestCase
 {
@@ -64,6 +64,7 @@ class SettingsTest extends TestCase
 
     /**
      * @dataProvider optionsProvider
+     *
      * @testdox Test $option option setter
      */
     public function test_option_setter(string $option, array $configuration, array $expected): void

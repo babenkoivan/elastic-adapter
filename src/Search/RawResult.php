@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Search;
+namespace OpenSearch\Adapter\Search;
 
-use Elastic\Adapter\Exceptions\RawResultReadOnlyException;
+use OpenSearch\Adapter\Exceptions\RawResultReadOnlyException;
 use ReturnTypeWillChange;
 
 trait RawResult

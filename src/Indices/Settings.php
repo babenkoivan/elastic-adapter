@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Indices;
+namespace OpenSearch\Adapter\Indices;
 
 use BadMethodCallException;
 use Illuminate\Contracts\Support\Arrayable;

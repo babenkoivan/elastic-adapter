@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Indices;
+namespace OpenSearch\Adapter\Tests\Unit\Indices;
 
 use BadMethodCallException;
 use Closure;
-use Elastic\Adapter\Indices\MappingProperties;
+use OpenSearch\Adapter\Indices\MappingProperties;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Indices\MappingProperties
+ * @covers \OpenSearch\Adapter\Indices\MappingProperties
  */
 final class MappingPropertiesTest extends TestCase
 {
@@ -152,6 +152,7 @@ final class MappingPropertiesTest extends TestCase
      * @param Closure|array $parameters
      *
      * @dataProvider parametersProvider
+     *
      * @testdox Test $type property setter
      */
     public function test_property_setter(string $type, string $name, $parameters, array $expected): void

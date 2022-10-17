@@ -1,25 +1,25 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter;
+namespace OpenSearch\Adapter;
 
-use Elastic\Client\ClientBuilderInterface as ElasticClientBuilderInterface;
-use Elastic\Elasticsearch\Client as ElasticClient;
+use OpenSearch\Client as OpenSearchClient;
+use OpenSearch\Laravel\Client\ClientBuilderInterface as OpenSearchClientBuilderInterface;
 
 trait Client
 {
-    private ElasticClientBuilderInterface $clientBuilder;
-    private ElasticClient $client;
+    private OpenSearchClientBuilderInterface $clientBuilder;
+    private OpenSearchClient $client;
 
-    public function __construct(ElasticClientBuilderInterface $clientBuilder)
+    public function __construct(OpenSearchClientBuilderInterface $clientBuilder)
     {
         $this->clientBuilder = $clientBuilder;
-        $this->client = $clientBuilder->default()->setAsync(false);
+        $this->client = $clientBuilder->default();
     }
 
     public function connection(string $name): self
     {
         $self = clone $this;
-        $self->client = $self->clientBuilder->connection($name)->setAsync(false);
+        $self->client = $self->clientBuilder->connection($name);
         return $self;
     }
 }

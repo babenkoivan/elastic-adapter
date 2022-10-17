@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Search;
+namespace OpenSearch\Adapter\Tests\Unit\Search;
 
-use Elastic\Adapter\Search\Aggregation;
-use Elastic\Adapter\Search\Bucket;
+use OpenSearch\Adapter\Search\Aggregation;
+use OpenSearch\Adapter\Search\Bucket;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Search\Aggregation
+ * @covers \OpenSearch\Adapter\Search\Aggregation
  *
- * @uses   \Elastic\Adapter\Search\Bucket
+ * @uses   \OpenSearch\Adapter\Search\Bucket
  */
 final class AggregationTest extends TestCase
 {

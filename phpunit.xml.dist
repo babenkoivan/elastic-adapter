@@ -10,7 +10,7 @@
          verbose="true"
          colors="true">
   <extensions>
-    <extension class="Elastic\Adapter\Tests\Extensions\BypassFinalExtension" />
+    <extension class="OpenSearch\Adapter\Tests\Extensions\BypassFinalExtension" />
   </extensions>
   <coverage processUncoveredFiles="true">
     <include>

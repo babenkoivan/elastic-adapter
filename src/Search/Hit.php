@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Search;
+namespace OpenSearch\Adapter\Search;
 
 use ArrayAccess;
-use Elastic\Adapter\Documents\Document;
 use Illuminate\Support\Collection;
+use OpenSearch\Adapter\Documents\Document;
 
 final class Hit implements ArrayAccess
 {

@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Search;
+namespace OpenSearch\Adapter\Search;
 
-use Elastic\Adapter\Client;
-use Elastic\Elasticsearch\Response\Elasticsearch;
+use OpenSearch\Adapter\Client;
 
 final class PointInTimeManager
 {
@@ -17,9 +16,7 @@ final class PointInTimeManager
             $params['keep_alive'] = $keepAlive;
         }
 
-        /** @var Elasticsearch $response */
-        $response = $this->client->openPointInTime($params);
-        $rawResult = $response->asArray();
+        $rawResult = $this->client->openPointInTime($params);
 
         return $rawResult['id'];
     }

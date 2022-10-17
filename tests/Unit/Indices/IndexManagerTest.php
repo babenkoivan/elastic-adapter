@@ -1,27 +1,26 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Indices;
+namespace OpenSearch\Adapter\Tests\Unit\Indices;
 
-use Elastic\Adapter\Indices\Alias;
-use Elastic\Adapter\Indices\Index;
-use Elastic\Adapter\Indices\IndexManager;
-use Elastic\Adapter\Indices\Mapping;
-use Elastic\Adapter\Indices\Settings;
-use Elastic\Client\ClientBuilderInterface;
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\Endpoints\Indices;
-use Elastic\Elasticsearch\Response\Elasticsearch;
+use OpenSearch\Adapter\Indices\Alias;
+use OpenSearch\Adapter\Indices\Index;
+use OpenSearch\Adapter\Indices\IndexManager;
+use OpenSearch\Adapter\Indices\Mapping;
+use OpenSearch\Adapter\Indices\Settings;
+use OpenSearch\Client;
+use OpenSearch\Laravel\Client\ClientBuilderInterface;
+use OpenSearch\Namespaces\IndicesNamespace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Indices\IndexManager
+ * @covers \OpenSearch\Adapter\Indices\IndexManager
  *
- * @uses   \Elastic\Adapter\Indices\Alias
- * @uses   \Elastic\Adapter\Indices\Index
- * @uses   \Elastic\Adapter\Indices\Mapping
- * @uses   \Elastic\Adapter\Indices\MappingProperties
- * @uses   \Elastic\Adapter\Indices\Settings
+ * @uses   \OpenSearch\Adapter\Indices\Alias
+ * @uses   \OpenSearch\Adapter\Indices\Index
+ * @uses   \OpenSearch\Adapter\Indices\Mapping
+ * @uses   \OpenSearch\Adapter\Indices\MappingProperties
+ * @uses   \OpenSearch\Adapter\Indices\Settings
  */
 class IndexManagerTest extends TestCase
 {
@@ -36,10 +35,9 @@ class IndexManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->indices = $this->createMock(Indices::class);
+        $this->indices = $this->createMock(IndicesNamespace::class);
 
         $client = $this->createMock(Client::class);
-        $client->method('setAsync')->willReturnSelf();
         $client->method('indices')->willReturn($this->indices);
 
         $clientBuilder = $this->createMock(ClientBuilderInterface::class);
@@ -79,9 +77,7 @@ class IndexManagerTest extends TestCase
     public function test_index_existence_can_be_checked(): void
     {
         $indexName = 'foo';
-
-        $response = $this->createMock(Elasticsearch::class);
-        $response->method('asBool')->willReturn(true);
+        $response = true;
 
         $this->indices
             ->expects($this->once())
@@ -346,18 +342,13 @@ class IndexManagerTest extends TestCase
         $indexName = 'foo';
         $aliasName = 'bar';
 
-        $response = $this->createMock(Elasticsearch::class);
-
-        $response
-            ->expects($this->once())
-            ->method('asArray')
-            ->willReturn([
-                $indexName => [
-                    'aliases' => [
-                        $aliasName => [],
-                    ],
+        $response = [
+            $indexName => [
+                'aliases' => [
+                    $aliasName => [],
                 ],
-            ]);
+            ],
+        ];
 
         $this->indices
             ->expects($this->once())
@@ -379,18 +370,16 @@ class IndexManagerTest extends TestCase
      */
     public function test_connection_can_be_changed(): void
     {
-        $defaultIndices = $this->createMock(Indices::class);
+        $defaultIndices = $this->createMock(IndicesNamespace::class);
         $defaultIndices->expects($this->never())->method('create');
 
         $defaultClient = $this->createMock(Client::class);
-        $defaultClient->method('setAsync')->willReturnSelf();
         $defaultClient->method('indices')->willReturn($defaultIndices);
 
-        $testIndices = $this->createMock(Indices::class);
+        $testIndices = $this->createMock(IndicesNamespace::class);
         $testIndices->expects($this->once())->method('open')->with(['index' => 'docs']);
 
         $testClient = $this->createMock(Client::class);
-        $testClient->method('setAsync')->willReturnSelf();
         $testClient->method('indices')->willReturn($testIndices);
 
         $clientBuilder = $this->createMock(ClientBuilderInterface::class);

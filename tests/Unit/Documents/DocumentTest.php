@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Documents;
+namespace OpenSearch\Adapter\Tests\Unit\Documents;
 
-use Elastic\Adapter\Documents\Document;
+use OpenSearch\Adapter\Documents\Document;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Documents\Document
+ * @covers \OpenSearch\Adapter\Documents\Document
  */
 final class DocumentTest extends TestCase
 {

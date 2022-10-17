@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Elastic\Adapter\Tests\Unit\Indices;
+namespace OpenSearch\Adapter\Tests\Unit\Indices;
 
-use Elastic\Adapter\Indices\Alias;
+use OpenSearch\Adapter\Indices\Alias;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Elastic\Adapter\Indices\Alias
+ * @covers \OpenSearch\Adapter\Indices\Alias
  */
 final class AliasTest extends TestCase
 {
