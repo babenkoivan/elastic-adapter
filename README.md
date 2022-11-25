@@ -462,6 +462,9 @@ $searchParameters->searchAfter([
 // use custom routing
 $searchParameters->routing(['user1', 'user2']);
 
+// enable explanation
+$searchParameters->explain(true);
+
 // perform the search and get the result
 $searchResult = $documentManager->search($searchParameters);
 
@@ -488,6 +491,9 @@ $suggestions = $searchResult->suggestions();
 
 // get aggregations
 $aggregations = $searchResult->aggregations();
+
+// get an explanation
+$explanation = $searchResult->explanation();
 ```
 
 ### Connection
