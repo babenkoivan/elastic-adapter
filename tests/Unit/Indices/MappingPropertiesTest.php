@@ -152,6 +152,7 @@ final class MappingPropertiesTest extends TestCase
      * @param Closure|array $parameters
      *
      * @dataProvider parametersProvider
+     *
      * @testdox Test $type property setter
      */
     public function test_property_setter(string $type, string $name, $parameters, array $expected): void
