@@ -474,7 +474,7 @@ $total = $searchResult->total();
 // get the corresponding hits
 $hits = $searchResult->hits();
 
-// every hit provides access to the related index name, the score, the document, the highlight and the inner hits
+// every hit provides access to the related index name, the score, the document, the highlight and more
 // in addition, you can get a raw representation of the hit
 foreach ($hits as $hit) {
     $indexName = $hit->indexName();
@@ -484,6 +484,16 @@ foreach ($hits as $hit) {
     $innerHits = $hit->innerHits();
     $innerHitsTotal = $hit->innerHitsTotal();
     $raw = $hit->raw();
+    
+    // get an explanation 
+    $explanation = $searchResult->explanation();
+    
+    // every explanation includes a value, a description and details
+    // it is also possible to get its raw representation
+    $value = $explanation->value();
+    $description = $explanation->description();
+    $details = $explanation->details();
+    $raw = $explanation->raw();
 }
 
 // get suggestions
@@ -491,9 +501,6 @@ $suggestions = $searchResult->suggestions();
 
 // get aggregations
 $aggregations = $searchResult->aggregations();
-
-// get an explanation
-$explanation = $searchResult->explanation();
 ```
 
 ### Connection
