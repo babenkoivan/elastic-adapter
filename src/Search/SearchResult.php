@@ -36,9 +36,4 @@ final class SearchResult implements ArrayAccess
     {
         return collect($this->rawResult['aggregations'] ?? [])->mapInto(Aggregation::class);
     }
-
-    public function explanation(): ?Explanation
-    {
-        return empty($this->rawResult['explanation']) ? null : new Explanation($this->rawResult['explanation']);
-    }
 }

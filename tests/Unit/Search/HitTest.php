@@ -3,6 +3,7 @@
 namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Documents\Document;
+use Elastic\Adapter\Search\Explanation;
 use Elastic\Adapter\Search\Highlight;
 use Elastic\Adapter\Search\Hit;
 use Illuminate\Support\Collection;
@@ -13,6 +14,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @uses   \Elastic\Adapter\Documents\Document
  * @uses   \Elastic\Adapter\Search\Highlight
+ * @uses   \Elastic\Adapter\Search\Explanation
  */
 final class HitTest extends TestCase
 {
@@ -56,6 +58,11 @@ final class HitTest extends TestCase
                         ],
                     ],
                 ],
+            ],
+            '_explanation' => [
+                'value' => 1.6943598,
+                'description' => 'result of:',
+                'details' => [],
             ],
         ]);
     }
@@ -116,6 +123,23 @@ final class HitTest extends TestCase
         $this->assertEquals($innerHit, $nestedInnerHits->first());
     }
 
+    public function test_inner_hits_total_can_be_retrieved(): void
+    {
+        $this->assertSame(1, $this->hit->innerHitsTotal()->get('nested'));
+    }
+
+    public function test_explanation_can_be_retrieved(): void
+    {
+        $this->assertEquals(
+            new Explanation([
+                'value' => 1.6943598,
+                'description' => 'result of:',
+                'details' => [],
+            ]),
+            $this->hit->explanation()
+        );
+    }
+
     public function test_raw_representation_can_be_retrieved(): void
     {
         $this->assertSame([
@@ -153,11 +177,11 @@ final class HitTest extends TestCase
                     ],
                 ],
             ],
+            '_explanation' => [
+                'value' => 1.6943598,
+                'description' => 'result of:',
+                'details' => [],
+            ],
         ], $this->hit->raw());
-    }
-
-    public function test_inner_hits_total_can_be_retrieved(): void
-    {
-        $this->assertSame(1, $this->hit->innerHitsTotal()->get('nested'));
     }
 }

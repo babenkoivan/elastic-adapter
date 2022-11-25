@@ -4,7 +4,6 @@ namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Exceptions\RawResultReadOnlyException;
 use Elastic\Adapter\Search\Aggregation;
-use Elastic\Adapter\Search\Explanation;
 use Elastic\Adapter\Search\Hit;
 use Elastic\Adapter\Search\SearchResult;
 use Elastic\Adapter\Search\Suggestion;
@@ -114,23 +113,6 @@ final class SearchResultTest extends TestCase
         $this->assertEquals(
             new Aggregation(['value' => 10]),
             $searchResult->aggregations()->get('min_price')
-        );
-    }
-
-    public function test_explanation_can_be_retrieved(): void
-    {
-        $searchResult = new SearchResult([
-            'hits' => [],
-            'explanation' => [
-                'value' => 1.6943598,
-                'description' => 'result of:',
-                'details' => [],
-            ],
-        ]);
-
-        $this->assertEquals(
-            new Explanation(['value' => 1.6943598, 'description' => 'result of:', 'details' => []]),
-            $searchResult->explanation()
         );
     }
 

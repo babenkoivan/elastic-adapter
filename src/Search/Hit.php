@@ -48,4 +48,9 @@ final class Hit implements ArrayAccess
             static fn (array $rawHits) => $rawHits['hits']['total']['value'] ?? null
         );
     }
+
+    public function explanation(): ?Explanation
+    {
+        return isset($this->rawResult['_explanation']) ? new Explanation($this->rawResult['_explanation']) : null;
+    }
 }
