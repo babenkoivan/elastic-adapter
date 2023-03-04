@@ -32,7 +32,7 @@ The current version of Elastic Adapter has been tested with the following config
 
 * PHP 7.4-8.x
 * Elasticsearch 8.x
-* Laravel 6.x-8.x
+* Laravel 6.x-10.x
 
 ## Installation
 
