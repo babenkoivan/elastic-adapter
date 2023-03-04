@@ -38,7 +38,7 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "babenkoivan/elastic-client": "dev-laravel-10-support as 2.1"
+        "babenkoivan/elastic-client": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
