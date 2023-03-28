@@ -400,4 +400,10 @@ final class SearchParametersTest extends TestCase
         $searchParameters = (new SearchParameters())->terminateAfter(10);
         $this->assertSame(['terminate_after' => 10], $searchParameters->toArray());
     }
+
+    public function test_array_casting_with_request_cache(): void
+    {
+        $searchParameters = (new SearchParameters())->requestCache(true);
+        $this->assertSame(['request_cache' => true], $searchParameters->toArray());
+    }
 }

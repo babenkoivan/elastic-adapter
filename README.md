@@ -468,6 +468,9 @@ $searchParameters->explain(true);
 // set maximum number of documents to collect for each shard
 $searchParameters->terminateAfter(10);
 
+// enable caching
+$searchParameters->requestCache(true);
+
 // perform the search and get the result
 $searchResult = $documentManager->search($searchParameters);
 

@@ -158,6 +158,12 @@ final class SearchParameters implements Arrayable
         return $this;
     }
 
+    public function requestCache(bool $requestCache): self
+    {
+        $this->params['request_cache'] = $requestCache;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->params;
