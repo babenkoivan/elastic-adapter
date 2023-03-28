@@ -465,6 +465,9 @@ $searchParameters->routing(['user1', 'user2']);
 // enable explanation
 $searchParameters->explain(true);
 
+// set maximum number of documents to collect for each shard
+$searchParameters->terminateAfter(10);
+
 // perform the search and get the result
 $searchResult = $documentManager->search($searchParameters);
 

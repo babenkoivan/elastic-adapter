@@ -394,4 +394,10 @@ final class SearchParametersTest extends TestCase
             ],
         ], $searchParameters->toArray());
     }
+
+    public function test_array_casting_with_terminate_after(): void
+    {
+        $searchParameters = (new SearchParameters())->terminateAfter(10);
+        $this->assertSame(['terminate_after' => 10], $searchParameters->toArray());
+    }
 }

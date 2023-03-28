@@ -152,6 +152,12 @@ final class SearchParameters implements Arrayable
         return $this;
     }
 
+    public function terminateAfter(int $terminateAfter): self
+    {
+        $this->params['terminate_after'] = $terminateAfter;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->params;
