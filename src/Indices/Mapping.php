@@ -56,6 +56,7 @@ final class Mapping implements Arrayable
     private ?bool $isSourceEnabled;
     private MappingProperties $properties;
     private array $dynamicTemplates = [];
+    private mixed $dynamic;
 
     public function __construct()
     {
@@ -90,6 +91,13 @@ final class Mapping implements Arrayable
         return $this;
     }
 
+    public function dynamic(mixed $dynamic): self
+    {
+        $this->dynamic = $dynamic;
+
+        return $this;
+    }
+
     public function dynamicTemplate(string $name, array $parameters): self
     {
         $this->dynamicTemplates[] = [$name => $parameters];
@@ -117,6 +125,10 @@ final class Mapping implements Arrayable
             $mapping['_source'] = [
                 'enabled' => $this->isSourceEnabled,
             ];
+        }
+
+        if(isset($this->dynamic)) {
+            $mapping['dynamic'] = $this->dynamic;
         }
 
         if (!empty($properties)) {

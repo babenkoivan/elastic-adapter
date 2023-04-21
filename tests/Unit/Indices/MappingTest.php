@@ -56,6 +56,15 @@ class MappingTest extends TestCase
         ], $mapping->toArray());
     }
 
+    public function test_dynamic_mapping_can_be_configured(): void
+    {
+        $mapping = (new Mapping())->dynamic('strict');
+
+        $this->assertSame([
+            'dynamic' => 'strict',
+        ], $mapping->toArray());
+    }
+
     public function test_default_array_casting(): void
     {
         $this->assertSame([], (new Mapping())->toArray());
