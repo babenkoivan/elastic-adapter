@@ -91,7 +91,10 @@ final class Mapping implements Arrayable
         return $this;
     }
 
-    public function dynamic(mixed $dynamic): self
+    /**
+     * @param string|bool $dynamic
+     */
+    public function dynamic($dynamic): self
     {
         $this->dynamic = $dynamic;
 
