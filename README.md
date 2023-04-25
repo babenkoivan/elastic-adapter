@@ -80,6 +80,7 @@ $mapping = (new \Elastic\Adapter\Indices\Mapping())
         'null_value' => 'NULL'
     ])
     ->geoPoint('location')
+    ->dynamic(true)
     ->dynamicTemplate('no_doc_values', [
         'match_mapping_type' => '*',
         'mapping' => [
