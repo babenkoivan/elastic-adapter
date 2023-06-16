@@ -1,6 +1,7 @@
 {
     "name": "babenkoivan/elastic-adapter",
     "description": "Adapter for official PHP Elasticsearch client",
+    "version": "3.5.0",
     "keywords": [
         "elastic",
         "elasticsearch",
