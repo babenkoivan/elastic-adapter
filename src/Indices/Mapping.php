@@ -59,12 +59,23 @@ final class Mapping implements Arrayable
     /**
      * @var string|bool|null
      */
-    private $dynamic;
-
-    public function __construct()
-    {
-        $this->properties = new MappingProperties();
-    }
+    private $isFieldNamesEnabled;
+    /**
+     * @var bool|null
+     */
+    private $isSourceEnabled;
+    /**
+     * @var array
+     */
+    private $properties = [];
+    /**
+     * @var array
+     */
+    private $dynamicTemplates = [];
+    /**
+     * @var array
+     */
+    private $runtimeFields = [];
 
     public function enableFieldNames(): self
     {
@@ -104,6 +115,11 @@ final class Mapping implements Arrayable
         return $this;
     }
 
+    public function runtimeField(string $name, array $parameters): self{
+        $this->runtimeFields[] = [$name => $parameters];
+        return $this;
+    }
+
     public function dynamicTemplate(string $name, array $parameters): self
     {
         $this->dynamicTemplates[] = [$name => $parameters];
@@ -133,8 +149,12 @@ final class Mapping implements Arrayable
             ];
         }
 
-        if(isset($this->dynamic)) {
-            $mapping['dynamic'] = $this->dynamic;
+        if(count($this->runtimeFields) > 0){
+            $mapping['runtime'] = $this->runtimeFields;
+        }
+
+        if (count($this->properties) > 0) {
+            $mapping['properties'] = $this->properties;
         }
 
         if (!empty($properties)) {
