@@ -52,10 +52,6 @@ final class Mapping implements Arrayable
 {
     use ForwardsCalls;
 
-    private ?bool $isFieldNamesEnabled;
-    private ?bool $isSourceEnabled;
-    private MappingProperties $properties;
-    private array $dynamicTemplates = [];
     /**
      * @var string|bool|null
      */

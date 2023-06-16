@@ -42,7 +42,14 @@ final class Hit implements ArrayAccess
         );
     }
 
-    public function innerHitsTotal(): Collection
+
+    public function getFields(): Document{
+        return new Document($this->hit['_id'],
+        $this->hit['fields'] ?? []
+        );
+    }
+
+    public function getHighlight(): ?Highlight // Previously innerHitsTotal
     {
         return collect($this->rawResult['inner_hits'] ?? [])->map(
             static fn (array $rawHits) => $rawHits['hits']['total']['value'] ?? null
