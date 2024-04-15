@@ -472,6 +472,9 @@ $searchParameters->terminateAfter(10);
 // enable caching
 $searchParameters->requestCache(true);
 
+// enable scroll search - the unit can be 'd', 'h', 'm', 's', 'ms', 'micros', 'nanos'
+$searchParameters->scroll('1m');
+
 // perform the search and get the result
 $searchResult = $documentManager->search($searchParameters);
 

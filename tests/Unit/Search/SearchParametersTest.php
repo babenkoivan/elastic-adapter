@@ -406,4 +406,10 @@ final class SearchParametersTest extends TestCase
         $searchParameters = (new SearchParameters())->requestCache(true);
         $this->assertSame(['request_cache' => true], $searchParameters->toArray());
     }
+
+    public function test_array_casting_with_scroll(): void
+    {
+        $searchParameters = (new SearchParameters())->scroll('1m');
+        $this->assertSame(['scroll' => '1m'], $searchParameters->toArray());
+    }
 }
