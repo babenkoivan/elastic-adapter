@@ -109,4 +109,15 @@ class DocumentManager
 
         return new SearchResult($rawResult);
     }
+
+    public function scroll(SearchParameters $searchParameters): SearchResult
+    {
+        $params = $searchParameters->toArray();
+
+        /** @var Elasticsearch $response */
+        $response = $this->client->scroll($params);
+        $rawResult = $response->asArray();
+
+        return new SearchResult($rawResult);
+    }
 }

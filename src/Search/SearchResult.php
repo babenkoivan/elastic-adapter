@@ -17,6 +17,11 @@ final class SearchResult implements ArrayAccess
         return collect($this->rawResult['hits']['hits'])->mapInto(Hit::class);
     }
 
+    public function scrollId(): ?string
+    {
+        return $this->rawResult['_scroll_id'] ?? null;
+    }
+
     public function total(): ?int
     {
         return $this->rawResult['hits']['total']['value'] ?? null;

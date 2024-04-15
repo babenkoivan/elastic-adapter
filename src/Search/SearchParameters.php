@@ -170,6 +170,12 @@ final class SearchParameters implements Arrayable
         return $this;
     }
 
+    public function scrollId(string $scrollId): self
+    {
+        $this->params['scroll_id'] = $scrollId;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->params;

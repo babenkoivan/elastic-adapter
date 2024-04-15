@@ -288,6 +288,55 @@ final class DocumentManagerTest extends TestCase
         $this->assertEquals(new Document('1', ['content' => 'foo']), $firstHit->document());
     }
 
+    public function test_documents_can_be_found_using_scroll(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response
+            ->expects($this->once())
+            ->method('asArray')
+            ->willReturn([
+                '_scroll_id' => 'dummy-scroll-id',
+                'hits' => [
+                    'total' => [
+                        'value' => 1,
+                        'relation' => 'eq',
+                    ],
+                    'max_score' => 1.601195,
+                    'hits' => [
+                        [
+                            '_index' => 'test',
+                            '_id' => '1',
+                            '_score' => 1.601195,
+                            '_source' => ['content' => 'foo'],
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('scroll')
+            ->with([
+                'index' => 'test',
+                'scroll_id' => 'dummy-scroll-id',
+            ])
+            ->willReturn($response);
+
+        $searchParameters = (new SearchParameters())
+            ->indices(['test'])
+            ->scrollId('dummy-scroll-id');
+
+        $searchResult = $this->documentManager->scroll($searchParameters);
+
+        $this->assertSame(1, $searchResult->total());
+        $this->assertEquals('dummy-scroll-id', $searchResult->scrollId());
+
+        /** @var Hit $firstHit */
+        $firstHit = $searchResult->hits()[0];
+        $this->assertEquals(new Document('1', ['content' => 'foo']), $firstHit->document());
+    }
+
     public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void
     {
         $response = $this->createMock(Elasticsearch::class);

@@ -174,4 +174,16 @@ final class SearchResultTest extends TestCase
             ],
         ], $searchResult->raw());
     }
+
+    public function test_scroll_id_can_be_retrieved(): void
+    {
+        $searchResult = new SearchResult([
+            '_scroll_id' => 'dummy-scroll-id',
+            'hits' => [
+                'total' => ['value' => 100],
+            ],
+        ]);
+
+        $this->assertSame('dummy-scroll-id', $searchResult->scrollId());
+    }
 }
