@@ -288,7 +288,7 @@ final class DocumentManagerTest extends TestCase
         $this->assertEquals(new Document('1', ['content' => 'foo']), $firstHit->document());
     }
 
-    public function test_documents_can_be_found_using_scroll(): void
+    public function test_results_will_contains_scroll_id(): void
     {
         $response = $this->createMock(Elasticsearch::class);
 
@@ -316,21 +316,72 @@ final class DocumentManagerTest extends TestCase
 
         $this->client
             ->expects($this->once())
-            ->method('scroll')
+            ->method('search')
             ->with([
                 'index' => 'test',
-                'scroll_id' => 'dummy-scroll-id',
+                'scroll' => '1m',
+                'body' => [
+                    'query' => [
+                        'match' => ['content' => 'foo'],
+                    ],
+                ],
             ])
             ->willReturn($response);
 
         $searchParameters = (new SearchParameters())
             ->indices(['test'])
+            ->scroll('1m')
+            ->query([
+                'match' => [
+                    'content' => 'foo',
+                ],
+            ]);
+
+        $searchResult = $this->documentManager->search($searchParameters);
+
+        $this->assertSame(1, $searchResult->total());
+        $this->assertSame('dummy-scroll-id', $searchResult->scrollId());
+    }
+
+    public function test_scroll_id_can_be_used_to_scroll_through_results(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response
+            ->expects($this->once())
+            ->method('asArray')
+            ->willReturn([
+                'hits' => [
+                    'total' => [
+                        'value' => 1,
+                        'relation' => 'eq',
+                    ],
+                    'max_score' => 1.601195,
+                    'hits' => [
+                        [
+                            '_index' => 'test',
+                            '_id' => '1',
+                            '_score' => 1.601195,
+                            '_source' => ['content' => 'foo'],
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('scroll')
+            ->with([
+                'scroll_id' => 'dummy-scroll-id',
+            ])
+            ->willReturn($response);
+
+        $searchParameters = (new SearchParameters())
             ->scrollId('dummy-scroll-id');
 
         $searchResult = $this->documentManager->scroll($searchParameters);
 
         $this->assertSame(1, $searchResult->total());
-        $this->assertEquals('dummy-scroll-id', $searchResult->scrollId());
 
         /** @var Hit $firstHit */
         $firstHit = $searchResult->hits()[0];
