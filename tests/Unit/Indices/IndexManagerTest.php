@@ -6,23 +6,23 @@ use Elastic\Adapter\Indices\Alias;
 use Elastic\Adapter\Indices\Index;
 use Elastic\Adapter\Indices\IndexManager;
 use Elastic\Adapter\Indices\Mapping;
+use Elastic\Adapter\Indices\MappingProperties;
 use Elastic\Adapter\Indices\Settings;
 use Elastic\Client\ClientBuilderInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Endpoints\Indices;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Indices\IndexManager
- *
- * @uses   \Elastic\Adapter\Indices\Alias
- * @uses   \Elastic\Adapter\Indices\Index
- * @uses   \Elastic\Adapter\Indices\Mapping
- * @uses   \Elastic\Adapter\Indices\MappingProperties
- * @uses   \Elastic\Adapter\Indices\Settings
- */
+#[CoversClass(IndexManager::class)]
+#[UsesClass(Alias::class)]
+#[UsesClass(Index::class)]
+#[UsesClass(Mapping::class)]
+#[UsesClass(MappingProperties::class)]
+#[UsesClass(Settings::class)]
 class IndexManagerTest extends TestCase
 {
     private MockObject $indices;

@@ -4,13 +4,12 @@ namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Search\Aggregation;
 use Elastic\Adapter\Search\Bucket;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\Aggregation
- *
- * @uses   \Elastic\Adapter\Search\Bucket
- */
+#[CoversClass(Aggregation::class)]
+#[UsesClass(Bucket::class)]
 final class AggregationTest extends TestCase
 {
     private Aggregation $aggregation;

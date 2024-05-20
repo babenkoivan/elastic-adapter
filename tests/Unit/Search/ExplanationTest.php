@@ -3,11 +3,10 @@
 namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Search\Explanation;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\Explanation
- */
+#[CoversClass(Explanation::class)]
 final class ExplanationTest extends TestCase
 {
     private Explanation $explanation;

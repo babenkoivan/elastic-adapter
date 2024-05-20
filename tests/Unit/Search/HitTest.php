@@ -7,15 +7,14 @@ use Elastic\Adapter\Search\Explanation;
 use Elastic\Adapter\Search\Highlight;
 use Elastic\Adapter\Search\Hit;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\Hit
- *
- * @uses   \Elastic\Adapter\Documents\Document
- * @uses   \Elastic\Adapter\Search\Highlight
- * @uses   \Elastic\Adapter\Search\Explanation
- */
+#[CoversClass(Hit::class)]
+#[UsesClass(Document::class)]
+#[UsesClass(Highlight::class)]
+#[UsesClass(Explanation::class)]
 final class HitTest extends TestCase
 {
     private Hit $hit;

@@ -6,12 +6,11 @@ use Elastic\Adapter\Search\PointInTimeManager;
 use Elastic\Client\ClientBuilderInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\PointInTimeManager
- */
+#[CoversClass(PointInTimeManager::class)]
 final class PointInTimeManagerTest extends TestCase
 {
     private MockObject $client;

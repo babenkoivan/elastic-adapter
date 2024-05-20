@@ -3,11 +3,10 @@
 namespace Elastic\Adapter\Tests\Unit\Indices;
 
 use Elastic\Adapter\Indices\Alias;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Indices\Alias
- */
+#[CoversClass(Alias::class)]
 final class AliasTest extends TestCase
 {
     public function test_alias_getters(): void

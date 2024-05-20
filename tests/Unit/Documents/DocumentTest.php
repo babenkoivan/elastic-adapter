@@ -3,11 +3,10 @@
 namespace Elastic\Adapter\Tests\Unit\Documents;
 
 use Elastic\Adapter\Documents\Document;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Documents\Document
- */
+#[CoversClass(Document::class)]
 final class DocumentTest extends TestCase
 {
     public function test_document_getters(): void

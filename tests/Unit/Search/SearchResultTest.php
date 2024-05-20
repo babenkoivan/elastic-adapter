@@ -7,16 +7,15 @@ use Elastic\Adapter\Search\Aggregation;
 use Elastic\Adapter\Search\Hit;
 use Elastic\Adapter\Search\SearchResult;
 use Elastic\Adapter\Search\Suggestion;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\SearchResult
- *
- * @uses   \Elastic\Adapter\Exceptions\RawResultReadOnlyException
- * @uses   \Elastic\Adapter\Search\Aggregation
- * @uses   \Elastic\Adapter\Search\Hit
- * @uses   \Elastic\Adapter\Search\Suggestion
- */
+#[CoversClass(SearchResult::class)]
+#[UsesClass(RawResultReadOnlyException::class)]
+#[UsesClass(Aggregation::class)]
+#[UsesClass(Hit::class)]
+#[UsesClass(Suggestion::class)]
 final class SearchResultTest extends TestCase
 {
     public function test_hits_can_be_retrieved(): void

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Search\SearchParameters;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \Elastic\Adapter\Search\SearchParameters
- */
+#[CoversClass(SearchParameters::class)]
 final class SearchParametersTest extends TestCase
 {
     public function test_array_casting_with_indices(): void
@@ -160,7 +160,7 @@ final class SearchParametersTest extends TestCase
         ], $searchParameters->toArray());
     }
 
-    public function sourceProvider(): array
+    public static function sourceProvider(): array
     {
         return [
             [false],
@@ -171,10 +171,9 @@ final class SearchParametersTest extends TestCase
     }
 
     /**
-     * @dataProvider sourceProvider
-     *
      * @param array|string|bool $source
      */
+    #[DataProvider('sourceProvider')]
     public function test_array_casting_with_source($source): void
     {
         $searchParameters = (new SearchParameters())->source($source);

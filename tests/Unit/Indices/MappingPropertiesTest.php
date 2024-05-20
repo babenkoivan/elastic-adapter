@@ -5,14 +5,15 @@ namespace Elastic\Adapter\Tests\Unit\Indices;
 use BadMethodCallException;
 use Closure;
 use Elastic\Adapter\Indices\MappingProperties;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Indices\MappingProperties
- */
+#[CoversClass(MappingProperties::class)]
 final class MappingPropertiesTest extends TestCase
 {
-    public function parametersProvider(): array
+    public static function parametersProvider(): array
     {
         return [
             [
@@ -150,11 +151,9 @@ final class MappingPropertiesTest extends TestCase
 
     /**
      * @param Closure|array $parameters
-     *
-     * @dataProvider parametersProvider
-     *
-     * @testdox Test $type property setter
      */
+    #[DataProvider('parametersProvider')]
+    #[TestDox('Test $type property setter')]
     public function test_property_setter(string $type, string $name, $parameters, array $expected): void
     {
         $actual = (new MappingProperties())->$type($name, $parameters);

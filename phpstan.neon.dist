@@ -1,12 +1,9 @@
-includes:
-  - phpstan-baseline.neon
-
 parameters:
   level: max
-  checkMissingIterableValueType: false
-  checkGenericClassInNonGenericObjectType: false
   paths:
     - src
   ignoreErrors:
+    - identifier: missingType.iterableValue
+    - identifier: missingType.generics
     - '#Unable to resolve the template type (TKey|TValue) in call to function collect#'
     - '#Parameter .+? of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'

@@ -3,11 +3,10 @@
 namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Search\Suggestion;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\Suggestion
- */
+#[CoversClass(Suggestion::class)]
 final class SuggestionTest extends TestCase
 {
     public function test_text_can_be_retrieved(): void

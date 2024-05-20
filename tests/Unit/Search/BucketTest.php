@@ -3,11 +3,10 @@
 namespace Elastic\Adapter\Tests\Unit\Search;
 
 use Elastic\Adapter\Search\Bucket;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Search\Bucket
- */
+#[CoversClass(Bucket::class)]
 final class BucketTest extends TestCase
 {
     private Bucket $bucket;

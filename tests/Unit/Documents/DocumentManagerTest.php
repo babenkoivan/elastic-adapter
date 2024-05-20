@@ -8,23 +8,23 @@ use Elastic\Adapter\Documents\Routing;
 use Elastic\Adapter\Exceptions\BulkOperationException;
 use Elastic\Adapter\Search\Hit;
 use Elastic\Adapter\Search\SearchParameters;
+use Elastic\Adapter\Search\SearchResult;
 use Elastic\Client\ClientBuilderInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \Elastic\Adapter\Documents\DocumentManager
- *
- * @uses   \Elastic\Adapter\Documents\Document
- * @uses   \Elastic\Adapter\Documents\Routing
- * @uses   \Elastic\Adapter\Exceptions\BulkOperationException
- * @uses   \Elastic\Adapter\Search\Hit
- * @uses   \Elastic\Adapter\Search\SearchParameters
- * @uses   \Elastic\Adapter\Search\SearchResult
- */
+#[CoversClass(DocumentManager::class)]
+#[UsesClass(Document::class)]
+#[UsesClass(Routing::class)]
+#[UsesClass(BulkOperationException::class)]
+#[UsesClass(Hit::class)]
+#[UsesClass(SearchParameters::class)]
+#[UsesClass(SearchResult::class)]
 final class DocumentManagerTest extends TestCase
 {
     private MockObject $client;

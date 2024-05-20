@@ -30,9 +30,11 @@ operations.
 
 The current version of Elastic Adapter has been tested with the following configuration:
 
-* PHP 7.4-8.x
+* PHP 8.2
 * Elasticsearch 8.x
-* Laravel 6.x-10.x
+* Laravel 11.x
+
+If your project uses older Laravel (or PHP) version check [the previous major version](https://github.com/babenkoivan/elastic-adapter/tree/v3.5.0#compatibility) of the package.
 
 ## Installation
 

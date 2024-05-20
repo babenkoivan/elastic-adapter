@@ -56,10 +56,7 @@ final class Mapping implements Arrayable
     private ?bool $isSourceEnabled;
     private MappingProperties $properties;
     private array $dynamicTemplates = [];
-    /**
-     * @var string|bool|null
-     */
-    private $dynamic;
+    private string|bool|null $dynamic;
 
     public function __construct()
     {

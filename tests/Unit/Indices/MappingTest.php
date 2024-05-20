@@ -3,13 +3,13 @@
 namespace Elastic\Adapter\Tests\Unit\Indices;
 
 use Elastic\Adapter\Indices\Mapping;
+use Elastic\Adapter\Indices\MappingProperties;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Indices\Mapping
- *
- * @uses   \Elastic\Adapter\Indices\MappingProperties
- */
+#[CoversClass(Mapping::class)]
+#[UsesClass(MappingProperties::class)]
 class MappingTest extends TestCase
 {
     public function test_field_names_can_be_disabled(): void

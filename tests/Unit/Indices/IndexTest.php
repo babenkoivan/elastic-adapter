@@ -5,13 +5,12 @@ namespace Elastic\Adapter\Tests\Unit\Indices;
 use Elastic\Adapter\Indices\Index;
 use Elastic\Adapter\Indices\Mapping;
 use Elastic\Adapter\Indices\Settings;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Elastic\Adapter\Indices\Index
- *
- * @uses   \Elastic\Adapter\Indices\Mapping
- */
+#[CoversClass(Index::class)]
+#[UsesClass(Mapping::class)]
 class IndexTest extends TestCase
 {
     public function test_index_default_values(): void
