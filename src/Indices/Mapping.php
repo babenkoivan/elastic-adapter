@@ -46,6 +46,7 @@ use Illuminate\Support\Traits\ForwardsCalls;
  * @method $this sparseVector(string $name)
  * @method $this text(string $name, array $parameters = null)
  * @method $this tokenCount(string $name, array $parameters = null)
+ * @method $this unsignedLong(string $name, array $parameters = null)
  * @method $this wildcard(string $name, array $parameters = null)
  */
 final class Mapping implements Arrayable
