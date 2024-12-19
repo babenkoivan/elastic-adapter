@@ -131,7 +131,7 @@ final class Mapping implements Arrayable
             ];
         }
 
-        if(isset($this->dynamic)) {
+        if (isset($this->dynamic)) {
             $mapping['dynamic'] = $this->dynamic;
         }
 
