@@ -8,7 +8,7 @@ final class Index
     private ?Mapping $mapping;
     private ?Settings $settings;
 
-    public function __construct(string $name, Mapping $mapping = null, Settings $settings = null)
+    public function __construct(string $name, ?Mapping $mapping = null, ?Settings $settings = null)
     {
         $this->name = $name;
         $this->mapping = $mapping;
