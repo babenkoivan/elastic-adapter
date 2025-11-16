@@ -34,7 +34,7 @@ The current version of Elastic Adapter has been tested with the following config
 * Elasticsearch 9.x
 * Laravel 12.x
 
-If your project uses older Laravel (or PHP) version check [the previous major version](https://github.com/babenkoivan/elastic-adapter/tree/v3.5.0#compatibility) of the package.
+If your project uses older Elasticsearch, Laravel, or PHP version check [the previous major version](https://github.com/babenkoivan/elastic-adapter/tree/v4.1.1#compatibility) of the package.
 
 ## Installation
 
