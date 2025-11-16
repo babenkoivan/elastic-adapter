@@ -38,13 +38,13 @@
     },
     "require": {
         "php": "^8.2",
-        "babenkoivan/elastic-client": "^3.0"
+        "babenkoivan/elastic-client": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0",
         "friendsofphp/php-cs-fixer": "^3.14",
         "phpstan/phpstan": "^1.10",
-        "orchestra/testbench": "^9.0",
+        "orchestra/testbench": "^10.0",
         "dg/bypass-finals": "^1.7"
     },
     "config": {
