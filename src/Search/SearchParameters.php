@@ -116,6 +116,18 @@ final class SearchParameters implements Arrayable
         return $this;
     }
 
+    public function runtimeMappings(array $runtimeFields): self
+    {
+        $this->params['body']['runtime_mappings'] = $runtimeFields;
+        return $this;
+    }
+
+    public function fields(array $fields): self
+    {
+        $this->params['body']['fields'] = $fields;
+        return $this;
+    }
+
     public function searchType(string $searchType): self
     {
         $this->params['search_type'] = $searchType;
