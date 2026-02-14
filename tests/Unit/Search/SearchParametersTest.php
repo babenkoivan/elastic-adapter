@@ -314,6 +314,41 @@ final class SearchParametersTest extends TestCase
         ], $searchParameters->toArray());
     }
 
+    public function test_array_casting_with_runtime_mappings(): void
+    {
+        $searchParameters = (new SearchParameters())->runtimeMappings([
+            'day_of_week' => [
+                'type' => 'long',
+                'script' => [
+                    'lang' => 'painless',
+                    'source' => 'doc[params.field] * params.multiplier',
+                    'params' => [
+                        'field' => 'my_field',
+                        'multiplier' => 2,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertEquals([
+            'body' => [
+                'runtime_mappings' => [
+                    'day_of_week' => [
+                        'type' => 'long',
+                        'script' => [
+                            'lang' => 'painless',
+                            'source' => 'doc[params.field] * params.multiplier',
+                            'params' => [
+                                'field' => 'my_field',
+                                'multiplier' => 2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $searchParameters->toArray());
+    }
+
     public function test_array_casting_with_min_score(): void
     {
         $searchParameters = (new SearchParameters())->minScore(0.5);
@@ -321,6 +356,17 @@ final class SearchParametersTest extends TestCase
         $this->assertEquals([
             'body' => [
                 'min_score' => 0.5,
+            ],
+        ], $searchParameters->toArray());
+    }
+
+    public function test_array_casting_with_fields(): void
+    {
+        $searchParameters = (new SearchParameters())->fields(['my_field']);
+
+        $this->assertEquals([
+            'body' => [
+                'fields' => ['my_field'],
             ],
         ], $searchParameters->toArray());
     }
