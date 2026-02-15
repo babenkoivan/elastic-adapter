@@ -14,7 +14,7 @@ class DocumentManager
     use Client;
 
     /**
-     * @param Collection|Document[] $documents
+     * @param Collection<Document> $documents
      */
     public function index(
         string $indexName,
