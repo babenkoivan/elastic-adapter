@@ -436,6 +436,21 @@ $searchParameters->scriptFields([
     ],
 ]);
 
+// runtime mappings
+$searchParameters->runtimeMappings([
+    'day_of_week' => [
+        'type' => 'long',
+        'script' => [
+            'lang' => 'painless',
+            'source' => 'doc[params.field] * params.multiplier',
+            'params' => [
+                'field' => 'my_field',
+                'multiplier' => 2,
+            ],
+        ],
+    ],
+]);
+
 // boost indices
 $searchParameters->indicesBoost([
     ['my-alias' => 1.4],
