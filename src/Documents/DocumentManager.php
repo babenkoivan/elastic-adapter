@@ -20,7 +20,7 @@ class DocumentManager
         string $indexName,
         Collection $documents,
         bool $refresh = false,
-        Routing $routing = null
+        ?Routing $routing = null
     ): self {
         $params = [
             'index' => $indexName,
@@ -57,7 +57,7 @@ class DocumentManager
         string $indexName,
         array $documentIds,
         bool $refresh = false,
-        Routing $routing = null
+        ?Routing $routing = null
     ): self {
         $params = [
             'index' => $indexName,

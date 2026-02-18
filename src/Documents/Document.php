@@ -24,7 +24,7 @@ final class Document implements Arrayable
     /**
      * @return mixed
      */
-    public function content(string $key = null)
+    public function content(?string $key = null)
     {
         return Arr::get($this->content, $key);
     }
