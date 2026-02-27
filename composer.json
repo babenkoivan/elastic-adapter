@@ -47,6 +47,9 @@
         "orchestra/testbench": "^6.20"
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "audit": {
+            "block-insecure": false
+        }
     }
 }
