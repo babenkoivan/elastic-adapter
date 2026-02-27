@@ -64,6 +64,7 @@ class SettingsTest extends TestCase
 
     /**
      * @dataProvider optionsProvider
+     *
      * @testdox Test $option option setter
      */
     public function test_option_setter(string $option, array $configuration, array $expected): void
