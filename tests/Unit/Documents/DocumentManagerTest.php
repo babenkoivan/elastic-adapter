@@ -6,6 +6,7 @@ use Elastic\Adapter\Documents\Document;
 use Elastic\Adapter\Documents\DocumentManager;
 use Elastic\Adapter\Documents\Routing;
 use Elastic\Adapter\Exceptions\BulkOperationException;
+use Elastic\Adapter\Exceptions\SearchOperationException;
 use Elastic\Adapter\Search\Hit;
 use Elastic\Adapter\Search\SearchParameters;
 use Elastic\Adapter\Search\SearchResult;
@@ -22,6 +23,7 @@ use stdClass;
 #[UsesClass(Document::class)]
 #[UsesClass(Routing::class)]
 #[UsesClass(BulkOperationException::class)]
+#[UsesClass(SearchOperationException::class)]
 #[UsesClass(Hit::class)]
 #[UsesClass(SearchParameters::class)]
 #[UsesClass(SearchResult::class)]
@@ -286,6 +288,211 @@ final class DocumentManagerTest extends TestCase
         /** @var Hit $firstHit */
         $firstHit = $searchResult->hits()[0];
         $this->assertEquals(new Document('1', ['content' => 'foo']), $firstHit->document());
+    }
+
+    public function test_many_documents_can_be_found(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response
+            ->expects($this->once())
+            ->method('asArray')
+            ->willReturn([
+                'responses' => [
+                    [
+                        'hits' => [
+                            'total' => ['value' => 1, 'relation' => 'eq'],
+                            'max_score' => 1.601195,
+                            'hits' => [
+                                [
+                                    '_index' => 'test1',
+                                    '_id' => '1',
+                                    '_score' => 1.601195,
+                                    '_source' => ['content' => 'foo'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'hits' => [
+                            'total' => ['value' => 1, 'relation' => 'eq'],
+                            'max_score' => 1.0,
+                            'hits' => [
+                                [
+                                    '_index' => 'test2',
+                                    '_id' => '2',
+                                    '_score' => 1.0,
+                                    '_source' => ['content' => 'bar'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('msearch')
+            ->with([
+                'body' => [
+                    ['index' => 'test1'],
+                    ['query' => ['match' => ['content' => 'foo']]],
+                    ['index' => 'test2'],
+                    ['query' => ['match' => ['content' => 'bar']]],
+                ],
+            ])
+            ->willReturn($response);
+
+        $searchParametersOne = (new SearchParameters())
+            ->indices(['test1'])
+            ->query(['match' => ['content' => 'foo']]);
+
+        $searchParametersTwo = (new SearchParameters())
+            ->indices(['test2'])
+            ->query(['match' => ['content' => 'bar']]);
+
+        $searchResults = $this->documentManager->searchMany([$searchParametersOne, $searchParametersTwo]);
+
+        $this->assertCount(2, $searchResults);
+        $this->assertSame(1, $searchResults->get(0)->total());
+        $this->assertSame(1, $searchResults->get(1)->total());
+
+        /** @var Hit $firstHit */
+        $firstHit = $searchResults->get(0)->hits()[0];
+        $this->assertEquals(new Document('1', ['content' => 'foo']), $firstHit->document());
+    }
+
+    public function test_terminate_after_is_moved_into_search_body_for_many_search(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response->method('asArray')->willReturn([
+            'responses' => [
+                [
+                    'hits' => ['total' => ['value' => 0, 'relation' => 'eq'], 'max_score' => null, 'hits' => []],
+                ],
+            ],
+        ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('msearch')
+            ->with([
+                'body' => [
+                    ['index' => 'test'],
+                    ['query' => ['match_all' => new stdClass()], 'terminate_after' => 10],
+                ],
+            ])
+            ->willReturn($response);
+
+        $searchParameters = (new SearchParameters())
+            ->indices(['test'])
+            ->query(['match_all' => new stdClass()])
+            ->terminateAfter(10);
+
+        $this->documentManager->searchMany([$searchParameters]);
+    }
+
+    public function test_empty_search_body_is_serialized_as_an_object_for_many_search(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response->method('asArray')->willReturn([
+            'responses' => [
+                [
+                    'hits' => ['total' => ['value' => 0, 'relation' => 'eq'], 'max_score' => null, 'hits' => []],
+                ],
+            ],
+        ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('msearch')
+            ->with([
+                'body' => [
+                    ['index' => 'test'],
+                    new stdClass(),
+                ],
+            ])
+            ->willReturn($response);
+
+        // only a header-level setter is called, so toArray() carries no 'body' key at all
+        $searchParameters = (new SearchParameters())->indices(['test']);
+
+        $this->documentManager->searchMany([$searchParameters]);
+    }
+
+    public function test_empty_search_header_is_serialized_as_an_object_for_many_search(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response->method('asArray')->willReturn([
+            'responses' => [
+                [
+                    'hits' => ['total' => ['value' => 0, 'relation' => 'eq'], 'max_score' => null, 'hits' => []],
+                ],
+            ],
+        ]);
+
+        $this->client
+            ->expects($this->once())
+            ->method('msearch')
+            ->with([
+                'body' => [
+                    new stdClass(),
+                    ['query' => ['match_all' => new stdClass()]],
+                ],
+            ])
+            ->willReturn($response);
+
+        // only a body-level setter is called, so toArray() carries no header key at all
+        $searchParameters = (new SearchParameters())->query(['match_all' => new stdClass()]);
+
+        $this->documentManager->searchMany([$searchParameters]);
+    }
+
+    public function test_exception_is_thrown_when_one_of_the_searches_failed(): void
+    {
+        $response = $this->createMock(Elasticsearch::class);
+
+        $response->method('asArray')->willReturn([
+            'responses' => [
+                [
+                    'hits' => [
+                        'total' => ['value' => 1, 'relation' => 'eq'],
+                        'max_score' => 1.0,
+                        'hits' => [
+                            [
+                                '_index' => 'test1',
+                                '_id' => '1',
+                                '_score' => 1.0,
+                                '_source' => ['content' => 'foo'],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'error' => [
+                        'type' => 'index_not_found_exception',
+                        'reason' => 'no such index [missing]',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->client->method('msearch')->willReturn($response);
+
+        $this->expectException(SearchOperationException::class);
+
+        $searchParametersOne = (new SearchParameters())
+            ->indices(['test1'])
+            ->query(['match_all' => new stdClass()]);
+
+        $searchParametersTwo = (new SearchParameters())
+            ->indices(['missing'])
+            ->query(['match_all' => new stdClass()]);
+
+        $this->documentManager->searchMany([$searchParametersOne, $searchParametersTwo]);
     }
 
     public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void

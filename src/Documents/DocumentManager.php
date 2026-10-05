@@ -4,10 +4,12 @@ namespace Elastic\Adapter\Documents;
 
 use Elastic\Adapter\Client;
 use Elastic\Adapter\Exceptions\BulkOperationException;
+use Elastic\Adapter\Exceptions\SearchOperationException;
 use Elastic\Adapter\Search\SearchParameters;
 use Elastic\Adapter\Search\SearchResult;
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use Illuminate\Support\Collection;
+use stdClass;
 
 class DocumentManager
 {
@@ -108,5 +110,43 @@ class DocumentManager
         $rawResult = $response->asArray();
 
         return new SearchResult($rawResult);
+    }
+
+    /**
+     * @param array<SearchParameters> $searchParameters
+     *
+     * @return Collection<SearchResult>
+     */
+    public function searchMany(array $searchParameters): Collection
+    {
+        $body = [];
+
+        foreach ($searchParameters as $parameters) {
+            $params = $parameters->toArray();
+            $searchBody = (array) ($params['body'] ?? []);
+            unset($params['body']);
+
+            // terminate_after is not a valid _msearch header key, but it is accepted in the search body
+            if (isset($params['terminate_after'])) {
+                $searchBody['terminate_after'] = $params['terminate_after'];
+                unset($params['terminate_after']);
+            }
+
+            // an empty array is serialized as [], which cannot be parsed as a header or a search body
+            $body[] = $params ?: new stdClass();
+            $body[] = $searchBody ?: new stdClass();
+        }
+
+        /** @var Elasticsearch $response */
+        $response = $this->client->msearch(['body' => $body]);
+        $rawResult = $response->asArray();
+
+        return collect($rawResult['responses'] ?? [])->map(static function (array $rawSearchResult) {
+            if (isset($rawSearchResult['error'])) {
+                throw new SearchOperationException($rawSearchResult);
+            }
+
+            return new SearchResult($rawSearchResult);
+        });
     }
 }
