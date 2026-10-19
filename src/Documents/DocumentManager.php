@@ -119,6 +119,10 @@ class DocumentManager
      */
     public function searchMany(array $searchParameters): Collection
     {
+        if (empty($searchParameters)) {
+            return collect();
+        }
+
         $body = [];
 
         foreach ($searchParameters as $parameters) {
@@ -141,12 +145,12 @@ class DocumentManager
         $response = $this->client->msearch(['body' => $body]);
         $rawResult = $response->asArray();
 
-        return collect($rawResult['responses'] ?? [])->map(static function (array $rawSearchResult) {
-            if (isset($rawSearchResult['error'])) {
-                throw new SearchOperationException($rawSearchResult);
-            }
+        $responses = collect($rawResult['responses'] ?? []);
 
-            return new SearchResult($rawSearchResult);
-        });
+        if ($responses->contains(static fn (array $rawSearchResult) => isset($rawSearchResult['error']))) {
+            throw new SearchOperationException($rawResult);
+        }
+
+        return $responses->map(static fn (array $rawSearchResult) => new SearchResult($rawSearchResult));
     }
 }

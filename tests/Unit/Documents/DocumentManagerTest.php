@@ -453,9 +453,7 @@ final class DocumentManagerTest extends TestCase
 
     public function test_exception_is_thrown_when_one_of_the_searches_failed(): void
     {
-        $response = $this->createMock(Elasticsearch::class);
-
-        $response->method('asArray')->willReturn([
+        $rawResult = [
             'responses' => [
                 [
                     'hits' => [
@@ -478,11 +476,12 @@ final class DocumentManagerTest extends TestCase
                     ],
                 ],
             ],
-        ]);
+        ];
+
+        $response = $this->createMock(Elasticsearch::class);
+        $response->method('asArray')->willReturn($rawResult);
 
         $this->client->method('msearch')->willReturn($response);
-
-        $this->expectException(SearchOperationException::class);
 
         $searchParametersOne = (new SearchParameters())
             ->indices(['test1'])
@@ -492,7 +491,24 @@ final class DocumentManagerTest extends TestCase
             ->indices(['missing'])
             ->query(['match_all' => new stdClass()]);
 
-        $this->documentManager->searchMany([$searchParametersOne, $searchParametersTwo]);
+        try {
+            $this->documentManager->searchMany([$searchParametersOne, $searchParametersTwo]);
+            $this->fail(SearchOperationException::class . ' was not thrown');
+        } catch (SearchOperationException $exception) {
+            // the full _msearch result is kept, so the caller can tell which search failed
+            $this->assertSame($rawResult, $exception->rawResult());
+        }
+    }
+
+    public function test_empty_collection_is_returned_when_no_search_parameters_are_given(): void
+    {
+        $this->client
+            ->expects($this->never())
+            ->method('msearch');
+
+        $searchResults = $this->documentManager->searchMany([]);
+
+        $this->assertTrue($searchResults->isEmpty());
     }
 
     public function test_exception_is_thrown_when_index_operation_was_unsuccessful(): void

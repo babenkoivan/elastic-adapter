@@ -549,9 +549,10 @@ foreach ($searchResults as $searchResult) {
 }
 ```
 
-If one of the searches fails, `Elastic\Adapter\Exceptions\SearchOperationException` is thrown (`_msearch`
+If one or more searches fail, `Elastic\Adapter\Exceptions\SearchOperationException` is thrown (`_msearch`
 responds with HTTP 200 and a per-search `error` object rather than an HTTP-level error, so this would
-otherwise go unnoticed as an empty result).
+otherwise go unnoticed as an empty result). Use its `rawResult()` method to get the full `_msearch` response,
+including the successful results and the position of each failed search.
 
 ### Connection
 
