@@ -527,6 +527,33 @@ $suggestions = $searchResult->suggestions();
 $aggregations = $searchResult->aggregations();
 ```
 
+### Search Many
+
+Run several independent searches in a single `_msearch` request:
+
+```php
+$searchParameters1 = (new \Elastic\Adapter\Search\SearchParameters())
+    ->indices(['my_index1'])
+    ->query(['match' => ['message' => 'test']]);
+
+$searchParameters2 = (new \Elastic\Adapter\Search\SearchParameters())
+    ->indices(['my_index2'])
+    ->query(['match' => ['message' => 'another test']]);
+
+// perform both searches in one HTTP call and get the results in the same order
+$searchResults = $documentManager->searchMany([$searchParameters1, $searchParameters2]);
+
+foreach ($searchResults as $searchResult) {
+    $total = $searchResult->total();
+    $hits = $searchResult->hits();
+}
+```
+
+If one or more searches fail, `Elastic\Adapter\Exceptions\SearchOperationException` is thrown (`_msearch`
+responds with HTTP 200 and a per-search `error` object rather than an HTTP-level error, so this would
+otherwise go unnoticed as an empty result). Use its `rawResult()` method to get the full `_msearch` response,
+including the successful results and the position of each failed search.
+
 ### Connection
 
 Switch Elasticsearch connection:
